@@ -1,0 +1,20 @@
+package com.example.neolabs.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+@Getter
+@Setter
+@Builder
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "marketing_strategies")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class MarketingStrategy {
+
+    String name;
+
+}
