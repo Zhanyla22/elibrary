@@ -1,5 +1,6 @@
 package com.example.neolabs.entity;
 
+import com.example.neolabs.entity.base.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -13,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Table(name = "marketing_strategies")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MarketingStrategy {
+public class MarketingStrategy extends BaseEntity {
 
     String name;
 
