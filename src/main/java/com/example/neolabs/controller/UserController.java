@@ -2,11 +2,11 @@ package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
 import com.example.neolabs.dto.ResponseDto;
-import com.example.neolabs.dto.authentication.AuthenticationRequest;
-import com.example.neolabs.dto.registration.RegistrationRequest;
+import com.example.neolabs.security.request.AuthenticationRequest;
+import com.example.neolabs.security.request.RegistrationRequest;
 import com.example.neolabs.service.CsvExportService;
-import com.example.neolabs.service.impl.CsvExportServiceImpl;
 import com.example.neolabs.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
@@ -24,7 +24,7 @@ import java.io.IOException;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Tag(name = "User")
+@Tag(name = "User Resource", description = "The User API ")
 public class UserController extends BaseController {
     final UserService userService;
 
@@ -39,6 +39,7 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/auth")
+    @Operation(summary = "User authorization")
     public ResponseEntity<ResponseDto> auth(@RequestBody AuthenticationRequest authenticationRequest) {
         return constructSuccessResponse(
                 userService.auth(authenticationRequest)
@@ -46,6 +47,7 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/registration")
+    @Operation(summary = "User registration")
     public ResponseEntity<ResponseDto> registration(@RequestBody RegistrationRequest registrationRequest) {
         return constructSuccessResponse(
                 userService.registration(registrationRequest)

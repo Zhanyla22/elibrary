@@ -1,4 +1,4 @@
-package com.example.neolabs.config.securityConfig;
+package com.example.neolabs.security.jwt;
 
 import com.example.neolabs.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

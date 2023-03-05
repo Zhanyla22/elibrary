@@ -1,4 +1,4 @@
-package com.example.neolabs.dto.registration;
+package com.example.neolabs.security.request;
 
 
 import com.example.neolabs.enums.Role;

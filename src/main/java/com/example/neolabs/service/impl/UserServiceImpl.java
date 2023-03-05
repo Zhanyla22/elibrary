@@ -1,10 +1,10 @@
 package com.example.neolabs.service.impl;
 
-import com.example.neolabs.config.securityConfig.JWTService;
-import com.example.neolabs.dto.authentication.AuthenticationRequest;
-import com.example.neolabs.dto.authentication.AuthenticationResponse;
-import com.example.neolabs.dto.registration.RegistrationRequest;
-import com.example.neolabs.dto.registration.RegistrationResponse;
+import com.example.neolabs.security.jwt.JWTService;
+import com.example.neolabs.security.request.AuthenticationRequest;
+import com.example.neolabs.security.response.AuthenticationResponse;
+import com.example.neolabs.security.request.RegistrationRequest;
+import com.example.neolabs.security.response.RegistrationResponse;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
