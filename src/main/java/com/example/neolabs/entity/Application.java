@@ -2,6 +2,7 @@ package com.example.neolabs.entity;
 
 import com.example.neolabs.entity.base.BaseEntity;
 import com.example.neolabs.enums.ApplicationStatus;
+import com.example.neolabs.enums.Education;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -48,5 +49,8 @@ public class Application extends BaseEntity {
     ApplicationStatus applicationStatus;
 
     @Column(name = "application_status_update_time")
-    LocalDateTime applicationStatusUpdateTime;
+    LocalDateTime applicationStatusUpdateDate;
+
+    @Enumerated(EnumType.STRING)
+    Education education;
 }
