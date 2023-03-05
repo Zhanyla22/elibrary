@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .jwtToken(jwtToken)
                     .build();
         } catch (Exception e) {
-            throw new BaseException("not found user", HttpStatus.NOT_FOUND);
+            throw new BaseException("User not found", HttpStatus.NOT_FOUND);
         }
 
     }
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new BaseException("user not found", HttpStatus.NOT_FOUND));
+                () -> new BaseException("User not found", HttpStatus.NOT_FOUND));
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(), user.getAuthorities());
 
@@ -94,4 +94,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return loadUserByUsername(email);
     }
 
+    public Long getCurrentUserId(){
+        return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(() -> new BaseException("User not found", HttpStatus.NOT_FOUND)).getId();
+    }
 }
