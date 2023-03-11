@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -17,21 +19,19 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "application_operations")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ApplicationOperation extends BaseEntity {
-
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(columnDefinition = "application_id",
-                referencedColumnName = "id")
+            referencedColumnName = "id")
     Application application;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(columnDefinition = "user_id",
-                referencedColumnName = "id")
+            referencedColumnName = "id")
     User user;
-
-    @Column(length = 500)
-    String description;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "operation_type")
     OperationType operationType;
+
+    String description;
 }
