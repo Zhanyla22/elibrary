@@ -40,7 +40,7 @@ public class CourseController {
 
     @PutMapping(value = {"/{id}"})
     @Operation(summary = "Update course by id")
-    public ResponseEntity updateCourseById(@PathVariable("id") Long id,
+    public ResponseEntity<CourseDTO> updateCourseById(@PathVariable("id") Long id,
                                            @Valid @RequestBody CourseDTO courseDTO){
         return ResponseEntity.ok(courseService.updateCourseById(id, courseDTO));
     }

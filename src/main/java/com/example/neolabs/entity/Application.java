@@ -36,7 +36,7 @@ public class Application extends BaseEntity {
     @ManyToOne(optional = false)
     @JoinColumn(columnDefinition = "cource_id",
             referencedColumnName = "id")
-    private Course cource;
+    private Course course;
 
     @ManyToOne
     @JoinColumn(columnDefinition = "marketing_strategy_id",
