@@ -1,5 +1,7 @@
-package com.example.neolabs.entity;
+package com.example.neolabs.entity.operation;
 
+import com.example.neolabs.entity.Department;
+import com.example.neolabs.entity.User;
 import com.example.neolabs.entity.base.BaseEntity;
 import com.example.neolabs.enums.OperationType;
 import jakarta.persistence.*;
@@ -14,13 +16,13 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_operations")
+@Table(name = "department_operations")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserOperation extends BaseEntity {
+public class DepartmentOperation extends BaseEntity {
     @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "target_user_id",
+    @JoinColumn(columnDefinition = "department_id",
             referencedColumnName = "id")
-    User targetUser;
+    Department department;
 
     @ManyToOne(optional = false)
     @JoinColumn(columnDefinition = "user_id",
@@ -32,7 +34,4 @@ public class UserOperation extends BaseEntity {
     OperationType operationType;
 
     String description;
-
-    @Column(name = "operation_date_time")
-    LocalDateTime operationDateTime;
 }
