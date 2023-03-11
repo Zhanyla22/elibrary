@@ -1,6 +1,6 @@
 package com.example.neolabs.config;
 
-import com.example.neolabs.config.securityConfig.JWTAuthenticationFilter;
+import com.example.neolabs.security.jwt.JWTAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebSecurity
 @EnableWebMvc
 @RequiredArgsConstructor
-public class SecurityConfiguration {
+public class WebSecurityConfig {
     private final JWTAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 

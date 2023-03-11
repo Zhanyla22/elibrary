@@ -1,5 +1,6 @@
 package com.example.neolabs.entity.base;
 
+import jakarta.annotation.PreDestroy;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,20 +21,28 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "date_created")
-    LocalDateTime dateCreated;
+    @Column(name = "created_date")
+    LocalDateTime createdDate;
 
-    @Column(name = "date_updated")
-    LocalDateTime dateUpdated;
+    @Column(name = "updated_date")
+    LocalDateTime updatedDate;
+
+    @Column(name = "deleted_date")
+    LocalDateTime deletedDate;
 
     @PrePersist
     public void prePersist(){
-        this.dateCreated = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now();
     }
 
     @PreUpdate
     public void preUpdate(){
-        this.dateUpdated = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
+    }
+
+    @PreDestroy
+    public void preDelete(){
+        this.deletedDate = LocalDateTime.now();
     }
 
 }

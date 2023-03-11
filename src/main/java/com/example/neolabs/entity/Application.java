@@ -33,9 +33,14 @@ public class Application extends BaseEntity {
     @Column(name = "has_laptop")
     Boolean hasLaptop;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(columnDefinition = "cource_id",
+            referencedColumnName = "id")
+    private Course cource;
+
     @ManyToOne
     @JoinColumn(columnDefinition = "marketing_strategy_id",
-                referencedColumnName = "id")
+            referencedColumnName = "id")
     MarketingStrategy marketingStrategy;
 
     @Column(name = "is_archived")

@@ -1,4 +1,4 @@
-package com.example.neolabs.config.securityConfig;
+package com.example.neolabs.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

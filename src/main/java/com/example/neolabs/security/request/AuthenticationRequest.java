@@ -1,4 +1,4 @@
-package com.example.neolabs.dto.authentication;
+package com.example.neolabs.security.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
