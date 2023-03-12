@@ -69,14 +69,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                             authenticationRequest.getPassword()
                     )
             );
-            String jwtToken = jwtService.generateToken((User) authenticate.getPrincipal());
-            return AuthenticationResponse.builder()
-                    .jwtToken(jwtToken)
-                    .build();
+            return jwtService.generateToken((User) authenticate.getPrincipal());
         } catch (Exception e) {
             throw new BaseException("User not found", HttpStatus.NOT_FOUND);
         }
 
+    }
+
+    @Override
+    public AuthenticationResponse refreshToken(User user) {
+        try{
+            return jwtService.generateToken(user);
+        }
+        catch (Exception e){
+            throw  new BaseException("not found user", HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override

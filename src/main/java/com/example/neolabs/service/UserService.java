@@ -1,5 +1,6 @@
 package com.example.neolabs.service;
 
+import com.example.neolabs.entity.User;
 import com.example.neolabs.security.request.AuthenticationRequest;
 import com.example.neolabs.security.response.AuthenticationResponse;
 import com.example.neolabs.security.request.RegistrationRequest;
@@ -11,5 +12,5 @@ public interface UserService {
 
     AuthenticationResponse auth(AuthenticationRequest authenticationRequest);
 
-
+    AuthenticationResponse refreshToken(User user);
 }
