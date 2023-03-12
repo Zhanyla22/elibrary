@@ -1,5 +1,7 @@
 package com.example.neolabs.service.impl;
 
+import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.security.jwt.JWTService;
 import com.example.neolabs.security.request.AuthenticationRequest;
 import com.example.neolabs.security.response.AuthenticationResponse;
@@ -34,6 +36,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     final JWTService jwtService;
     final PasswordEncoder passwordEncoder;
     final AuthenticationManager authenticationManager;
+    final OperationServiceImpl operationService;
 
     @Override
     public RegistrationResponse registration(RegistrationRequest registrationRequest) {
@@ -97,5 +100,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public Long getCurrentUserId(){
         return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new BaseException("User not found", HttpStatus.NOT_FOUND)).getId();
+    }
+
+    public User getUserEntityById(Long userId){
+        return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(EntityEnum.USER, "id", userId));
+    }
+
+    public User getCurrentUserEntity(){
+        return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(() -> new BaseException("User not found", HttpStatus.NOT_FOUND));
     }
 }

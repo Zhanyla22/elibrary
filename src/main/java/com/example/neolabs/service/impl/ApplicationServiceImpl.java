@@ -5,24 +5,31 @@ import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.entity.Application;
 import com.example.neolabs.enums.ApplicationStatus;
-import com.example.neolabs.enums.Entity;
+import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.enums.OperationType;
 import com.example.neolabs.enums.ResultCode;
 import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.ApplicationMapper;
 import com.example.neolabs.repository.ApplicationRepository;
 import com.example.neolabs.service.ApplicationService;
+import com.example.neolabs.util.OperationUtil;
 import com.example.neolabs.util.StatusUtil;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ApplicationServiceImpl implements ApplicationService {
 
-    private final ApplicationMapper applicationMapper;
-    private final ApplicationRepository applicationRepository;
+    final ApplicationMapper applicationMapper;
+    final ApplicationRepository applicationRepository;
+    final OperationServiceImpl operationService;
+    final OperationUtil opUtil;
 
     @Override
     public ApplicationDto getApplicationById(Long applicationId) {
@@ -42,7 +49,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         ApplicationStatus oldStatus = application.getApplicationStatus();
         application.setApplicationStatus(StatusUtil.getApplicationStatus(newStatus));
         application.setIsArchived(newStatus > 4);
-        applicationRepository.save(application);
+        operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.UPDATE,
+                opUtil.buildCreateDescription(EntityEnum.APPLICATION, applicationId));
         return ResponseDto.builder()
                 .result("Application status has been successfully updated from "
                         + oldStatus.toString() + " to " + application.getApplicationStatus().toString() + ".")
@@ -109,7 +117,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application getApplicationEntityById(Long applicationId) {
         return applicationRepository.findById(applicationId).orElseThrow(() -> {
-            throw new EntityNotFoundException(Entity.APPLICATION, "id", String.valueOf(applicationId));
+            throw new EntityNotFoundException(EntityEnum.APPLICATION, "id", applicationId);
         });
     }
 

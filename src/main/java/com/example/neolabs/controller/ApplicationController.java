@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping(name = "/api/v1/applications")
+@RequestMapping("/api/v1/applications")
 @RequiredArgsConstructor
 public class ApplicationController extends BaseController {
 
@@ -51,7 +51,7 @@ public class ApplicationController extends BaseController {
         return ResponseEntity.ok(applicationService.unarchiveApplicationById(applicationId));
     }
 
-    @RequestMapping("/csv")
+    @GetMapping("/csv")
     public void getAllEmployeesInCsv(HttpServletResponse servletResponse) throws IOException {
         servletResponse.setContentType("text/csv");
         servletResponse.addHeader("Content-Disposition","attachment; filename=\"applications.csv\"");

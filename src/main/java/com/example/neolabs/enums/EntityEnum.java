@@ -1,6 +1,6 @@
 package com.example.neolabs.enums;
 
-public enum Entity {
+public enum EntityEnum {
     USER,
     APPLICATION,
     MARKETING_STRATEGY,
