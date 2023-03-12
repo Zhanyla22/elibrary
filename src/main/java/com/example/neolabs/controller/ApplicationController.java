@@ -3,6 +3,7 @@ package com.example.neolabs.controller;
 import com.example.neolabs.controller.base.BaseController;
 import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.dto.ResponseDto;
+import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.service.impl.ApplicationServiceImpl;
 import com.example.neolabs.service.impl.CsvExportServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,6 +38,17 @@ public class ApplicationController extends BaseController {
     @PostMapping("")
     public ResponseEntity<ResponseDto> insertApplication(@RequestBody ApplicationDto applicationDto){
         return ResponseEntity.ok(applicationService.insertApplication(applicationDto));
+    }
+
+    @PutMapping("/archive")
+    public ResponseEntity<ResponseDto> archiveApplicationById(@RequestParam("id") Long applicationId,
+                                                          @RequestBody ArchiveRequest request){
+        return ResponseEntity.ok(applicationService.archiveApplicationById(applicationId, request));
+    }
+
+    @PutMapping("/unarchive")
+    public ResponseEntity<ResponseDto> unarchiveApplicationById(@RequestParam("id") Long applicationId){
+        return ResponseEntity.ok(applicationService.unarchiveApplicationById(applicationId));
     }
 
     @RequestMapping("/csv")
