@@ -2,6 +2,7 @@ package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
 import com.example.neolabs.dto.ResponseDto;
+import com.example.neolabs.entity.User;
 import com.example.neolabs.security.request.AuthenticationRequest;
 import com.example.neolabs.security.request.RegistrationRequest;
 import com.example.neolabs.service.CsvExportService;
@@ -14,6 +15,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
@@ -48,6 +54,13 @@ public class UserController extends BaseController {
     public ResponseEntity<ResponseDto> registration(@RequestBody RegistrationRequest registrationRequest) {
         return constructSuccessResponse(
                 userService.registration(registrationRequest)
+        );
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<ResponseDto> auth(@AuthenticationPrincipal User user) {
+        return constructSuccessResponse(
+                userService.refreshToken(user)
         );
     }
 
