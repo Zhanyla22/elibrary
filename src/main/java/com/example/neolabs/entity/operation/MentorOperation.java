@@ -1,6 +1,9 @@
-package com.example.neolabs.entity;
+package com.example.neolabs.entity.operation;
 
+import com.example.neolabs.entity.Mentor;
+import com.example.neolabs.entity.User;
 import com.example.neolabs.entity.base.BaseEntity;
+import com.example.neolabs.enums.ApplicationStatus;
 import com.example.neolabs.enums.OperationType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,13 +17,13 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "group_operations")
+@Table(name = "mentor_operations")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GroupOperation extends BaseEntity {
+public class MentorOperation extends BaseEntity {
     @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "group_id",
+    @JoinColumn(columnDefinition = "mentor_id",
             referencedColumnName = "id")
-    Group group;
+    Mentor mentor;
 
     @ManyToOne(optional = false)
     @JoinColumn(columnDefinition = "user_id",
@@ -32,7 +35,4 @@ public class GroupOperation extends BaseEntity {
     OperationType operationType;
 
     String description;
-
-    @Column(name = "operation_date_time")
-    LocalDateTime operationDateTime;
 }

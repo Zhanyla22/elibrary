@@ -15,6 +15,7 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "marketing_strategies")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MarketingStrategy extends BaseEntity {
-    String name;
-}
 
+    String name;
+
+}
