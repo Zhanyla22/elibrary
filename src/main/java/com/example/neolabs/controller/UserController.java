@@ -2,6 +2,7 @@ package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
 import com.example.neolabs.dto.ResponseDto;
+import com.example.neolabs.dto.UpdatePasswordDTO;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.security.request.AuthenticationRequest;
 import com.example.neolabs.security.request.RegistrationRequest;
@@ -61,6 +62,13 @@ public class UserController extends BaseController {
     public ResponseEntity<ResponseDto> auth(@AuthenticationPrincipal User user) {
         return constructSuccessResponse(
                 userService.refreshToken(user)
+        );
+    }
+
+    @PostMapping("/update-password")
+    public ResponseEntity<ResponseDto> updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO){
+        return constructSuccessResponse(
+                userService.updatePassword(updatePasswordDTO)
         );
     }
 
