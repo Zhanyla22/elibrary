@@ -1,5 +1,8 @@
 package com.example.neolabs.service.impl;
 
+import com.example.neolabs.dto.ResponseDto;
+import com.example.neolabs.dto.UpdatePasswordDTO;
+import com.example.neolabs.enums.ResultCode;
 import com.example.neolabs.security.jwt.JWTService;
 import com.example.neolabs.security.request.AuthenticationRequest;
 import com.example.neolabs.security.response.AuthenticationResponse;
@@ -24,6 +27,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static java.util.regex.Pattern.matches;
 
 @Service
 @RequiredArgsConstructor
@@ -85,6 +90,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw  new BaseException("not found user", HttpStatus.NOT_FOUND);
         }
     }
+
+    @Override
+    public ResponseDto updatePassword(UpdatePasswordDTO updatePasswordDTO) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (passwordEncoder.matches(updatePasswordDTO.getOldPassword(), user.getPassword())){
+            user.setPassword(passwordEncoder.encode(updatePasswordDTO.getNewPassword()));
+            userRepository.save(user);
+        }
+        return ResponseDto.builder()
+                .result(ResultCode.SUCCESS)
+                .details(getCurrentUser().getPassword())
+                .build();
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
