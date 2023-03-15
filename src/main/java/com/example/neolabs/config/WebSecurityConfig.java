@@ -51,7 +51,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(WHITELISTED_ENDPOINTS)
                 .permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

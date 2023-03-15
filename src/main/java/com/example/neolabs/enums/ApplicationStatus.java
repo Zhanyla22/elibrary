@@ -42,8 +42,7 @@ public enum ApplicationStatus {
         int order(){
             return 7;
         }
-    },
-    BLACKLISTED;
+    };
 
 
     int order(){

@@ -8,11 +8,14 @@ import com.example.neolabs.service.impl.ApplicationServiceImpl;
 import com.example.neolabs.service.impl.CsvExportServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/applications")
@@ -22,12 +25,14 @@ public class ApplicationController extends BaseController {
     private final ApplicationServiceImpl applicationService;
     private final CsvExportServiceImpl csvExportService;
 
-    // TODO: 05.03.2023 need to redo all of the endpoints with constructSuccessResponse()
-
     @GetMapping("")
     public ResponseEntity<List<ApplicationDto>> getAllApplications(
-            @RequestParam(name = "include_archived", defaultValue = "1") boolean includeArchived){
-        return ResponseEntity.ok(applicationService.getAllApplications(includeArchived));
+            @RequestParam(name = "include_archived", defaultValue = "1") boolean includeArchived,
+            @RequestParam(name = "sort_by")Optional<String> sortBy,
+            @RequestParam(name = "page") Optional<Integer> page,
+            @RequestParam(name = "size") Optional<Integer> size){
+        PageRequest pageRequest = PageRequest.of(page.orElse(0), size.orElse(20), Sort.by(sortBy.orElse("id")));
+        return ResponseEntity.ok(applicationService.getAllApplications(includeArchived, pageRequest));
     }
 
     @GetMapping("/{applicationId}")
@@ -56,5 +61,11 @@ public class ApplicationController extends BaseController {
         servletResponse.setContentType("text/csv");
         servletResponse.addHeader("Content-Disposition","attachment; filename=\"applications.csv\"");
         csvExportService.writeApplicationsToCsv(servletResponse.getWriter());
+    }
+
+    @PutMapping("/convert")
+    public ResponseEntity<ResponseDto> convertApplicationIntoStudent(@RequestParam("id") Long id,
+                                                                     @RequestParam("result") Integer newStatus){
+        return ResponseEntity.ok(applicationService.convertApplication(id, newStatus));
     }
 }

@@ -28,8 +28,8 @@ public class Student extends BaseEntity {
     @Column(name = "last_name")
     String lastName;
 
-    @Column(name = "date_of_birth")
-    LocalDate dateOfBirth;
+    @Column(name = "phone_number")
+    String phoneNumber;
 
     @Enumerated(EnumType.STRING)
     Gender gender;

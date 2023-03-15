@@ -17,6 +17,8 @@ import com.example.neolabs.util.StatusUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +30,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     final ApplicationMapper applicationMapper;
     final ApplicationRepository applicationRepository;
+    final StudentServiceImpl studentService;
     final OperationServiceImpl operationService;
     final OperationUtil opUtil;
 
@@ -37,10 +40,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<ApplicationDto> getAllApplications(boolean includeArchived) {
-        List<Application> applications = includeArchived ?
-                applicationRepository.findAll() : applicationRepository.findAllByIsArchived(false);
-        return applicationMapper.entityListToDtoList(applications);
+    public List<ApplicationDto> getAllApplications(boolean includeArchived, PageRequest pageRequest) {
+        Page<Application> applications = includeArchived ?
+                applicationRepository.findAll(pageRequest) : applicationRepository.findAllByIsArchived(false, pageRequest);
+        return applicationMapper.entityListToDtoList(applications.stream().toList());
     }
 
     @Override
@@ -73,9 +76,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ResponseDto insertApplication(ApplicationDto applicationDto) {
-        ApplicationDto newDto = applicationMapper.entityToDto(
-                applicationRepository.save(applicationMapper.dtoToEntity(applicationDto))
-        );
+        Application application = applicationRepository.save(applicationMapper.dtoToEntity(applicationDto));
+        if (application.getApplicationStatus() == null){
+            application.setApplicationStatus(ApplicationStatus.WAITING_FOR_CALL);
+        }
+        ApplicationDto newDto = applicationMapper.entityToDto(application);
         return ResponseDto.builder()
                 .result(newDto)
                 .resultCode(ResultCode.SUCCESS)
@@ -92,8 +97,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ResponseDto archiveApplicationById(Long applicationId, ArchiveRequest archiveRequest) {
         Application application = getApplicationEntityById(applicationId);
         application.setIsArchived(true);
-        application.setApplicationStatus(archiveRequest.getIsBlacklist() ?
-                ApplicationStatus.BLACKLISTED : ApplicationStatus.DID_NOT_APPLY_FOR_COURSES);
+        application.setApplicationStatus(ApplicationStatus.DID_NOT_APPLY_FOR_COURSES);
         // TODO: 12.03.2023 need to save last status before archiving for analytics
         // also need to do something with archive reason
         return ResponseDto.builder()
@@ -112,6 +116,11 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .result("Application with id " + applicationId + " has been successfully archived.")
                 .build();
         // TODO: 12.03.2023 same as function above
+    }
+
+    @Override
+    public ResponseDto convertApplication(Long applicationId, Integer newStatus) {
+        return null;
     }
 
     @Override

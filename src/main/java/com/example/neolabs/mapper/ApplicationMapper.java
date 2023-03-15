@@ -2,9 +2,13 @@ package com.example.neolabs.mapper;
 
 import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.entity.Application;
+import com.example.neolabs.entity.Student;
+import com.example.neolabs.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +28,8 @@ public class ApplicationMapper {
                 .updateDate(application.getUpdatedDate())
                 .education(application.getEducation())
                 .isArchived(application.getIsArchived())
+                .isUrgent(DateUtil.findDifference(LocalDateTime.now(),
+                        application.getApplicationStatusUpdateDate(), ChronoUnit.SECONDS) > 86400)
                 .reason(application.getReason())
                 .phoneNumber(application.getPhoneNumber())
                 .hasLaptop(application.getHasLaptop())
@@ -52,5 +58,15 @@ public class ApplicationMapper {
     //redundant?
     public List<Application> dtoListToEntityList(List<ApplicationDto> applicationDtos){
         return applicationDtos.stream().map(this::dtoToEntity).collect(Collectors.toList());
+    }
+
+    public Student entityToStudentEntity(Application application){
+        return Student.builder()
+                .application(application)
+                .email(application.getEmail())
+                .firstName(application.getFirstName())
+                .lastName(application.getLastName())
+                .phoneNumber(application.getPhoneNumber())
+                .build();
     }
 }

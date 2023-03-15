@@ -53,4 +53,7 @@ public class ApplicationDto {
     LocalDateTime updateDate;
 
     Education education;
+
+    @JsonProperty(value = "is_urgent")
+    Boolean isUrgent;
 }
