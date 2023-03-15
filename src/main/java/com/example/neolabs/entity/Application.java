@@ -3,6 +3,7 @@ package com.example.neolabs.entity;
 import com.example.neolabs.entity.base.BaseEntity;
 import com.example.neolabs.enums.ApplicationStatus;
 import com.example.neolabs.enums.Education;
+import com.example.neolabs.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -29,6 +30,9 @@ public class Application extends BaseEntity {
 
     @Column(name = "phone_number")
     String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    Gender gender;
 
     @Column(name = "has_laptop")
     Boolean hasLaptop;

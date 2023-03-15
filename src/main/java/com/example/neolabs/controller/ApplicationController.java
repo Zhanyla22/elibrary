@@ -4,6 +4,7 @@ import com.example.neolabs.controller.base.BaseController;
 import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
+import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.service.impl.ApplicationServiceImpl;
 import com.example.neolabs.service.impl.CsvExportServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
@@ -64,8 +65,7 @@ public class ApplicationController extends BaseController {
     }
 
     @PutMapping("/convert")
-    public ResponseEntity<ResponseDto> convertApplicationIntoStudent(@RequestParam("id") Long id,
-                                                                     @RequestParam("result") Integer newStatus){
-        return ResponseEntity.ok(applicationService.convertApplication(id, newStatus));
+    public ResponseEntity<ResponseDto> convertApplicationIntoStudent(@RequestBody ConversionRequest conversionRequest){
+        return ResponseEntity.ok(applicationService.convertApplication(conversionRequest));
     }
 }

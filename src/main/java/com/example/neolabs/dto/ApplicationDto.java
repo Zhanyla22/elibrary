@@ -3,6 +3,7 @@ package com.example.neolabs.dto;
 import com.example.neolabs.entity.MarketingStrategy;
 import com.example.neolabs.enums.ApplicationStatus;
 import com.example.neolabs.enums.Education;
+import com.example.neolabs.enums.Gender;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -28,6 +29,8 @@ public class ApplicationDto {
 
     @JsonProperty(value = "phone_number")
     String phoneNumber;
+
+    Gender gender;
 
     @JsonProperty(value = "has_laptop")
     Boolean hasLaptop;

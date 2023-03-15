@@ -3,6 +3,7 @@ package com.example.neolabs.service;
 import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
+import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.entity.Application;
 import org.springframework.data.domain.PageRequest;
 
@@ -17,7 +18,7 @@ public interface ApplicationService {
     ResponseDto deleteApplicationById(Long applicationId);
     ResponseDto archiveApplicationById(Long applicationId, ArchiveRequest archiveRequest);
     ResponseDto unarchiveApplicationById(Long applicationId);
-    ResponseDto convertApplication(Long applicationId, Integer newStatus);
+    ResponseDto convertApplication(ConversionRequest conversionRequest);
     Application getApplicationEntityById(Long applicationId);
     // TODO: 05.03.2023
     // add searching, filters, FlexBe

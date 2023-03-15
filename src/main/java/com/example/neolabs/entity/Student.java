@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -49,5 +50,8 @@ public class Student extends BaseEntity {
     @JoinTable(name = "students_groups",
             joinColumns = { @JoinColumn(name = "student_id") },
             inverseJoinColumns = { @JoinColumn(name = "group_id") })
-    private Set<Student> groups;
+    List<Group> groups;
+
+    @OneToMany(mappedBy = "student")
+    List<StudentGroupBill> groupBills;
 }

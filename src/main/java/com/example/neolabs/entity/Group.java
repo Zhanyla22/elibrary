@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,30 +20,33 @@ import java.time.LocalDate;
 public class Group extends BaseEntity {
 
     @Column(name = "name")
-    private String name;
+    String name;
 
     @ManyToOne(optional = false)
     @JoinColumn(columnDefinition = "cource_id",
             referencedColumnName = "id")
-    private Course cource;
+    Course course;
 
     @Column(name = "max_capacity")
-    private Integer maxCapacity;
+    Integer maxCapacity;
 
     @ManyToOne(optional = false)
     @JoinColumn(columnDefinition = "mentor_id",
             referencedColumnName = "id")
-    private Mentor mentor;
+    Mentor mentor;
 
     @Column(name = "start_date")
-    private LocalDate startDate;
+    LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDate endDate;
+    LocalDate endDate;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    Status status;
 
     @Column(name = "is_archived")
-    private Boolean isArchived;
+    Boolean isArchived;
+
+    @ManyToMany(mappedBy = "groups")
+    Set<Student> students;
 }

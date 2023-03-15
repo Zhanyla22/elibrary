@@ -4,6 +4,7 @@ import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.StudentDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
+import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.entity.Application;
 import com.example.neolabs.entity.Student;
 import com.example.neolabs.mapper.ApplicationMapper;
@@ -29,12 +30,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResponseDto insertStudent(StudentDto studentDto) {
+        Student student = studentMapper.dtoToEntity(studentDto);
         return null;
     }
 
     @Override
-    public void insertStudentFromApplication(Application application) {
-        Student student = applicationMapper.entityToStudentEntity(application);
+    public void insertStudentFromApplication(Application application, ConversionRequest conversionRequest) {
+        Student student = applicationMapper.entityToStudentEntity(application, conversionRequest);
     }
 
     @Override

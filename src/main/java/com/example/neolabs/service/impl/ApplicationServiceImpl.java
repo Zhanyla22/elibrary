@@ -3,6 +3,7 @@ package com.example.neolabs.service.impl;
 import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
+import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.entity.Application;
 import com.example.neolabs.enums.ApplicationStatus;
 import com.example.neolabs.enums.EntityEnum;
@@ -119,8 +120,14 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public ResponseDto convertApplication(Long applicationId, Integer newStatus) {
-        return null;
+    public ResponseDto convertApplication(ConversionRequest conversionRequest) {
+        studentService.insertStudentFromApplication(getApplicationEntityById(conversionRequest.getApplicationId()),
+                conversionRequest);
+        return ResponseDto.builder()
+                .result("Successfully converted application into a student.")
+                .resultCode(ResultCode.SUCCESS)
+                .build();
+        // TODO: 15.03.2023 need operations and some analytics 
     }
 
     @Override

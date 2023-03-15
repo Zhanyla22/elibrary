@@ -1,20 +1,26 @@
 package com.example.neolabs.mapper;
 
 import com.example.neolabs.dto.ApplicationDto;
+import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.entity.Application;
+import com.example.neolabs.entity.Group;
 import com.example.neolabs.entity.Student;
+import com.example.neolabs.service.impl.GroupServiceImpl;
 import com.example.neolabs.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class ApplicationMapper {
+
+    final GroupServiceImpl groupService;
 
     public ApplicationDto entityToDto(Application application){
         return ApplicationDto.builder()
@@ -60,13 +66,17 @@ public class ApplicationMapper {
         return applicationDtos.stream().map(this::dtoToEntity).collect(Collectors.toList());
     }
 
-    public Student entityToStudentEntity(Application application){
+    public Student entityToStudentEntity(Application application, ConversionRequest conversionRequest){
+        List<Group> groups = new ArrayList<>();
+        groups.add(groupService.getGroupEntityById(conversionRequest.getGroupId()));
         return Student.builder()
                 .application(application)
                 .email(application.getEmail())
                 .firstName(application.getFirstName())
                 .lastName(application.getLastName())
                 .phoneNumber(application.getPhoneNumber())
+                .gender(application.getGender())
+                .groups(groups)
                 .build();
     }
 }
