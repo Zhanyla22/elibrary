@@ -19,7 +19,7 @@ public class StatusUtil {
         } else if (n == 7) {
             return ApplicationStatus.GOT_REJECTED;
         } else {
-            return ApplicationStatus.BLACKLISTED;
+            return null;
         }
     }
 }

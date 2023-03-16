@@ -1,13 +1,12 @@
 package com.example.neolabs.dto;
 
-import com.example.neolabs.entity.Group;
 import com.example.neolabs.enums.Gender;
 import com.example.neolabs.enums.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -37,5 +36,5 @@ public class StudentDto {
     @JsonProperty("payment_percentage")
     Integer totalPaymentPercentage;
 
-    Set<Group> groups;
+    List<GroupDto> groups;
 }

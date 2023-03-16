@@ -7,6 +7,8 @@ import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.entity.Application;
 import com.example.neolabs.entity.Student;
+import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.ApplicationMapper;
 import com.example.neolabs.mapper.StudentMapper;
 import com.example.neolabs.repository.StudentRepository;
@@ -37,16 +39,19 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void insertStudentFromApplication(Application application, ConversionRequest conversionRequest) {
         Student student = applicationMapper.entityToStudentEntity(application, conversionRequest);
+        // FIXME: 16.03.2023
+        studentRepository.save(student);
     }
 
     @Override
     public List<StudentDto> getAllStudents(Boolean includeArchived, PageRequest pageRequest) {
-        return null;
+        // TODO: 16.03.2023 add archive including/excluding
+        return studentMapper.entityListToDtoList(studentRepository.findAll(pageRequest).stream().toList());
     }
 
     @Override
     public StudentDto getStudentById(Long studentId) {
-        return null;
+        return studentMapper.entityToDto(getStudentEntityById(studentId));
     }
 
     @Override
@@ -62,5 +67,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public ResponseDto unarchiveStudentById(Long studentId) {
         return null;
+    }
+
+    public Student getStudentEntityById(Long studentId){
+        return studentRepository.findById(studentId).orElseThrow(() -> {
+            throw new EntityNotFoundException(EntityEnum.STUDENT, "id", studentId);
+        });
     }
 }

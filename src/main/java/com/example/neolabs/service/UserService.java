@@ -1,9 +1,9 @@
 package com.example.neolabs.service;
 
-import com.example.neolabs.security.request.AuthenticationRequest;
-import com.example.neolabs.security.response.AuthenticationResponse;
-import com.example.neolabs.security.request.RegistrationRequest;
-import com.example.neolabs.security.response.RegistrationResponse;
+import com.example.neolabs.dto.request.AuthenticationRequest;
+import com.example.neolabs.dto.response.response.AuthenticationResponse;
+import com.example.neolabs.dto.request.RegistrationRequest;
+import com.example.neolabs.dto.response.response.RegistrationResponse;
 
 public interface UserService {
 
