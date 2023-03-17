@@ -27,7 +27,8 @@ public class WebSecurityConfig {
             "/documentation/**",
             "/v3/api-docs/**",
             "/api/v1/auth/**",
-            "/user/auth"
+            "/user/*"
+    //       "/user/auth"
     };
 
     @Bean
