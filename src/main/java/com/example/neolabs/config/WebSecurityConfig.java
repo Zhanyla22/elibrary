@@ -27,8 +27,10 @@ public class WebSecurityConfig {
             "/documentation/**",
             "/v3/api-docs/**",
             "/api/v1/auth/**",
-            "/user/*"
-    //       "/user/auth"
+            "/user/auth",
+            "/user/forgot-password",
+            "/user/reset-password",
+            "/user/registration"
     };
 
     @Bean
@@ -61,5 +63,4 @@ public class WebSecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
 }

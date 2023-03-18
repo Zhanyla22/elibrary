@@ -9,9 +9,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdatePasswordDTO {
+public class ForgotPasswordRequestDto {
 
-    String oldPassword;
+    String email;
 
-    String newPassword;
 }

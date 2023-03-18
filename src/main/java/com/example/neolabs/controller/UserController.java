@@ -1,9 +1,12 @@
 package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
+import com.example.neolabs.dto.ForgotPasswordCodeRequestDto;
+import com.example.neolabs.dto.ForgotPasswordRequestDto;
 import com.example.neolabs.dto.ResponseDto;
-import com.example.neolabs.dto.UpdatePasswordDTO;
+import com.example.neolabs.dto.UpdatePasswordDto;
 import com.example.neolabs.entity.User;
+import com.example.neolabs.enums.ResultCode;
 import com.example.neolabs.security.request.AuthenticationRequest;
 import com.example.neolabs.security.request.RegistrationRequest;
 import com.example.neolabs.service.CsvExportService;
@@ -22,7 +25,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping("/user")
@@ -66,10 +71,21 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/update-password")
-    public ResponseEntity<ResponseDto> updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO){
-        return constructSuccessResponse(
-                userService.updatePassword(updatePasswordDTO)
-        );
+    public ResponseEntity<ResponseDto> updatePassword(@RequestBody UpdatePasswordDto updatePasswordDTO){
+        userService.updatePassword(updatePasswordDTO);
+        return constructSuccessResponse("Password successfully updated");
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ResponseDto> forgotPass(@RequestBody ForgotPasswordRequestDto forgotPasswordRequestDto) throws MessagingException {
+        userService.forgotPassword(forgotPasswordRequestDto);
+        return constructSuccessResponse("6 digit code sent to your email");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<ResponseDto> resetPassword(@RequestBody ForgotPasswordCodeRequestDto forgotPasswordCodeRequestDto){
+        userService.confirmCode(forgotPasswordCodeRequestDto);
+        return constructSuccessResponse("password successfully changed");
     }
 
 }
