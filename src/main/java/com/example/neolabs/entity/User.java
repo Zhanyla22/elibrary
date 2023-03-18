@@ -1,8 +1,8 @@
 package com.example.neolabs.entity;
 
+import com.example.neolabs.entity.base.BaseEntity;
 import com.example.neolabs.enums.Role;
 import com.example.neolabs.enums.Status;
-import com.example.neolabs.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -24,9 +25,11 @@ import java.util.Collections;
 public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "email")
+    @NotNull
     String email;
 
     @Column(name = "password")
+    @NotNull
     String password;
 
     @Column(name = "first_name")
@@ -39,11 +42,11 @@ public class User extends BaseEntity implements UserDetails {
     String urlImage;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     Role role;
+
     @Enumerated(EnumType.STRING)
     Status status;
-
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -79,4 +82,5 @@ public class User extends BaseEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
