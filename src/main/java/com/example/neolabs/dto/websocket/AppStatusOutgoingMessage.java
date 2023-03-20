@@ -10,13 +10,13 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class IncomingMessage {
+public class AppStatusOutgoingMessage {
     @JsonProperty("application_id")
     Long applicationId;
 
-    @JsonProperty("old_status")
-    Integer oldStatus;
-
     @JsonProperty("new_status")
     Integer newStatus;
+
+    @JsonProperty("user_id")
+    Long userId;
 }

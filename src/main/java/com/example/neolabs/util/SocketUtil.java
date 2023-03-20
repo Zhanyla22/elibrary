@@ -1,7 +1,8 @@
 package com.example.neolabs.util;
 
-import com.example.neolabs.dto.websocket.IncomingMessage;
-import com.example.neolabs.dto.websocket.OutgoingMessage;
+import com.example.neolabs.dto.websocket.AppStatusIncomingMessage;
+import com.example.neolabs.dto.websocket.AppStatusOutgoingMessage;
+import com.example.neolabs.service.impl.ApplicationServiceImpl;
 import com.example.neolabs.service.impl.UserServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +15,15 @@ import org.springframework.stereotype.Component;
 public class SocketUtil {
 
     final UserServiceImpl userService;
+    final ApplicationServiceImpl applicationService;
 
-    public OutgoingMessage convertIncomingMessage(IncomingMessage incomingMessage){
-        return OutgoingMessage.builder()
-                .applicationId(incomingMessage.getApplicationId())
-                .oldStatus(incomingMessage.getOldStatus())
-                .newStatus(incomingMessage.getNewStatus())
+    public AppStatusOutgoingMessage convertAppStatusIncomingMessage(AppStatusIncomingMessage appStatusIncomingMessage){
+        applicationService.updateApplicationStatus(appStatusIncomingMessage.getApplicationId(),
+                appStatusIncomingMessage.getNewStatus());
+        return AppStatusOutgoingMessage.builder()
+                .applicationId(appStatusIncomingMessage.getApplicationId())
+                .oldStatus(appStatusIncomingMessage.getOldStatus())
+                .newStatus(appStatusIncomingMessage.getNewStatus())
                 .userId(userService.getCurrentUserId())
                 .build();
     }
