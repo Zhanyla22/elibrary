@@ -22,7 +22,6 @@ public class SocketUtil {
                 appStatusIncomingMessage.getNewStatus());
         return AppStatusOutgoingMessage.builder()
                 .applicationId(appStatusIncomingMessage.getApplicationId())
-                .oldStatus(appStatusIncomingMessage.getOldStatus())
                 .newStatus(appStatusIncomingMessage.getNewStatus())
                 .userId(userService.getCurrentUserId())
                 .build();
