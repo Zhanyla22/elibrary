@@ -1,7 +1,9 @@
-package com.example.neolabs.dto.response.response;
+package com.example.neolabs.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Date;
 
 @Getter
 @Setter
@@ -14,7 +16,9 @@ public class AuthenticationResponse {
 
     String jwtToken;
 
-    //TODO: implement refresh Token
+    Date dateExpiredAccessToken;
+
+    Date dateExpiredRefreshToken;
     String refreshToken;
 
 }

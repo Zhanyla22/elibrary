@@ -1,7 +1,12 @@
 package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
+import com.example.neolabs.dto.ForgotPasswordCodeRequestDto;
+import com.example.neolabs.dto.ForgotPasswordRequestDto;
 import com.example.neolabs.dto.ResponseDto;
+import com.example.neolabs.dto.UpdatePasswordDto;
+import com.example.neolabs.entity.User;
+import com.example.neolabs.enums.ResultCode;
 import com.example.neolabs.dto.request.AuthenticationRequest;
 import com.example.neolabs.dto.request.RegistrationRequest;
 import com.example.neolabs.service.CsvExportService;
@@ -13,12 +18,16 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping("/user")
@@ -31,7 +40,7 @@ public class UserController extends BaseController {
     private final CsvExportService csvExportService;
 
 
-    @RequestMapping(path = "/download")
+    @GetMapping(path = "/download")
     public void getAllEmployeesInCsv(HttpServletResponse servletResponse) throws IOException {
         servletResponse.setContentType("text/csv");
         servletResponse.addHeader("Content-Disposition","attachment; filename=\"users.csv\"");
@@ -52,6 +61,31 @@ public class UserController extends BaseController {
         return constructSuccessResponse(
                 userService.registration(registrationRequest)
         );
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<ResponseDto> auth(@AuthenticationPrincipal User user) {
+        return constructSuccessResponse(
+                userService.refreshToken(user)
+        );
+    }
+
+    @PostMapping("/update-password")
+    public ResponseEntity<ResponseDto> updatePassword(@RequestBody UpdatePasswordDto updatePasswordDTO){
+        userService.updatePassword(updatePasswordDTO);
+        return constructSuccessResponse("Password successfully updated");
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ResponseDto> forgotPass(@RequestBody ForgotPasswordRequestDto forgotPasswordRequestDto) throws MessagingException {
+        userService.forgotPassword(forgotPasswordRequestDto);
+        return constructSuccessResponse("6 digit code sent to your email");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<ResponseDto> resetPassword(@RequestBody ForgotPasswordCodeRequestDto forgotPasswordCodeRequestDto){
+        userService.confirmCode(forgotPasswordCodeRequestDto);
+        return constructSuccessResponse("password successfully changed");
     }
 
 }

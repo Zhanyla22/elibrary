@@ -1,4 +1,4 @@
-package com.example.neolabs.dto.response.response;
+package com.example.neolabs.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
