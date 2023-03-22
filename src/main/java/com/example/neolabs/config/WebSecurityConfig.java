@@ -34,19 +34,21 @@ public class WebSecurityConfig {
             "/ws"
     };
 
-    @Bean
-    public CorsFilter corsFilter() {
-        var source = new UrlBasedCorsConfigurationSource();
-        var config = new CorsConfiguration();
-        config.addAllowedOrigin("**");
-        config.addAllowedMethod(CorsConfiguration.ALL);
-        config.setMaxAge(3600L);
-        config.addAllowedHeader(CorsConfiguration.ALL);
-        config.setAllowCredentials(true);
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
+  //  TODO: Fix cors error
+//    @Bean
+//    public CorsFilter corsFilter() {
+//        var source = new UrlBasedCorsConfigurationSource();
+//        var config = new CorsConfiguration();
+//        config.addAllowedOrigin("**");
+//        config.addAllowedMethod(CorsConfiguration.ALL);
+//        config.setMaxAge(3600L);
+//        config.addAllowedHeader(CorsConfiguration.ALL);
+//        config.setAllowCredentials(true);
+//        source.registerCorsConfiguration("/**", config);
+//        return new CorsFilter(source);
+//    }
 
+    //TODO: here mb will be added cors disable
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http

@@ -29,12 +29,14 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Tag(name = "User Resource", description = "The User API ")
 public class UserController extends BaseController {
+
     final UserService userService;
 
     private final CsvExportService csvExportService;
