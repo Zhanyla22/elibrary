@@ -22,7 +22,7 @@ public class ApplicationMapper {
 
     final GroupServiceImpl groupService;
 
-    public ApplicationDto entityToDto(Application application){
+    public ApplicationDto entityToDto(Application application) {
         return ApplicationDto.builder()
                 .id(application.getId())
                 .firstName(application.getFirstName())
@@ -43,7 +43,7 @@ public class ApplicationMapper {
                 .build();
     }
 
-    public Application dtoToEntity(ApplicationDto applicationDto){
+    public Application dtoToEntity(ApplicationDto applicationDto) {
         return Application.builder()
                 .firstName(applicationDto.getFirstName())
                 .lastName(applicationDto.getLastName())
@@ -57,16 +57,16 @@ public class ApplicationMapper {
                 .build();
     }
 
-    public List<ApplicationDto> entityListToDtoList(List<Application> applications){
+    public List<ApplicationDto> entityListToDtoList(List<Application> applications) {
         return applications.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 
     //redundant?
-    public List<Application> dtoListToEntityList(List<ApplicationDto> applicationDtos){
+    public List<Application> dtoListToEntityList(List<ApplicationDto> applicationDtos) {
         return applicationDtos.stream().map(this::dtoToEntity).collect(Collectors.toList());
     }
 
-    public Student entityToStudentEntity(Application application, ConversionRequest conversionRequest){
+    public Student entityToStudentEntity(Application application, ConversionRequest conversionRequest) {
         List<Group> groups = new ArrayList<>();
         groups.add(groupService.getGroupEntityById(conversionRequest.getGroupId()));
         return Student.builder()

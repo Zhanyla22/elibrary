@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("api/v1/department")
 @Tag(name = "Department Resource", description = "The Department API ")
 public class DepartmentController {
+
     private final DepartmentServiceImpl departmentServiceImpl;
 
     @Operation(summary = "Get all departments")

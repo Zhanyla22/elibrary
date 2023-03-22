@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+
 @Builder
 @Entity
 @AllArgsConstructor
@@ -21,5 +22,4 @@ public class Department extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     Status status;
-
 }

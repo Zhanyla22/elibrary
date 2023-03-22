@@ -2,13 +2,13 @@ package com.example.neolabs.exception;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BaseException extends RuntimeException{
+public class BaseException extends RuntimeException {
+
     final HttpStatus status;
 
     public BaseException(String message, HttpStatus status) {

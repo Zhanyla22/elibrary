@@ -9,12 +9,13 @@ import java.util.stream.Collectors;
 
 @Component
 public class GroupMapper {
-    public GroupDto entityToDto(Group group){
+
+    public GroupDto entityToDto(Group group) {
         // TODO: 16.03.2023 Alibek
         return GroupDto.builder().build();
     }
 
-    public List<GroupDto> entityListToDtoList(List<Group> groups){
+    public List<GroupDto> entityListToDtoList(List<Group> groups) {
         return groups.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 }

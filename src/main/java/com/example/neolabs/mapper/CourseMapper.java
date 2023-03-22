@@ -12,9 +12,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CourseMapper {
+
     private final DepartmentMapper departmentMapper;
 
-    public CourseDTO entityToDto(Course course){
+    public CourseDTO entityToDto(Course course) {
         return CourseDTO.builder()
                 .id(course.getId())
                 .name(course.getName())
@@ -26,7 +27,7 @@ public class CourseMapper {
                 .build();
     }
 
-    public Course dtoToEntity(CourseDTO courseDTO){
+    public Course dtoToEntity(CourseDTO courseDTO) {
         return Course.builder()
                 .name(courseDTO.getName())
                 .level(courseDTO.getLevel())
@@ -37,7 +38,7 @@ public class CourseMapper {
                 .build();
     }
 
-    public List<CourseDTO> entityListToDtoList(List<Course> entities){
+    public List<CourseDTO> entityListToDtoList(List<Course> entities) {
         return entities.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 }

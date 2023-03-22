@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("api/v1/course")
 @Tag(name = "Course Resource", description = "The Course API ")
 public class CourseController {
+
     private final CourseServiceImpl courseService;
 
     @Operation(summary = "Get all cources")

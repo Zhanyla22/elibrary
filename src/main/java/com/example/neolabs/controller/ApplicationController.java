@@ -7,6 +7,7 @@ import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.service.impl.ApplicationServiceImpl;
 import com.example.neolabs.service.impl.CsvExportServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -20,8 +21,9 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/applications")
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/applications")
+@Tag(name = "Application Resource", description = "The Application API ")
 public class ApplicationController extends BaseController {
 
     private final ApplicationServiceImpl applicationService;

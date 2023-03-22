@@ -6,12 +6,14 @@ import com.example.neolabs.repository.ApplicationRepository;
 import com.example.neolabs.repository.UserRepository;
 import com.example.neolabs.service.CsvExportService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.csv.*;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.List;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
@@ -28,7 +30,7 @@ public class CsvExportServiceImpl implements CsvExportService {
     public void writeUsersToCsv(Writer writer) {
         List<User> users = userRepository.findAll();
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
-            csvPrinter.printRecord("ID", "First Name" ,"Email", "Phone Number");
+            csvPrinter.printRecord("ID", "First Name", "Email", "Phone Number");
             for (User user : users) {
                 csvPrinter.printRecord(user.getId(), user.getFirstName(), user.getEmail(), user.getPhoneNumber());
             }

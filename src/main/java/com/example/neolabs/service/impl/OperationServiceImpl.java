@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OperationServiceImpl implements OperationService {
+
     final ApplicationOperationRepository appOpRepo;
     final UserRepository userRepository;
 
@@ -38,7 +39,7 @@ public class OperationServiceImpl implements OperationService {
         return appOpRepo.findAll();
     }
 
-    private User getCurrentUserEntity(){
+    private User getCurrentUserEntity() {
         return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(RuntimeException::new);
     }

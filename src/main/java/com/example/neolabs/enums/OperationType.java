@@ -1,6 +1,7 @@
 package com.example.neolabs.enums;
 
 public enum OperationType {
+
     DELETE,
     ARCHIVE,
     CREATE,

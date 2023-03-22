@@ -21,25 +21,25 @@ public class CourseServiceImpl implements CourseService {
     private final CourseMapper courseMapper;
 
     @Override
-    public List<CourseDTO> getAllCourses(){
+    public List<CourseDTO> getAllCourses() {
         return courseMapper.entityListToDtoList(courseRepository.findAll());
     }
 
     @Override
-    public CourseDTO insertCourse(CourseDTO courseDTO){
+    public CourseDTO insertCourse(CourseDTO courseDTO) {
         Course course = courseMapper.dtoToEntity(courseDTO);
         return courseMapper.entityToDto(courseRepository.save(course));
     }
 
     @Override
-    public CourseDTO updateCourseById(Long id, CourseDTO courseDTO){
+    public CourseDTO updateCourseById(Long id, CourseDTO courseDTO) {
         Course course = courseMapper.dtoToEntity(courseDTO);
         course.setId(id);
         return courseMapper.entityToDto(courseRepository.save(course));
     }
 
     @Override
-    public CourseDTO deleteCourseById(Long id){
+    public CourseDTO deleteCourseById(Long id) {
         Course course = getCourseEntityById(id);
         courseRepository.delete(course);
         return courseMapper.entityToDto(course);

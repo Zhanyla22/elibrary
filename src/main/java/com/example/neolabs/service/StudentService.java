@@ -10,11 +10,18 @@ import org.springframework.data.domain.PageRequest;
 import java.util.List;
 
 public interface StudentService {
+
     ResponseDto insertStudent(StudentDto studentDto);
+
     void insertStudentFromApplication(Application application, ConversionRequest conversionRequest);
+
     List<StudentDto> getAllStudents(Boolean includeArchived, PageRequest pageRequest);
+
     StudentDto getStudentById(Long studentId);
+
     ResponseDto updateStudentById(Long studentId, StudentDto studentDto);
+
     ResponseDto archiveStudentById(Long studentId, ArchiveRequest archiveRequest);
+
     ResponseDto unarchiveStudentById(Long studentId);
 }
