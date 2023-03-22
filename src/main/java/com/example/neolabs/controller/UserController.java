@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -53,9 +54,9 @@ public class UserController extends BaseController {
 
     @PostMapping("/registration")
     @Operation(summary = "User registration")
-    public ResponseEntity<ResponseDto> registration(@RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<ResponseDto> registration(@RequestBody RegistrationRequest registrationRequest, MultipartFile multipartFile) {
         return constructSuccessResponse(
-                userService.registration(registrationRequest)
+                userService.registration(registrationRequest, multipartFile)
         );
     }
 
