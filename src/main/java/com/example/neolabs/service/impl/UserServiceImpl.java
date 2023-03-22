@@ -2,21 +2,20 @@ package com.example.neolabs.service.impl;
 
 import com.example.neolabs.dto.ForgotPasswordCodeRequestDto;
 import com.example.neolabs.dto.ForgotPasswordRequestDto;
-import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.UpdatePasswordDto;
-import com.example.neolabs.entity.ResetPassword;
-import com.example.neolabs.enums.EntityEnum;
-import com.example.neolabs.exception.EntityNotFoundException;
-import com.example.neolabs.security.jwt.JWTService;
 import com.example.neolabs.dto.request.AuthenticationRequest;
-import com.example.neolabs.dto.response.AuthenticationResponse;
 import com.example.neolabs.dto.request.RegistrationRequest;
+import com.example.neolabs.dto.response.AuthenticationResponse;
 import com.example.neolabs.dto.response.RegistrationResponse;
+import com.example.neolabs.entity.ResetPassword;
 import com.example.neolabs.entity.User;
+import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
+import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.repository.ResetPasswordRepository;
 import com.example.neolabs.repository.UserRepository;
+import com.example.neolabs.security.jwt.JWTService;
 import com.example.neolabs.service.UserService;
 import com.example.neolabs.util.EmailUtil;
 import lombok.AccessLevel;
@@ -101,25 +100,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseDto updatePassword(UpdatePasswordDto updatePasswordDTO) {
+    public void updatePassword(UpdatePasswordDto updatePasswordDTO) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (passwordEncoder.matches(updatePasswordDTO.getOldPassword(), user.getPassword())) {
             user.setPassword(passwordEncoder.encode(updatePasswordDTO.getNewPassword()));
             userRepository.save(user);
         }
-        return ResponseDto.builder()
-                .result(getCurrentUser().getUsername() + " ' s password updated")
-                .build();
     }
 
     @Override
-    public void forgotPassword(ForgotPasswordRequestDto forgotPasswordRequestDto) { //FIXME: responsDTO на уровне сервиса нельзя
+    public void forgotPassword(ForgotPasswordRequestDto forgotPasswordRequestDto) {
         User users = userRepository.findByEmail(forgotPasswordRequestDto.getEmail())
                 .orElseThrow(() -> new NotFoundException("user not found"));
         String genCode = codeGenerate();
         resetPasswordRepository.save(ResetPassword.builder()
                 .code(genCode)
-                .dateExpiration(LocalDateTime.now().plus(10, ChronoUnit.MINUTES)) //TODO: how to realize delete after date exp
+                .dateExpiration(LocalDateTime.now().plus(10, ChronoUnit.MINUTES))
                 .user(users)
                 .isActive(false)
                 .build());
@@ -169,11 +165,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .orElseThrow(() -> new BaseException("User not found", HttpStatus.NOT_FOUND)).getId();
     }
 
-    public User getUserEntityById(Long userId){
+    public User getUserEntityById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(EntityEnum.USER, "id", userId));
     }
 
-    public User getCurrentUserEntity(){
+    public User getCurrentUserEntity() {
         return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new BaseException("User not found", HttpStatus.NOT_FOUND));
     }

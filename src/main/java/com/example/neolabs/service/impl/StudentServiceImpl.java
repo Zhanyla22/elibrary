@@ -1,6 +1,5 @@
 package com.example.neolabs.service.impl;
 
-import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.StudentDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
@@ -69,7 +68,7 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
 
-    public Student getStudentEntityById(Long studentId){
+    public Student getStudentEntityById(Long studentId) {
         return studentRepository.findById(studentId).orElseThrow(() -> {
             throw new EntityNotFoundException(EntityEnum.STUDENT, "id", studentId);
         });

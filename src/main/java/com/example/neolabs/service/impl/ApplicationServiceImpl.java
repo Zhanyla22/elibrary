@@ -78,7 +78,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public ResponseDto insertApplication(ApplicationDto applicationDto) {
         Application application = applicationRepository.save(applicationMapper.dtoToEntity(applicationDto));
-        if (application.getApplicationStatus() == null){
+        if (application.getApplicationStatus() == null) {
             application.setApplicationStatus(ApplicationStatus.WAITING_FOR_CALL);
         }
         ApplicationDto newDto = applicationMapper.entityToDto(application);
@@ -108,7 +108,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public ResponseDto unarchiveApplicationById(Long applicationId){
+    public ResponseDto unarchiveApplicationById(Long applicationId) {
         Application application = getApplicationEntityById(applicationId);
         application.setIsArchived(false);
         applicationRepository.save(application);

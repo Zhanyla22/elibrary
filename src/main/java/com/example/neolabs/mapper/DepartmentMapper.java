@@ -11,7 +11,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class DepartmentMapper {
-    public DepartmentDTO entityToDto(Department department){
+
+    public DepartmentDTO entityToDto(Department department) {
         return DepartmentDTO.builder()
                 .id(department.getId())
                 .name(department.getName())
@@ -19,14 +20,14 @@ public class DepartmentMapper {
                 .build();
     }
 
-    public Department dtoToEntity(DepartmentDTO departmentDTO){
+    public Department dtoToEntity(DepartmentDTO departmentDTO) {
         return Department.builder()
                 .name(departmentDTO.getName())
                 .status(departmentDTO.getStatus())
                 .build();
     }
 
-    public List<DepartmentDTO> entityListToDtoList(List<Department> entities){
+    public List<DepartmentDTO> entityListToDtoList(List<Department> entities) {
         return entities.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 }

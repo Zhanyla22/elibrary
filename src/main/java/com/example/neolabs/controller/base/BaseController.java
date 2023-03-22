@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class BaseController {
+
     protected <T> ResponseEntity<ResponseDto> constructSuccessResponse(T result) {
         return new ResponseEntity<>(
                 ResponseDto.builder()

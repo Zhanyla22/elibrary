@@ -8,7 +8,10 @@ import com.example.neolabs.enums.OperationType;
 import java.util.List;
 
 public interface OperationService {
+
     void recordApplicationOperation(Application application, OperationType operationType, String description);
+
     List<ApplicationOperation> getAllApplicationOperations();
+
     //List<OperationDto> getAllOperations();
 }

@@ -17,7 +17,7 @@ public class StudentMapper {
 
     final GroupMapper groupMapper;
 
-    public Student dtoToEntity(StudentDto studentDto){
+    public Student dtoToEntity(StudentDto studentDto) {
         return Student.builder()
                 .firstName(studentDto.getFirstName())
                 .lastName(studentDto.getLastName())
@@ -28,7 +28,7 @@ public class StudentMapper {
                 .build();
     }
 
-    public StudentDto entityToDto(Student student){
+    public StudentDto entityToDto(Student student) {
         return StudentDto.builder()
                 .email(student.getEmail())
                 .firstName(student.getFirstName())
@@ -42,7 +42,7 @@ public class StudentMapper {
                 .build();
     }
 
-    public List<StudentDto> entityListToDtoList(List<Student> students){
+    public List<StudentDto> entityListToDtoList(List<Student> students) {
         return students.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 }

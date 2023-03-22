@@ -17,9 +17,9 @@ public class GroupServiceImpl implements GroupService {
 
     final GroupRepository groupRepository;
 
-    public Group getGroupEntityById(Long groupId){
+    public Group getGroupEntityById(Long groupId) {
         return groupRepository.findById(groupId).orElseThrow(() -> {
-           throw new EntityNotFoundException(EntityEnum.GROUP, "id", groupId);
+            throw new EntityNotFoundException(EntityEnum.GROUP, "id", groupId);
         });
     }
 }

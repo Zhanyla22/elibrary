@@ -2,7 +2,6 @@ package com.example.neolabs.service;
 
 import com.example.neolabs.dto.ForgotPasswordCodeRequestDto;
 import com.example.neolabs.dto.ForgotPasswordRequestDto;
-import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.UpdatePasswordDto;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.dto.request.AuthenticationRequest;
@@ -21,7 +20,7 @@ public interface UserService {
 
     AuthenticationResponse refreshToken(User user);
 
-    ResponseDto updatePassword(UpdatePasswordDto updatePasswordDTO);
+    void updatePassword(UpdatePasswordDto updatePasswordDTO);
 
     void forgotPassword(ForgotPasswordRequestDto forgotPasswordRequestDto) throws MessagingException;
 

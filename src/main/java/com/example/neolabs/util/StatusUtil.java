@@ -3,6 +3,7 @@ package com.example.neolabs.util;
 import com.example.neolabs.enums.ApplicationStatus;
 
 public class StatusUtil {
+
     public static ApplicationStatus getApplicationStatus(int n){
         if (n == 1) {
             return ApplicationStatus.WAITING_FOR_CALL;

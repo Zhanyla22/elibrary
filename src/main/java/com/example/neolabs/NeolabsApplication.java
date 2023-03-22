@@ -9,5 +9,4 @@ public class NeolabsApplication {
     public static void main(String[] args) {
         SpringApplication.run(NeolabsApplication.class, args);
     }
-
 }

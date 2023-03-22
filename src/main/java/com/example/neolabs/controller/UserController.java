@@ -6,7 +6,6 @@ import com.example.neolabs.dto.ForgotPasswordRequestDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.UpdatePasswordDto;
 import com.example.neolabs.entity.User;
-import com.example.neolabs.enums.ResultCode;
 import com.example.neolabs.dto.request.AuthenticationRequest;
 import com.example.neolabs.dto.request.RegistrationRequest;
 import com.example.neolabs.service.CsvExportService;
@@ -14,9 +13,7 @@ import com.example.neolabs.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,20 +24,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/user")
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@RequestMapping("/user")
 @Tag(name = "User Resource", description = "The User API ")
 public class UserController extends BaseController {
 
-    final UserService userService;
+    private final UserService userService;
 
     private final CsvExportService csvExportService;
-
 
     @GetMapping(path = "/download")
     public void getAllEmployeesInCsv(HttpServletResponse servletResponse) throws IOException {
