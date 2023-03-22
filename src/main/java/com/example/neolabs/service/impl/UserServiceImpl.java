@@ -32,6 +32,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
@@ -44,6 +45,7 @@ import java.util.UUID;
 @Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+
     final UserRepository userRepository;
     final JWTService jwtService;
     final PasswordEncoder passwordEncoder;
@@ -51,17 +53,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     final ResetPasswordRepository resetPasswordRepository;
     final EmailUtil emailUtil;
     final OperationServiceImpl operationService;
+    final ImageUploadServiceImpl imageUploadService;
 
     @Override
-    public RegistrationResponse registration(RegistrationRequest registrationRequest) {
+    public RegistrationResponse registration(RegistrationRequest registrationRequest, MultipartFile multipartFile) {
         if (!userRepository.existsByEmail(registrationRequest.getEmail())) {
             userRepository.save(User.builder()
                     .email(registrationRequest.getEmail())
                     .firstName(registrationRequest.getFirstName())
                     .phoneNumber(registrationRequest.getPhoneNumber())
                     .status(Status.ACTIVE)
-                    //TODO:implement image upload
-                    .urlImage(registrationRequest.getFirstName())
+                    .urlImage(imageUploadService.saveImage(multipartFile))
                     .password(passwordEncoder.encode(registrationRequest.getPassword()))
                     .role(registrationRequest.getRole())
                     .build());

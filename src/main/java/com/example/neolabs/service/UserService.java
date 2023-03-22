@@ -8,13 +8,14 @@ import com.example.neolabs.dto.request.AuthenticationRequest;
 import com.example.neolabs.dto.request.RegistrationRequest;
 import com.example.neolabs.dto.response.AuthenticationResponse;
 import com.example.neolabs.dto.response.RegistrationResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 
 
 public interface UserService {
 
-    RegistrationResponse registration(RegistrationRequest registrationRequest);
+    RegistrationResponse registration(RegistrationRequest registrationRequest, MultipartFile multipartFile);
 
     AuthenticationResponse auth(AuthenticationRequest authenticationRequest);
 
