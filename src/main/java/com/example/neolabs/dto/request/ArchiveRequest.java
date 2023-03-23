@@ -10,6 +10,8 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ArchiveRequest {
+
     String reason;
+
     Boolean isBlacklist;
 }

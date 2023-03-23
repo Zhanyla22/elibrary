@@ -29,6 +29,7 @@ public class WebSecurityConfig {
             "/api/v1/auth/**",
             "/user/auth",
             "/user/forgot-password",
+            "/user/confirm-code",
             "/user/reset-password",
             "/user/registration",
             "/ws"

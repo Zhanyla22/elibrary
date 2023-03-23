@@ -1,4 +1,4 @@
-package com.example.neolabs.dto.response;
+package com.example.neolabs.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -9,9 +9,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RegistrationResponse {
+public class CodeRequest {
 
-    String email;
-
-    String password;
+    String code;
 }
