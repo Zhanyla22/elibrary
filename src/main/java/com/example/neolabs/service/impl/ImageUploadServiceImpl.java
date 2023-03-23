@@ -15,6 +15,7 @@ import java.util.Objects;
 
 @Service
 public class ImageUploadServiceImpl implements ImageUploadService {
+
     @SneakyThrows
     public String saveImage(MultipartFile multipartfile) {
         if (multipartfile.isEmpty()) {
