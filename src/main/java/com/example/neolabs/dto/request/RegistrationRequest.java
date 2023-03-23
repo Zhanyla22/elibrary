@@ -12,10 +12,16 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RegistrationRequest {
+
     String email;
+
     String password;
+
     Role role;
+
     String phoneNumber;
+
     String firstName;
+
     String lastName;
 }

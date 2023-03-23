@@ -1,10 +1,10 @@
 package com.example.neolabs.service.impl;
 
-import com.example.neolabs.dto.ForgotPasswordCodeRequestDto;
-import com.example.neolabs.dto.ForgotPasswordRequestDto;
-import com.example.neolabs.dto.UpdatePasswordDto;
+import com.example.neolabs.dto.*;
 import com.example.neolabs.dto.request.AuthenticationRequest;
 import com.example.neolabs.dto.request.RegistrationRequest;
+import com.example.neolabs.dto.request.UpdateUserClientRequest;
+import com.example.neolabs.dto.request.UpdateUserRequest;
 import com.example.neolabs.dto.response.AuthenticationResponse;
 import com.example.neolabs.dto.response.RegistrationResponse;
 import com.example.neolabs.entity.ResetPassword;
@@ -13,6 +13,7 @@ import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.EntityNotFoundException;
+import com.example.neolabs.mapper.UserMapper;
 import com.example.neolabs.repository.ResetPasswordRepository;
 import com.example.neolabs.repository.UserRepository;
 import com.example.neolabs.security.jwt.JWTService;
@@ -37,6 +38,9 @@ import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -44,7 +48,6 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
-
 
     final UserRepository userRepository;
     final JWTService jwtService;
@@ -145,6 +148,68 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userRepository.save(user);
         } else throw new BaseException("code date expired", HttpStatus.BAD_REQUEST);
     }
+
+    @Override
+    public void confirmCodeFirst(CodeRequest code) {
+        resetPasswordRepository
+                .findTopByCodeAndIsActiveOrderByDateExpirationDesc(code.getCode(), false)
+                .orElseThrow(() -> new BaseException("code undefined", HttpStatus.BAD_REQUEST));
+    }
+
+    @Override
+    public void updateProfilePageWithRole(Long id,UpdateUserRequest updateUserRequest) {
+        User user = userRepository.findById(id).orElseThrow(()->new BaseException("User not found",HttpStatus.BAD_REQUEST));
+        user.setEmail(updateUserRequest.getEmail());
+        user.setRole(updateUserRequest.getRole());
+        user.setFirstName(updateUserRequest.getFirstName());
+        user.setPhoneNumber(updateUserRequest.getPhoneNumber());
+        user.setLastName(updateUserRequest.getLastName());
+        userRepository.save(user);
+    }
+
+    //TODO: подумать над email
+    @Override
+    public void updateProfilePage(UpdateUserClientRequest updateUserClientRequest) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user.setEmail(updateUserClientRequest.getEmail());
+        user.setFirstName(updateUserClientRequest.getFirstName());
+        user.setPhoneNumber(updateUserClientRequest.getPhoneNumber());
+        user.setLastName(updateUserClientRequest.getLastName());
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updateProfileImage(MultipartFile multipartFile, User user) {
+        user.setUrlImage(imageUploadService.saveImage(multipartFile));
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(()-> new BaseException("user doesnt exist", HttpStatus.BAD_REQUEST));
+        user.setStatus(Status.DELETED);
+        user.setDeletedDate(LocalDateTime.now());
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public List<UserDto> getAllUserByStatus(Status status) {
+        List<User> allUserByStatus = userRepository.findAllByStatus(status);
+        List<UserDto> userDtoList = new ArrayList<>();
+        for(User u: allUserByStatus){
+            userDtoList.add(UserMapper.UserEntityToUserDto(u));
+        }
+        return userDtoList;
+    }
+
+    @Override
+    public UserDto getUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(()-> new BaseException("User with id " +id+" not found",HttpStatus.BAD_REQUEST));
+        return UserMapper.UserEntityToUserDto(user);
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

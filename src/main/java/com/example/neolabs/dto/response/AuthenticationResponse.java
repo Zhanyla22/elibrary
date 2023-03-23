@@ -19,6 +19,6 @@ public class AuthenticationResponse {
     Date dateExpiredAccessToken;
 
     Date dateExpiredRefreshToken;
-    String refreshToken;
 
+    String refreshToken;
 }
