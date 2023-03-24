@@ -1,7 +1,7 @@
 package com.example.neolabs.controller;
 
 
-import com.example.neolabs.dto.CourseDTO;
+import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.service.impl.CourseServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,27 +23,27 @@ public class CourseController {
 
     @Operation(summary = "Get all cources")
     @GetMapping(value = {""}, produces = "application/json")
-    public ResponseEntity<List<CourseDTO>> getAllCourses(){
+    public ResponseEntity<List<CourseDto>> getAllCourses(){
         return ResponseEntity.ok(courseService.getAllCourses());
     }
 
 
     @Operation(summary = "Insert new course")
     @PostMapping(value = {""}, produces = "application/json")
-    public ResponseEntity<CourseDTO> insertCourse(@RequestBody CourseDTO courseDTO){
+    public ResponseEntity<CourseDto> insertCourse(@RequestBody CourseDto courseDTO){
         return ResponseEntity.ok(courseService.insertCourse(courseDTO));
     }
 
     @Operation(summary = "Delete course by id")
     @DeleteMapping("/{id}")
-    public ResponseEntity<CourseDTO> deleteCourseById(@PathVariable("id") Long id){
+    public ResponseEntity<CourseDto> deleteCourseById(@PathVariable("id") Long id){
         return ResponseEntity.ok(courseService.deleteCourseById(id));
     }
 
     @PutMapping(value = {"/{id}"})
     @Operation(summary = "Update course by id")
-    public ResponseEntity<CourseDTO> updateCourseById(@PathVariable("id") Long id,
-                                           @Valid @RequestBody CourseDTO courseDTO){
+    public ResponseEntity<CourseDto> updateCourseById(@PathVariable("id") Long id,
+                                                      @Valid @RequestBody CourseDto courseDTO){
         return ResponseEntity.ok(courseService.updateCourseById(id, courseDTO));
     }
 }

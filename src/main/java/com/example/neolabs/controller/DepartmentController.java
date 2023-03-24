@@ -1,6 +1,6 @@
 package com.example.neolabs.controller;
 
-import com.example.neolabs.dto.DepartmentDTO;
+import com.example.neolabs.dto.DepartmentDto;
 import com.example.neolabs.service.impl.DepartmentServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,21 +22,21 @@ public class DepartmentController {
 
     @Operation(summary = "Get all departments")
     @GetMapping(value = {""}, produces = "application/json")
-    public ResponseEntity<List<DepartmentDTO>> getAllDepartments(){
+    public ResponseEntity<List<DepartmentDto>> getAllDepartments(){
         return ResponseEntity.ok(departmentServiceImpl.getAllDepartments());
     }
 
 
     @Operation(summary = "Insert new department")
     @PostMapping(value = {""}, produces = "application/json")
-    public ResponseEntity<DepartmentDTO> insertDepartment(@RequestBody DepartmentDTO departmentDTO){
+    public ResponseEntity<DepartmentDto> insertDepartment(@RequestBody DepartmentDto departmentDTO){
         return ResponseEntity.ok(departmentServiceImpl.insertDepartment(departmentDTO));
     }
 
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete department by id")
-    public ResponseEntity<DepartmentDTO> deleteDepartmentById(@PathVariable("id") Long id){
+    public ResponseEntity<DepartmentDto> deleteDepartmentById(@PathVariable("id") Long id){
         return ResponseEntity.ok(departmentServiceImpl.deleteDepartmentById(id));
     }
 
@@ -44,7 +44,7 @@ public class DepartmentController {
     @Operation(summary = "Update department by id")
     @PutMapping(value = {"/{id}"})
     public ResponseEntity updateDepartmentById(@PathVariable("id") Long id,
-                                               @Valid @RequestBody DepartmentDTO departmentDTO){
+                                               @Valid @RequestBody DepartmentDto departmentDTO){
         return ResponseEntity.ok(departmentServiceImpl.updateDepartmentById(id, departmentDTO));
     }
 }
