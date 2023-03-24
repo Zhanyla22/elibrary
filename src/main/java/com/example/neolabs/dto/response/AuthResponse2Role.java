@@ -1,9 +1,8 @@
 package com.example.neolabs.dto.response;
 
+import com.example.neolabs.enums.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Date;
 
 @Getter
 @Setter
@@ -11,13 +10,10 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationResponse {
+public class AuthResponse2Role {
 
-    String jwtToken;
+    AuthenticationResponse authenticationResponse;
 
-    Date dateExpiredAccessToken;
+    Role role;
 
-    Date dateExpiredRefreshToken;
-
-    String refreshToken;
 }

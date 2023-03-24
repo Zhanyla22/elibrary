@@ -3,6 +3,7 @@ package com.example.neolabs.service;
 import com.example.neolabs.dto.request.UpdateUserClientRequest;
 import com.example.neolabs.dto.request.UpdateUserRequest;
 import com.example.neolabs.dto.*;
+import com.example.neolabs.dto.response.AuthResponse2Role;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.dto.request.AuthenticationRequest;
 import com.example.neolabs.dto.request.RegistrationRequest;
@@ -13,14 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import java.util.List;
-import java.util.Optional;
 
 
 public interface UserService {
 
     RegistrationResponse registration(RegistrationRequest registrationRequest, MultipartFile multipartFile);
 
-    AuthenticationResponse auth(AuthenticationRequest authenticationRequest);
+    AuthResponse2Role auth(AuthenticationRequest authenticationRequest);
 
     AuthenticationResponse refreshToken(User user);
 

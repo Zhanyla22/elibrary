@@ -5,11 +5,13 @@ import com.example.neolabs.dto.request.AuthenticationRequest;
 import com.example.neolabs.dto.request.RegistrationRequest;
 import com.example.neolabs.dto.request.UpdateUserClientRequest;
 import com.example.neolabs.dto.request.UpdateUserRequest;
+import com.example.neolabs.dto.response.AuthResponse2Role;
 import com.example.neolabs.dto.response.AuthenticationResponse;
 import com.example.neolabs.dto.response.RegistrationResponse;
 import com.example.neolabs.entity.ResetPassword;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.enums.Role;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.EntityNotFoundException;
@@ -81,7 +83,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public AuthenticationResponse auth(AuthenticationRequest authenticationRequest) {
+    public AuthResponse2Role auth(AuthenticationRequest authenticationRequest) {
         try {
             Authentication authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -89,7 +91,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                             authenticationRequest.getPassword()
                     )
             );
-            return jwtService.generateToken((User) authenticate.getPrincipal());
+            User user = (User) authenticate.getPrincipal();
+            Role authenticationResponse =  user.getRole();
+            return new AuthResponse2Role(jwtService.generateToken((User) authenticate.getPrincipal()),authenticationResponse);
         } catch (Exception e) {
             throw new BaseException("User not found", HttpStatus.NOT_FOUND);
         }
