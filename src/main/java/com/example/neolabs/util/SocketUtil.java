@@ -23,7 +23,7 @@ public class SocketUtil {
         return AppStatusOutgoingMessage.builder()
                 .applicationId(appStatusIncomingMessage.getApplicationId())
                 .newStatus(appStatusIncomingMessage.getNewStatus())
-                .userId(userService.getCurrentUserId())
+                .userId(null) // FIXME: 25.03.2023 
                 .build();
     }
 }

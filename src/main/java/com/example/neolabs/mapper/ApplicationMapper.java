@@ -30,6 +30,7 @@ public class ApplicationMapper {
                 .email(application.getEmail())
                 .applicationStatus(application.getApplicationStatus())
                 .applicationStatusUpdateDate(application.getApplicationStatusUpdateDate())
+                .applicationStatusOrder(application.getApplicationStatus().getOrder())
                 .creationDate(application.getCreatedDate())
                 .updateDate(application.getUpdatedDate())
                 .education(application.getEducation())

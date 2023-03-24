@@ -26,11 +26,13 @@ public class Application extends BaseEntity {
     @Column(name = "last_name")
     String lastName;
 
+    @Column(name = "email")
     String email;
 
     @Column(name = "phone_number")
     String phoneNumber;
 
+    @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     Gender gender;
 
@@ -38,14 +40,17 @@ public class Application extends BaseEntity {
     Boolean hasLaptop;
 
     @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "cource_id",
+    @JoinColumn(columnDefinition = "course_id",
             referencedColumnName = "id")
-    private Course course;
+    Course course;
 
     @ManyToOne
     @JoinColumn(columnDefinition = "marketing_strategy_id",
             referencedColumnName = "id")
     MarketingStrategy marketingStrategy;
+
+    @Column(name = "note")
+    String note;
 
     @Column(name = "is_archived")
     Boolean isArchived;
@@ -53,7 +58,7 @@ public class Application extends BaseEntity {
     @Column(name = "archive_reason")
     String archiveReason;
 
-    @Column(length = 1000)
+    @Column(name = "reason", length = 1000)
     String reason;
 
     @Enumerated(EnumType.STRING)
@@ -63,6 +68,7 @@ public class Application extends BaseEntity {
     @Column(name = "application_status_update_time")
     LocalDateTime applicationStatusUpdateDate;
 
+    @Column(name = "education")
     @Enumerated(EnumType.STRING)
     Education education;
 }

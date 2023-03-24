@@ -1,6 +1,7 @@
 package com.example.neolabs.util;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 public class DateUtil {
@@ -11,5 +12,9 @@ public class DateUtil {
             time2 = temp;
         }
         return time1.until(time2, unit);
+    }
+
+    public static ZoneId getZoneId(){
+        return ZoneId.of("Asia/Bishkek");
     }
 }
