@@ -59,7 +59,6 @@ public class ApplicationMapper {
                 .applicationStatus(applicationDto.getApplicationStatusNum() != null ?
                         StatusUtil.getApplicationStatus(applicationDto.getApplicationStatusNum()) : null)
                 .department(departmentService.getDepartmentEntityById(applicationDto.getDepartmentId()))
-                .applicationStatus(applicationDto.getApplicationStatus())
                 .hasLaptop(applicationDto.getHasLaptop())
                 .marketingStrategyEnum(applicationDto.getMarketingStrategyEnum())
                 .phoneNumber(applicationDto.getPhoneNumber())
