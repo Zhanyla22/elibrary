@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -59,20 +57,26 @@ public class ApplicationDto {
     @JsonProperty(value = "reason")
     String reason;
 
-    @JsonProperty(value = "application_status_name", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "application_status", access = JsonProperty.Access.READ_ONLY)
     ApplicationStatus applicationStatus;
 
-    @JsonProperty(value = "application_initial_status", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "application_status_num", access = JsonProperty.Access.READ_ONLY)
     Integer applicationStatusNum;
 
+    @JsonProperty(value = "application_initial_status_num", access = JsonProperty.Access.WRITE_ONLY)
+    Integer applicationStatusInitialNum;
+
+    @JsonProperty(value = "application_status_update_date", access = JsonProperty.Access.READ_ONLY)
+    String applicationStatusUpdateDate;
+
     @JsonProperty(value = "application_status_update_time", access = JsonProperty.Access.READ_ONLY)
-    LocalDateTime applicationStatusUpdateDate;
+    String applicationStatusUpdateTime;
 
-    @JsonProperty(value = "creation_time", access = JsonProperty.Access.READ_ONLY)
-    LocalDateTime creationDate;
+    @JsonProperty(value = "creation_date", access = JsonProperty.Access.READ_ONLY)
+    String creationDate;
 
-    @JsonProperty(value = "update_time", access = JsonProperty.Access.READ_ONLY)
-    LocalDateTime updateDate;
+    @JsonProperty(value = "update_date", access = JsonProperty.Access.READ_ONLY)
+    String updateDate;
 
     @JsonProperty(value = "education")
     Education education;

@@ -101,6 +101,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (application.getApplicationStatus() == null) {
             application.setApplicationStatus(ApplicationStatus.WAITING_FOR_CALL);
         }
+        application.setIsArchived(false);
         application.setApplicationStatusUpdateDate(LocalDateTime.now(DateUtil.getZoneId()));
         ApplicationDto newDto = applicationMapper.entityToDto(application);
         return ResponseDto.builder()

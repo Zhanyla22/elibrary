@@ -32,11 +32,15 @@ public class ApplicationMapper {
                 .firstName(application.getFirstName())
                 .lastName(application.getLastName())
                 .email(application.getEmail())
+                .gender(application.getGender())
                 .applicationStatus(application.getApplicationStatus())
-                .applicationStatusUpdateDate(application.getApplicationStatusUpdateDate())
                 .applicationStatusNum(application.getApplicationStatus().getOrder())
-                .creationDate(application.getCreatedDate())
-                .updateDate(application.getUpdatedDate())
+                .applicationStatusUpdateDate(DateUtil.dateFormatter.format(application.getApplicationStatusUpdateDate()))
+                .applicationStatusUpdateTime(DateUtil.timeFormatter.format(application.getApplicationStatusUpdateDate()))
+                .applicationStatusInitialNum(application.getApplicationStatus().getOrder())
+                .creationDate(DateUtil.dateFormatter.format(application.getCreatedDate()))
+                .updateDate(application.getUpdatedDate() != null ?
+                        DateUtil.dateFormatter.format(application.getUpdatedDate()) : null)
                 .education(application.getEducation())
                 .isArchived(application.getIsArchived())
                 .isUrgent(DateUtil.findDifference(LocalDateTime.now(),
@@ -56,8 +60,9 @@ public class ApplicationMapper {
                 .lastName(applicationDto.getLastName())
                 .email(applicationDto.getEmail())
                 .education(applicationDto.getEducation())
-                .applicationStatus(applicationDto.getApplicationStatusNum() != null ?
-                        StatusUtil.getApplicationStatus(applicationDto.getApplicationStatusNum()) : null)
+                .gender(applicationDto.getGender())
+                .applicationStatus(applicationDto.getApplicationStatusInitialNum() != null ?
+                        StatusUtil.getApplicationStatus(applicationDto.getApplicationStatusInitialNum()) : null)
                 .department(departmentService.getDepartmentEntityById(applicationDto.getDepartmentId()))
                 .hasLaptop(applicationDto.getHasLaptop())
                 .marketingStrategyEnum(applicationDto.getMarketingStrategyEnum())
