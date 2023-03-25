@@ -38,7 +38,7 @@ public class AdminController extends BaseController {
         csvExportService.writeUsersToCsv(servletResponse.getWriter());
     }
 
-    @Hidden
+//    @Hidden
     @PostMapping("/registration123")
     @Operation(summary = "User registration/ добавление пользователя только для админа")
     public ResponseEntity<ResponseDto> registration(@RequestBody RegistrationRequest registrationRequest) {
