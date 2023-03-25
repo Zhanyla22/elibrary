@@ -62,16 +62,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     final ImageUploadServiceImpl imageUploadService;
 
     @Override
-    public RegistrationResponse registration(RegistrationRequest registrationRequest, MultipartFile multipartFile) {
+    public RegistrationResponse registration(RegistrationRequest registrationRequest) {
         if (!userRepository.existsByEmail(registrationRequest.getEmail())) {
             userRepository.save(User.builder()
                     .email(registrationRequest.getEmail())
                     .firstName(registrationRequest.getFirstName())
                     .phoneNumber(registrationRequest.getPhoneNumber())
                     .status(Status.ACTIVE)
-                    .urlImage(imageUploadService.saveImage(multipartFile))
                     .password(passwordEncoder.encode(registrationRequest.getPassword()))
-                    .role(Role.ROLE_MANAGER)
+                    .role(Role.ROLE_ADMIN)
                     .build());
 
             return RegistrationResponse.builder()

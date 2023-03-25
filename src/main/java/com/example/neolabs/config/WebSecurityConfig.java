@@ -32,6 +32,7 @@ public class WebSecurityConfig {
             "/user/confirm-code",
             "/user/reset-password",
             "/user/registration",
+            "/api/v1/admin/registration123",
             "/ws"
     };
 

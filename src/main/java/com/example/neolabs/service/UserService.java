@@ -18,7 +18,7 @@ import java.util.List;
 
 public interface UserService {
 
-    RegistrationResponse registration(RegistrationRequest registrationRequest, MultipartFile multipartFile);
+    RegistrationResponse registration(RegistrationRequest registrationRequest);
 
     ResponseDto emergencyRegistration(RegistrationRequest registrationRequest);
 

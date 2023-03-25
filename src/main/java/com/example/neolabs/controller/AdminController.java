@@ -41,9 +41,9 @@ public class AdminController extends BaseController {
     @Hidden
     @PostMapping("/registration123")
     @Operation(summary = "User registration/ добавление пользователя только для админа")
-    public ResponseEntity<ResponseDto> registration(@RequestBody RegistrationRequest registrationRequest, MultipartFile multipartFile) {
+    public ResponseEntity<ResponseDto> registration(@RequestBody RegistrationRequest registrationRequest) {
         return constructSuccessResponse(
-                userService.registration(registrationRequest, multipartFile)
+                userService.registration(registrationRequest)
         );
     }
 
