@@ -19,22 +19,18 @@ public class CourseMapper {
         return CourseDto.builder()
                 .id(course.getId())
                 .name(course.getName())
-                .level(course.getLevel())
-                .department(departmentMapper.entityToDto(course.getDepartment()))
                 .cost(course.getCost())
                 .duration_in_month(course.getDurationInMonth())
-                .status(course.getStatus())
+                .numberOfLessons(course.getNumberOfLessons())
                 .build();
     }
 
     public Course dtoToEntity(CourseDto courseDTO) {
         return Course.builder()
                 .name(courseDTO.getName())
-                .level(courseDTO.getLevel())
-                .department(departmentMapper.dtoToEntity(courseDTO.getDepartment()))
                 .cost(courseDTO.getCost())
                 .durationInMonth(courseDTO.getDuration_in_month())
-                .status(courseDTO.getStatus())
+                .numberOfLessons(courseDTO.getNumberOfLessons())
                 .build();
     }
 

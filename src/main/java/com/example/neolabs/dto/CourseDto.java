@@ -22,19 +22,21 @@ public class CourseDto {
     @NotBlank(message = "Name can't be empty or null")
     private String name;
 
-    @NotBlank(message = "Level can't be empty or null")
-    private Level level;
-
-    @JsonProperty(value = "department", access = JsonProperty.Access.READ_ONLY)
-    private DepartmentDto department;
-
     @NotBlank(message = "Cost can't be empty or null")
     private Double cost;
 
     @NotBlank(message = "Duration can't be empty or null")
     private Integer duration_in_month;
 
-    @NotBlank(message = "Status can't be empty or null")
-    private Status status;
+    private Integer numberOfLessons;
 
+
+    //    @NotBlank(message = "Level can't be empty or null")
+//    private Level level;
+
+//    @JsonProperty(value = "department", access = JsonProperty.Access.READ_ONLY)
+//    private DepartmentDto department;
+
+    //    @NotBlank(message = "Status can't be empty or null")
+//    private Status status;
 }
