@@ -15,4 +15,9 @@ public class AuthResponse2Role {
     AuthenticationResponse authenticationResponse;
 
     Role role;
+
+    String firstName;
+
+    String lastName;
+
 }

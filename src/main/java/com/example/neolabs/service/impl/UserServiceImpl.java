@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseDto emergencyRegistration(RegistrationRequest registrationRequest){
+    public ResponseDto emergencyRegistration(RegistrationRequest registrationRequest) {
         if (!userRepository.existsByEmail(registrationRequest.getEmail())) {
             userRepository.save(User.builder()
                     .email(registrationRequest.getEmail())
@@ -115,8 +115,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             User user = (User) authenticate.getPrincipal();
             user.setLastVisitDate(LocalDateTime.now(DateUtil.getZoneId()));//s
             userRepository.save(user);//s
-            Role authenticationResponse =  user.getRole(); //wha?
-            return new AuthResponse2Role(jwtService.generateToken((User) authenticate.getPrincipal()),authenticationResponse);
+            return new AuthResponse2Role(
+                    jwtService.generateToken((User) authenticate.getPrincipal()),
+                    user.getRole(),
+                    user.getFirstName(),
+                    user.getLastName()
+            );
         } catch (Exception e) {
             throw new BaseException("User not found", HttpStatus.NOT_FOUND);
         }
@@ -184,8 +188,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void updateProfilePageWithRole(Long id,UpdateUserRequest updateUserRequest) {
-        User user = userRepository.findById(id).orElseThrow(()->new BaseException("User not found",HttpStatus.BAD_REQUEST));
+    public void updateProfilePageWithRole(Long id, UpdateUserRequest updateUserRequest) {
+        User user = userRepository.findById(id).orElseThrow(() -> new BaseException("User not found", HttpStatus.BAD_REQUEST));
         user.setEmail(updateUserRequest.getEmail());
         user.setRole(updateUserRequest.getRole());
         user.setFirstName(updateUserRequest.getFirstName());
@@ -214,7 +218,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void deleteUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(()-> new BaseException("user doesnt exist", HttpStatus.BAD_REQUEST));
+        User user = userRepository.findById(id).orElseThrow(() -> new BaseException("user doesnt exist", HttpStatus.BAD_REQUEST));
         user.setStatus(Status.DELETED);
         user.setDeletedDate(LocalDateTime.now());
 
@@ -225,20 +229,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<UserDto> getAllUserByStatus(Status status) {
         List<User> allUserByStatus = userRepository.findAllByStatus(status);
         List<UserDto> userDtoList = new ArrayList<>();
-        for(User u: allUserByStatus){
+        for (User u : allUserByStatus) {
             userDtoList.add(UserMapper.userEntityToUserDto(u));
         }
         return userDtoList;
     }
 
     @Override
-    public List<UserDto> getAllUsers(){
+    public List<UserDto> getAllUsers() {
         return UserMapper.entityListToDtoList(userRepository.findAll());
     }
 
     @Override
     public UserDto getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(()-> new BaseException("User with id " +id+" not found",HttpStatus.BAD_REQUEST));
+        User user = userRepository.findById(id).orElseThrow(() -> new BaseException("User with id " + id + " not found", HttpStatus.BAD_REQUEST));
         return UserMapper.userEntityToUserDto(user);
     }
 
