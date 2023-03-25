@@ -53,6 +53,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public ResponseDto updateApplicationStatus(Long applicationId, Integer newStatus) {
         Application application = getApplicationEntityById(applicationId);
+        System.out.println(application.getApplicationStatus());
         ApplicationStatus oldStatus = application.getApplicationStatus();
         application.setApplicationStatus(StatusUtil.getApplicationStatus(newStatus));
         application.setIsArchived(newStatus > 4);
@@ -103,7 +104,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         application.setIsArchived(false);
         application.setApplicationStatusUpdateDate(LocalDateTime.now(DateUtil.getZoneId()));
-        ApplicationDto newDto = applicationMapper.entityToDto(application);
+        ApplicationDto newDto = applicationMapper.entityToDto(applicationRepository.save(application));
         return ResponseDto.builder()
                 .result(newDto)
                 .resultCode(ResultCode.SUCCESS)
