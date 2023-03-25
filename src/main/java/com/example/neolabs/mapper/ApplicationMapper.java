@@ -8,6 +8,7 @@ import com.example.neolabs.entity.Student;
 import com.example.neolabs.service.impl.DepartmentServiceImpl;
 import com.example.neolabs.service.impl.GroupServiceImpl;
 import com.example.neolabs.util.DateUtil;
+import com.example.neolabs.util.StatusUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -55,6 +56,8 @@ public class ApplicationMapper {
                 .lastName(applicationDto.getLastName())
                 .email(applicationDto.getEmail())
                 .education(applicationDto.getEducation())
+                .applicationStatus(applicationDto.getApplicationStatusNum() != null ?
+                        StatusUtil.getApplicationStatus(applicationDto.getApplicationStatusNum()) : null)
                 .department(departmentService.getDepartmentEntityById(applicationDto.getDepartmentId()))
                 .applicationStatus(applicationDto.getApplicationStatus())
                 .hasLaptop(applicationDto.getHasLaptop())

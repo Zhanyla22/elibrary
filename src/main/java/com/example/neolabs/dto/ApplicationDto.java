@@ -48,7 +48,7 @@ public class ApplicationDto {
     MarketingStrategyEnum marketingStrategyEnum;
 
     @JsonProperty(value = "department", access = JsonProperty.Access.READ_ONLY)
-    DepartmentDTO departmentDTO;
+    DepartmentDto departmentDTO;
 
     @JsonProperty(value = "department_id", access = JsonProperty.Access.WRITE_ONLY)
     Long departmentId;
