@@ -40,4 +40,7 @@ public class Course extends BaseEntity {
 
     @Column(name = "is_archived")
     Boolean isArchived;
+
+    @Column(name = "number_of_lessons")
+    Integer numberOfLessons;
 }

@@ -2,20 +2,44 @@ package com.example.neolabs.mapper;
 
 import com.example.neolabs.dto.GroupDto;
 import com.example.neolabs.entity.Group;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@Service
+@RequiredArgsConstructor
 public class GroupMapper {
 
-    public GroupDto entityToDto(Group group) {
-        // TODO: 16.03.2023 Alibek
-        return GroupDto.builder().build();
+    private final CourseMapper courseMapper;
+
+    public GroupDto entityToDto(Group group){
+        return GroupDto.builder()
+                .id(group.getId())
+                .course(courseMapper.entityToDto(group.getCourse()))
+                .maxCapacity(group.getMaxCapacity())
+                .startDate(group.getStartDate())
+                .endDate(group.getEndDate())
+                .status(group.getStatus())
+                .isArchived(group.getIsArchived())
+                .build();
     }
 
-    public List<GroupDto> entityListToDtoList(List<Group> groups) {
-        return groups.stream().map(this::entityToDto).collect(Collectors.toList());
+    public Group dtoToEntity(GroupDto groupDto){
+        return Group.builder()
+                .course(courseMapper.dtoToEntity(groupDto.getCourse()))
+                .maxCapacity(groupDto.getMaxCapacity())
+                .startDate(groupDto.getStartDate())
+                .endDate(groupDto.getEndDate())
+                .status(groupDto.getStatus())
+                .isArchived(groupDto.getIsArchived())
+                .build();
+    }
+
+    public List<GroupDto> entityListToDtoList(List<Group> entities){
+        return entities.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 }

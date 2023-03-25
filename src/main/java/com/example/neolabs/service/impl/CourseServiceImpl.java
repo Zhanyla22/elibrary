@@ -1,6 +1,6 @@
 package com.example.neolabs.service.impl;
 
-import com.example.neolabs.dto.CourseDTO;
+import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.entity.Course;
 import com.example.neolabs.exception.ContentNotFoundException;
 import com.example.neolabs.mapper.CourseMapper;
@@ -21,25 +21,25 @@ public class CourseServiceImpl implements CourseService {
     private final CourseMapper courseMapper;
 
     @Override
-    public List<CourseDTO> getAllCourses() {
+    public List<CourseDto> getAllCourses() {
         return courseMapper.entityListToDtoList(courseRepository.findAll());
     }
 
     @Override
-    public CourseDTO insertCourse(CourseDTO courseDTO) {
+    public CourseDto insertCourse(CourseDto courseDTO) {
         Course course = courseMapper.dtoToEntity(courseDTO);
         return courseMapper.entityToDto(courseRepository.save(course));
     }
 
     @Override
-    public CourseDTO updateCourseById(Long id, CourseDTO courseDTO) {
+    public CourseDto updateCourseById(Long id, CourseDto courseDTO) {
         Course course = courseMapper.dtoToEntity(courseDTO);
         course.setId(id);
         return courseMapper.entityToDto(courseRepository.save(course));
     }
 
     @Override
-    public CourseDTO deleteCourseById(Long id) {
+    public CourseDto deleteCourseById(Long id) {
         Course course = getCourseEntityById(id);
         courseRepository.delete(course);
         return courseMapper.entityToDto(course);
