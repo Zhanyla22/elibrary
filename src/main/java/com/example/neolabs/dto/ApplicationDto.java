@@ -1,9 +1,9 @@
 package com.example.neolabs.dto;
 
-import com.example.neolabs.entity.MarketingStrategy;
 import com.example.neolabs.enums.ApplicationStatus;
 import com.example.neolabs.enums.Education;
 import com.example.neolabs.enums.Gender;
+import com.example.neolabs.enums.MarketingStrategyEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -38,11 +38,20 @@ public class ApplicationDto {
     @JsonProperty(value = "has_laptop")
     Boolean hasLaptop;
 
-    @JsonProperty(value = "marketing_strategy", access = JsonProperty.Access.READ_ONLY)
-    MarketingStrategy marketingStrategy;
+//    @JsonProperty(value = "marketing_strategy", access = JsonProperty.Access.READ_ONLY)
+//    MarketingStrategy marketingStrategy;
+//
+//    @JsonProperty(value = "marketing_strategy_id")
+//    Long marketingStrategyId;
 
-    @JsonProperty(value = "marketing_strategy_id")
-    Long marketingStrategyId;
+    @JsonProperty(value = "marketing_strategy")
+    MarketingStrategyEnum marketingStrategyEnum;
+
+    @JsonProperty(value = "department", access = JsonProperty.Access.READ_ONLY)
+    DepartmentDTO departmentDTO;
+
+    @JsonProperty(value = "department_id", access = JsonProperty.Access.WRITE_ONLY)
+    Long departmentId;
 
     @JsonProperty(value = "is_archived", access = JsonProperty.Access.READ_ONLY)
     Boolean isArchived;
@@ -53,8 +62,8 @@ public class ApplicationDto {
     @JsonProperty(value = "application_status_name", access = JsonProperty.Access.READ_ONLY)
     ApplicationStatus applicationStatus;
 
-    @JsonProperty(value = "application_status_order")
-    Integer applicationStatusOrder;
+    @JsonProperty(value = "application_initial_status", access = JsonProperty.Access.WRITE_ONLY)
+    Integer applicationStatusNum;
 
     @JsonProperty(value = "application_status_update_time", access = JsonProperty.Access.READ_ONLY)
     LocalDateTime applicationStatusUpdateDate;

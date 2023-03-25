@@ -28,8 +28,7 @@ import org.springframework.context.annotation.Configuration;
         version = "v3",
         license = @License(
                 name = "TrustMeBro Licence",
-                url = "https://github.com/thombergs/code-examples/blob/master/LICENSE")),
-        servers = {@Server(url = "potom dobavlyu")}
+                url = "https://github.com/thombergs/code-examples/blob/master/LICENSE"))
 )
 public class OpenApiConfig {
 

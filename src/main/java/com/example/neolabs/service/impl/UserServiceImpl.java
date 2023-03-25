@@ -11,6 +11,7 @@ import com.example.neolabs.dto.response.RegistrationResponse;
 import com.example.neolabs.entity.ResetPassword;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.enums.ResultCode;
 import com.example.neolabs.enums.Role;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
@@ -20,6 +21,7 @@ import com.example.neolabs.repository.ResetPasswordRepository;
 import com.example.neolabs.repository.UserRepository;
 import com.example.neolabs.security.jwt.JWTService;
 import com.example.neolabs.service.UserService;
+import com.example.neolabs.util.DateUtil;
 import com.example.neolabs.util.EmailUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +44,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -70,12 +71,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .status(Status.ACTIVE)
                     .urlImage(imageUploadService.saveImage(multipartFile))
                     .password(passwordEncoder.encode(registrationRequest.getPassword()))
-                    .role(registrationRequest.getRole())
+                    .role(Role.ROLE_MANAGER)
                     .build());
 
             return RegistrationResponse.builder()
                     .email(registrationRequest.getEmail())
                     .password(registrationRequest.getPassword())
+                    .build();
+        } else {
+            throw new BaseException("user already exists", HttpStatus.CONFLICT);
+        }
+    }
+
+    @Override
+    public ResponseDto emergencyRegistration(RegistrationRequest registrationRequest){
+        if (!userRepository.existsByEmail(registrationRequest.getEmail())) {
+            userRepository.save(User.builder()
+                    .email(registrationRequest.getEmail())
+                    .firstName(registrationRequest.getFirstName())
+                    .phoneNumber(registrationRequest.getPhoneNumber())
+                    .status(Status.ACTIVE)
+                    .password(passwordEncoder.encode(registrationRequest.getPassword()))
+                    .role(Role.ROLE_MANAGER)
+                    .build());
+
+            return ResponseDto.builder()
+                    .result("User has been added successfully.")
+                    .resultCode(ResultCode.SUCCESS)
                     .build();
         } else {
             throw new BaseException("user already exists", HttpStatus.CONFLICT);
@@ -92,7 +114,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     )
             );
             User user = (User) authenticate.getPrincipal();
-            Role authenticationResponse =  user.getRole();
+            user.setLastVisitDate(LocalDateTime.now(DateUtil.getZoneId()));//s
+            userRepository.save(user);//s
+            Role authenticationResponse =  user.getRole(); //wha?
             return new AuthResponse2Role(jwtService.generateToken((User) authenticate.getPrincipal()),authenticationResponse);
         } catch (Exception e) {
             throw new BaseException("User not found", HttpStatus.NOT_FOUND);
@@ -203,15 +227,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         List<User> allUserByStatus = userRepository.findAllByStatus(status);
         List<UserDto> userDtoList = new ArrayList<>();
         for(User u: allUserByStatus){
-            userDtoList.add(UserMapper.UserEntityToUserDto(u));
+            userDtoList.add(UserMapper.userEntityToUserDto(u));
         }
         return userDtoList;
     }
 
     @Override
+    public List<UserDto> getAllUsers(){
+        return UserMapper.entityListToDtoList(userRepository.findAll());
+    }
+
+    @Override
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(()-> new BaseException("User with id " +id+" not found",HttpStatus.BAD_REQUEST));
-        return UserMapper.UserEntityToUserDto(user);
+        return UserMapper.userEntityToUserDto(user);
     }
 
 

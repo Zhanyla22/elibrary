@@ -4,6 +4,7 @@ import com.example.neolabs.entity.base.BaseEntity;
 import com.example.neolabs.enums.ApplicationStatus;
 import com.example.neolabs.enums.Education;
 import com.example.neolabs.enums.Gender;
+import com.example.neolabs.enums.MarketingStrategyEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -40,14 +41,18 @@ public class Application extends BaseEntity {
     Boolean hasLaptop;
 
     @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "course_id",
+    @JoinColumn(columnDefinition = "department_id",
             referencedColumnName = "id")
-    Course course;
+    Department department;
 
     @ManyToOne
     @JoinColumn(columnDefinition = "marketing_strategy_id",
             referencedColumnName = "id")
     MarketingStrategy marketingStrategy;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "market_strat")
+    MarketingStrategyEnum marketingStrategyEnum;
 
     @Column(name = "note")
     String note;

@@ -4,6 +4,7 @@ import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
+import com.example.neolabs.dto.response.SortedApplicationResponse;
 import com.example.neolabs.entity.Application;
 import com.example.neolabs.enums.ApplicationStatus;
 import com.example.neolabs.enums.EntityEnum;
@@ -15,6 +16,7 @@ import com.example.neolabs.repository.ApplicationRepository;
 import com.example.neolabs.service.ApplicationService;
 import com.example.neolabs.util.OperationUtil;
 import com.example.neolabs.util.StatusUtil;
+import com.example.neolabs.util.DateUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -53,6 +56,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         ApplicationStatus oldStatus = application.getApplicationStatus();
         application.setApplicationStatus(StatusUtil.getApplicationStatus(newStatus));
         application.setIsArchived(newStatus > 4);
+	    application.setApplicationStatusUpdateDate(LocalDateTime.now(DateUtil.getZoneId()));
         operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.UPDATE,
                 opUtil.buildCreateDescription(EntityEnum.APPLICATION, applicationId));
         return ResponseDto.builder()
@@ -61,6 +65,22 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .build();
 
         // TODO: 12.03.2023 need to add some new entity like "ApplicationHistory" for analytics
+    }
+
+    public SortedApplicationResponse getSortedApplications(){
+        return SortedApplicationResponse.builder()
+                .waitingForCall(applicationMapper.entityListToDtoList(
+                        applicationRepository.findAllByApplicationStatusOrderByIdAsc(ApplicationStatus.WAITING_FOR_CALL))
+                )
+                .callReceived(applicationMapper.entityListToDtoList(
+                        applicationRepository.findAllByApplicationStatusOrderByIdAsc(ApplicationStatus.CALL_RECEIVED))
+                )
+                .appliedForTrial(applicationMapper.entityListToDtoList(
+                        applicationRepository.findAllByApplicationStatusOrderByIdAsc(ApplicationStatus.APPLIED_FOR_TRIAL))
+                )
+                .attendedTrial(applicationMapper.entityListToDtoList(
+                        applicationRepository.findAllByApplicationStatusOrderByIdAsc(ApplicationStatus.ATTENDED_TRIAL)))
+                .build();
     }
 
     @Override

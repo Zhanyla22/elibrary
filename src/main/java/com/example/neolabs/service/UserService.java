@@ -20,6 +20,8 @@ public interface UserService {
 
     RegistrationResponse registration(RegistrationRequest registrationRequest, MultipartFile multipartFile);
 
+    ResponseDto emergencyRegistration(RegistrationRequest registrationRequest);
+
     AuthResponse2Role auth(AuthenticationRequest authenticationRequest);
 
     AuthenticationResponse refreshToken(User user);
@@ -44,6 +46,8 @@ public interface UserService {
 
     //TODO: dto
     List<UserDto> getAllUserByStatus(Status status);
+
+    List<UserDto> getAllUsers();
 
     //TODO:DTO
     UserDto getUserById(Long id);

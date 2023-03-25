@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -43,6 +44,9 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "url_image")
     String urlImage;
+
+    @Column(name = "last_visit_date")
+    LocalDateTime lastVisitDate;
 
     @Enumerated(EnumType.STRING)
     @NotNull

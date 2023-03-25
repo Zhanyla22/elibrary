@@ -5,6 +5,7 @@ import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.entity.Application;
 import com.example.neolabs.entity.Group;
 import com.example.neolabs.entity.Student;
+import com.example.neolabs.service.impl.DepartmentServiceImpl;
 import com.example.neolabs.service.impl.GroupServiceImpl;
 import com.example.neolabs.util.DateUtil;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ApplicationMapper {
 
+    final DepartmentMapper departmentMapper;
     final GroupServiceImpl groupService;
+    final DepartmentServiceImpl departmentService;
 
     public ApplicationDto entityToDto(Application application) {
         return ApplicationDto.builder()
@@ -30,17 +33,19 @@ public class ApplicationMapper {
                 .email(application.getEmail())
                 .applicationStatus(application.getApplicationStatus())
                 .applicationStatusUpdateDate(application.getApplicationStatusUpdateDate())
-                .applicationStatusOrder(application.getApplicationStatus().getOrder())
+                .applicationStatusNum(application.getApplicationStatus().getOrder())
                 .creationDate(application.getCreatedDate())
                 .updateDate(application.getUpdatedDate())
                 .education(application.getEducation())
                 .isArchived(application.getIsArchived())
                 .isUrgent(DateUtil.findDifference(LocalDateTime.now(),
                         application.getApplicationStatusUpdateDate(), ChronoUnit.SECONDS) > 86400)
+                .departmentId(application.getDepartment().getId())
+                .departmentDTO(departmentMapper.entityToDto(application.getDepartment()))
                 .reason(application.getReason())
                 .phoneNumber(application.getPhoneNumber())
                 .hasLaptop(application.getHasLaptop())
-                .marketingStrategy(application.getMarketingStrategy())
+                .marketingStrategyEnum(application.getMarketingStrategyEnum())
                 .build();
     }
 
@@ -50,9 +55,10 @@ public class ApplicationMapper {
                 .lastName(applicationDto.getLastName())
                 .email(applicationDto.getEmail())
                 .education(applicationDto.getEducation())
+                .department(departmentService.getDepartmentEntityById(applicationDto.getDepartmentId()))
                 .applicationStatus(applicationDto.getApplicationStatus())
                 .hasLaptop(applicationDto.getHasLaptop())
-                .marketingStrategy(applicationDto.getMarketingStrategy())
+                .marketingStrategyEnum(applicationDto.getMarketingStrategyEnum())
                 .phoneNumber(applicationDto.getPhoneNumber())
                 .reason(applicationDto.getReason())
                 .build();

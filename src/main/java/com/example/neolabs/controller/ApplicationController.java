@@ -5,6 +5,7 @@ import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
+import com.example.neolabs.dto.response.SortedApplicationResponse;
 import com.example.neolabs.service.impl.ApplicationServiceImpl;
 import com.example.neolabs.service.impl.CsvExportServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,6 +63,13 @@ public class ApplicationController extends BaseController {
         return ResponseEntity.ok(applicationService.getAllApplications(includeArchived, pageRequest));
     }
 
+    @Operation(summary = "Получить отсортированные заявки (без архивированных)")
+    @GetMapping("/sort-by-status")
+    public ResponseEntity<SortedApplicationResponse> getSortedApplications(){
+        //Archived applications will not be included!
+        return ResponseEntity.ok(applicationService.getSortedApplications());
+    }
+
     @Operation(summary = "Find Application by ID")
     @GetMapping("/{applicationId}")
     public ResponseEntity<ApplicationDto> getApplicationById(@PathVariable("applicationId") Long applicationId){
@@ -99,5 +107,11 @@ public class ApplicationController extends BaseController {
     @PutMapping("/convert")
     public ResponseEntity<ResponseDto> convertApplicationIntoStudent(@RequestBody ConversionRequest conversionRequest){
         return ResponseEntity.ok(applicationService.convertApplication(conversionRequest));
+    }
+
+    @PutMapping("/status")
+    public ResponseEntity<ResponseDto> updateApplicationStatus(@RequestParam("application_id") Long applicationId,
+                                                               @RequestParam("new_status") Integer newStatus){
+        return ResponseEntity.ok(applicationService.updateApplicationStatus(applicationId, newStatus));
     }
 }
