@@ -1,6 +1,6 @@
 package com.example.neolabs.mapper;
 
-import com.example.neolabs.dto.CourseDTO;
+import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.entity.Course;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,30 +15,26 @@ public class CourseMapper {
 
     private final DepartmentMapper departmentMapper;
 
-    public CourseDTO entityToDto(Course course) {
-        return CourseDTO.builder()
+    public CourseDto entityToDto(Course course) {
+        return CourseDto.builder()
                 .id(course.getId())
                 .name(course.getName())
-                .level(course.getLevel())
-                .department(departmentMapper.entityToDto(course.getDepartment()))
                 .cost(course.getCost())
                 .duration_in_month(course.getDurationInMonth())
-                .status(course.getStatus())
+                .numberOfLessons(course.getNumberOfLessons())
                 .build();
     }
 
-    public Course dtoToEntity(CourseDTO courseDTO) {
+    public Course dtoToEntity(CourseDto courseDTO) {
         return Course.builder()
                 .name(courseDTO.getName())
-                .level(courseDTO.getLevel())
-                .department(departmentMapper.dtoToEntity(courseDTO.getDepartment()))
                 .cost(courseDTO.getCost())
                 .durationInMonth(courseDTO.getDuration_in_month())
-                .status(courseDTO.getStatus())
+                .numberOfLessons(courseDTO.getNumberOfLessons())
                 .build();
     }
 
-    public List<CourseDTO> entityListToDtoList(List<Course> entities) {
+    public List<CourseDto> entityListToDtoList(List<Course> entities) {
         return entities.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 }
