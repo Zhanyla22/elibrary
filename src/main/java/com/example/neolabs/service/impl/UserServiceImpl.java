@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new BaseException("user already exists", HttpStatus.CONFLICT);
         }
     }
-
+    //TODO: fix auth status
     @Override
     public AuthResponse2Role auth(AuthenticationRequest authenticationRequest) {
         try {
@@ -92,6 +92,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     )
             );
             User user = (User) authenticate.getPrincipal();
+            //TODO: in getUser add to DTO setLastVisitedDate field
             user.setLastVisitDate(LocalDateTime.now(DateUtil.getZoneId()));//s
             userRepository.save(user);//s
             return new AuthResponse2Role(
