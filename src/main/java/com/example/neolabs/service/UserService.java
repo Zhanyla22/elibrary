@@ -18,9 +18,7 @@ import java.util.List;
 
 public interface UserService {
 
-    RegistrationResponse registration(RegistrationRequest registrationRequest);
-
-    ResponseDto emergencyRegistration(RegistrationRequest registrationRequest);
+    ResponseDto registration(RegistrationRequest registrationRequest);
 
     AuthResponse2Role auth(AuthenticationRequest authenticationRequest);
 
@@ -44,7 +42,6 @@ public interface UserService {
 
     void deleteUserById(Long id);
 
-    //TODO: dto
     List<UserDto> getAllUserByStatus(Status status);
 
     List<UserDto> getAllUsers();

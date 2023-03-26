@@ -38,19 +38,10 @@ public class AdminController extends BaseController {
         csvExportService.writeUsersToCsv(servletResponse.getWriter());
     }
 
-//    @Hidden
-    @PostMapping("/registration123")
-    @Operation(summary = "User registration/ добавление пользователя только для админа")
-    public ResponseEntity<ResponseDto> registration(@RequestBody RegistrationRequest registrationRequest) {
-        return constructSuccessResponse(
-                userService.registration(registrationRequest)
-        );
-    }
-
     @Operation(summary = "Регистрация нового пользователя   || Саку")
     @PostMapping("/registration")
     public ResponseEntity<ResponseDto> emergencyRegistration(@RequestBody RegistrationRequest registrationRequest){
-        return constructSuccessResponse(userService.emergencyRegistration(registrationRequest));
+        return constructSuccessResponse(userService.registration(registrationRequest));
     }
 
     @Operation(summary = "удаление пользователя по Id")
@@ -66,8 +57,13 @@ public class AdminController extends BaseController {
         userService.updateProfilePageWithRole(id,updateUserRequest);
         return constructSuccessResponse("profile info successfully updated");
     }
-
+    //TODO: Conversation with Saku
     // why is it divided by status? why is it path variable? and what is this naming "all-user"!? sry, ne uderzhalsya :)
+    // 1. Because if I will create endpoint to each status - it will be duplicating(SOLID нарушается) and we have bunch of enum Status
+    // 2. I just wanted to practice to put in pathvariable something new instead of id
+    // 3. I can make it /all/{status}/user, no problem
+    // And I think this endpoint make sense, instead of writing endpoint to each status we can make it in one
+    // (this endpoint for filtration)
     @Hidden
     @Operation(summary = "получение всех пользователей по статусу")
     @GetMapping("/all-user/{status}")

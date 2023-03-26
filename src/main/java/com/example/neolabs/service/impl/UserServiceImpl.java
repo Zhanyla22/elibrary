@@ -62,28 +62,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     final ImageUploadServiceImpl imageUploadService;
 
     @Override
-    public RegistrationResponse registration(RegistrationRequest registrationRequest) {
-        if (!userRepository.existsByEmail(registrationRequest.getEmail())) {
-            userRepository.save(User.builder()
-                    .email(registrationRequest.getEmail())
-                    .firstName(registrationRequest.getFirstName())
-                    .phoneNumber(registrationRequest.getPhoneNumber())
-                    .status(Status.ACTIVE)
-                    .password(passwordEncoder.encode(registrationRequest.getPassword()))
-                    .role(Role.ROLE_ADMIN)
-                    .build());
-
-            return RegistrationResponse.builder()
-                    .email(registrationRequest.getEmail())
-                    .password(registrationRequest.getPassword())
-                    .build();
-        } else {
-            throw new BaseException("user already exists", HttpStatus.CONFLICT);
-        }
-    }
-
-    @Override
-    public ResponseDto emergencyRegistration(RegistrationRequest registrationRequest) {
+    public ResponseDto registration(RegistrationRequest registrationRequest) {
         if (!userRepository.existsByEmail(registrationRequest.getEmail())) {
             userRepository.save(User.builder()
                     .email(registrationRequest.getEmail())
