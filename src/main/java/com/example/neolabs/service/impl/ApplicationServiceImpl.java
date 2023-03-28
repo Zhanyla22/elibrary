@@ -41,9 +41,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<ApplicationDto> getAllApplications(boolean includeArchived, PageRequest pageRequest) {
-        Page<Application> applications = includeArchived ?
-                applicationRepository.findAll(pageRequest) : applicationRepository.findAllByIsArchived(false, pageRequest);
+    public List<ApplicationDto> getAllApplications(Boolean isArchived, PageRequest pageRequest) {
+        Page<Application> applications;
+        if (isArchived != null) {
+            applications = applicationRepository.findAllByIsArchived(isArchived, pageRequest);
+        } else {
+            applications = applicationRepository.findAll(pageRequest);
+        }
         return applicationMapper.entityListToDtoList(applications.stream().toList());
     }
 
