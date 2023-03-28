@@ -14,6 +14,7 @@ import lombok.*;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DepartmentDto {
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 

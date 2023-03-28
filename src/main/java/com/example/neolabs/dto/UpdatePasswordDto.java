@@ -1,5 +1,6 @@
 package com.example.neolabs.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,8 +12,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdatePasswordDto {
 
+    @JsonProperty(value = "old_password")
     String oldPassword;
 
+    @JsonProperty(value = "new_password")
     String newPassword;
-
 }

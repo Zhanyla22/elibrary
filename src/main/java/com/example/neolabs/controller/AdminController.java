@@ -66,7 +66,7 @@ public class AdminController extends BaseController {
     // (this endpoint for filtration)
     @Hidden
     @Operation(summary = "получение всех пользователей по статусу")
-    @GetMapping("/all-user/{status}")
+    @GetMapping("/all-users/{status}")
     public ResponseEntity<ResponseDto> getAllUserByStatus(@PathVariable Status status) {
         userService.getAllUserByStatus(status);
         return constructSuccessResponse(userService.getAllUserByStatus(status));
@@ -81,7 +81,7 @@ public class AdminController extends BaseController {
 
     //TODO: исправить
     @Operation(summary = "получение 1го пользователя по айди и статус")
-    @GetMapping("user/{id}")
+    @GetMapping("users/{id}")
     public ResponseEntity<ResponseDto> getUserById(@PathVariable Long id) {
         return  constructSuccessResponse(userService.getUserById(id));
     }

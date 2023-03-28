@@ -21,6 +21,8 @@ import java.util.Set;
 @Table(name = "students")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Student extends BaseEntity {
+
+    @Column(name = "email")
     String email;
 
     @Column(name = "first_name")

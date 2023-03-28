@@ -15,12 +15,17 @@ import java.time.LocalDate;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GroupDto {
+
+    @JsonProperty(value = "id")
     Long id;
 
+    @JsonProperty(value = "course")
     CourseDto course;
 
+    @JsonProperty(value = "max_capacity")
     Integer maxCapacity;
 
+    @JsonProperty(value = "mentor")
     MentorDto mentor;
 
     @JsonProperty(value = "start_date")
@@ -29,9 +34,9 @@ public class GroupDto {
     @JsonProperty(value = "end_date")
     LocalDate endDate;
 
+    @JsonProperty(value = "status")
     Status status;
 
     @JsonProperty(value = "is_archived")
     Boolean isArchived;
-
 }

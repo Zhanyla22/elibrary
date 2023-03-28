@@ -15,6 +15,7 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "mentors")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Mentor extends BaseEntity {
+
     @Column(name = "email")
     String email;
 

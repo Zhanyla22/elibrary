@@ -18,6 +18,7 @@ import java.time.LocalTime;
 @Table(name = "schedules")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Schedule extends BaseEntity {
+
     @ManyToOne(optional = false)
     @JoinColumn(columnDefinition = "group_id",
             referencedColumnName = "id")

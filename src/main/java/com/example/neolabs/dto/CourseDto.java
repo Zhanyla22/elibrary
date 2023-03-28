@@ -16,6 +16,7 @@ import lombok.*;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CourseDto {
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 

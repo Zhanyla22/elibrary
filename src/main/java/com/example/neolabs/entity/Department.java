@@ -7,12 +7,12 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 
-@Builder
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@Builder
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "departments")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Department extends BaseEntity {

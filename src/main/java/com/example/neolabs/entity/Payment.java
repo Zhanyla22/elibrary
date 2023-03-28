@@ -17,6 +17,8 @@ import java.time.LocalDate;
 @Table(name = "payments")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Payment extends BaseEntity {
+
+    @Column(name = "value")
     Double value;
 
     @Enumerated(EnumType.STRING)
