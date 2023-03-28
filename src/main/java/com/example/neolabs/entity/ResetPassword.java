@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "reset_password")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ResetPassword {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

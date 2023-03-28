@@ -23,7 +23,7 @@ public class Group extends BaseEntity {
     String name;
 
     @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "cource_id",
+    @JoinColumn(columnDefinition = "course_id",
             referencedColumnName = "id")
     Course course;
 

@@ -1,10 +1,7 @@
 package com.example.neolabs.entity;
 
 import com.example.neolabs.entity.base.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "student_group_bills")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentGroupBill extends BaseEntity {
+
     @ManyToOne(optional = false)
     @JoinColumn(columnDefinition = "student_id",
             referencedColumnName = "id")
@@ -27,5 +25,6 @@ public class StudentGroupBill extends BaseEntity {
             referencedColumnName = "id")
     Group group;
 
+    @Column(name = "debt")
     Double debt;
 }

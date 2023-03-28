@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -24,6 +27,8 @@ public class ApplicationDto {
     @JsonProperty(value = "last_name")
     String lastName;
 
+    @NotEmpty
+    @Email
     @JsonProperty(value = "email")
     String email;
 

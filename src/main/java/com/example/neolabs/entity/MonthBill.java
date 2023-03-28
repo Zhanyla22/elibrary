@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @Table(name = "month_bills")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MonthBill extends BaseEntity {
+
     @ManyToOne(optional = false)
     @JoinColumn(columnDefinition = "student_group_bill_id",
             referencedColumnName = "id")
