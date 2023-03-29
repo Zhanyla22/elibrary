@@ -1,7 +1,10 @@
 package com.example.neolabs.dto;
 
+import com.example.neolabs.dto.UserDto;
 import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.enums.OperationType;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,15 +18,27 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OperationDto {
+    @JsonProperty("type")
+    OperationType type;
 
-    EntityEnum operationTarget;
+    @JsonProperty("target_type")
+    EntityEnum targetType;
 
-    Long operationTargetId;
+    @JsonProperty("target")
+    Object target;
 
+    @JsonProperty("target_id")
+    Long targetId;
+
+    @JsonProperty("user")
     UserDto user;
 
+    @JsonProperty("description")
     String description;
 
-    LocalDateTime time;
+    @JsonProperty("date")
+    String date;
 
+    @JsonProperty("time")
+    String time;
 }

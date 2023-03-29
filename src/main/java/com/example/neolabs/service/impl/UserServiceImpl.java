@@ -42,7 +42,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -203,7 +202,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         List<User> allUserByStatus = userRepository.findAllByStatus(status);
         List<UserDto> userDtoList = new ArrayList<>();
         for(User u: allUserByStatus){
-            userDtoList.add(UserMapper.UserEntityToUserDto(u));
+            userDtoList.add(UserMapper.entityToDto(u));
         }
         return userDtoList;
     }
@@ -211,7 +210,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(()-> new BaseException("User with id " +id+" not found",HttpStatus.BAD_REQUEST));
-        return UserMapper.UserEntityToUserDto(user);
+        return UserMapper.entityToDto(user);
     }
 
 

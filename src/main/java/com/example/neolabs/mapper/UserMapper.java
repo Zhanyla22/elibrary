@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
 
-    public static UserDto UserEntityToUserDto(User user){
+    public static UserDto entityToDto(User user){
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
         userDto.setFirstName(user.getFirstName());

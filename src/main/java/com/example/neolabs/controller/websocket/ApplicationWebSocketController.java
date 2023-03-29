@@ -20,7 +20,4 @@ public class ApplicationWebSocketController {
     public AppStatusOutgoingMessage incomingMessageResponse(AppStatusIncomingMessage appStatusIncomingMessage){
         return socketUtil.convertAppStatusIncomingMessage(appStatusIncomingMessage);
     }
-
-
-    // TODO: 05.03.2023 topic for every dragged application card?
 }
