@@ -16,4 +16,7 @@ public class AppStatusIncomingMessage {
 
     @JsonProperty("new_status")
     Integer newStatus;
+
+    @JsonProperty("old_status")
+    Integer oldStatus;
 }

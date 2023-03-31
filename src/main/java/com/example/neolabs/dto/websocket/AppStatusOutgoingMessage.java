@@ -17,6 +17,6 @@ public class AppStatusOutgoingMessage {
     @JsonProperty("new_status")
     Integer newStatus;
 
-    @JsonProperty("user_id")
-    Long userId;
+    @JsonProperty("old_status")
+    Integer oldStatus;
 }

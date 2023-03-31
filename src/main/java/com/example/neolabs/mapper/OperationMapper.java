@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ public class OperationMapper {
                 .description(operation.getDescription())
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
+                .rawDate(operation.getCreatedDate())
                 .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
                 .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
                 .build();
@@ -40,6 +42,7 @@ public class OperationMapper {
                 .description(operation.getDescription())
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
+                .rawDate(operation.getCreatedDate())
                 .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
                 .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
                 .build();
@@ -57,6 +60,7 @@ public class OperationMapper {
                 .description(operation.getDescription())
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
+                .rawDate(operation.getCreatedDate())
                 .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
                 .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
                 .build();
@@ -74,6 +78,7 @@ public class OperationMapper {
                 .description(operation.getDescription())
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
+                .rawDate(operation.getCreatedDate())
                 .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
                 .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
                 .build();
@@ -91,6 +96,7 @@ public class OperationMapper {
                 .description(operation.getDescription())
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
+                .rawDate(operation.getCreatedDate())
                 .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
                 .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
                 .build();
@@ -108,6 +114,7 @@ public class OperationMapper {
                 .description(operation.getDescription())
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
+                .rawDate(operation.getCreatedDate())
                 .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
                 .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
                 .build();
@@ -125,6 +132,7 @@ public class OperationMapper {
                 .description(operation.getDescription())
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
+                .rawDate(operation.getCreatedDate())
                 .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
                 .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
                 .build();
@@ -142,6 +150,7 @@ public class OperationMapper {
                 .description(operation.getDescription())
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
+                .rawDate(operation.getCreatedDate())
                 .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
                 .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
                 .build();
@@ -160,17 +169,31 @@ public class OperationMapper {
                                                         List<MentorOperation> mentorOperations,
                                                         List<PaymentOperation> paymentOperations){
         List<OperationDto> operations = new ArrayList<>();
-        operations.addAll(applicationOperationListToDtoList(applicationOperations));
-        operations.addAll(userOperationListToDtoList(userOperations));
-        operations.addAll(groupOperationListToDtoList(groupOperations));
-        operations.addAll(studentOperationListToDtoList(studentOperations));
-        operations.addAll(departmentOperationListToDtoList(departmentOperations));
-        operations.addAll(courseOperationListToDtoList(courseOperations));
-        operations.addAll(mentorOperationListToDtoList(mentorOperations));
-        operations.addAll(paymentOperationListToDtoList(paymentOperations));
-        // TODO: 29.03.2023 null safety + date margin
+        if (applicationOperations != null){
+            operations.addAll(applicationOperationListToDtoList(applicationOperations));
+        }
+        if (userOperations != null){
+            operations.addAll(userOperationListToDtoList(userOperations));
+        }
+        if (groupOperations != null){
+            operations.addAll(groupOperationListToDtoList(groupOperations));
+        }
+        if (studentOperations != null){
+            operations.addAll(studentOperationListToDtoList(studentOperations));
+        }
+        if (departmentOperations != null){
+            operations.addAll(departmentOperationListToDtoList(departmentOperations));
+        }
+        if (courseOperations != null){
+            operations.addAll(courseOperationListToDtoList(courseOperations));
+        }
+        if (mentorOperations != null){
+            operations.addAll(mentorOperationListToDtoList(mentorOperations));
+        }
+        if (paymentOperations != null){
+            operations.addAll(paymentOperationListToDtoList(paymentOperations));
+        }
+        Collections.sort(operations);
         return operations;
-
-        // TODO: 29.03.2023 this is surely wrong
     }
 }

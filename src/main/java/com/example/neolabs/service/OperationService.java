@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OperationService {
 
-    void recordApplicationOperation(Application application, OperationType operationType, String description);
+    void recordApplicationOperation(Application application, OperationType operationType);
 
     List<OperationDto> getAllOperations(boolean includeApplications,
                                         boolean includeStudents,

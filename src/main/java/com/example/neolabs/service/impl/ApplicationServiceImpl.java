@@ -57,8 +57,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         ApplicationStatus oldStatus = application.getApplicationStatus();
         application.setApplicationStatus(StatusUtil.getApplicationStatus(newStatus));
         application.setIsArchived(newStatus > 4);
-        operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.UPDATE,
-                opUtil.buildCreateDescription(EntityEnum.APPLICATION, applicationId));
+        operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.UPDATE);
         return ResponseDto.builder()
                 .result("Application status has been successfully updated from "
                         + oldStatus.toString() + " to " + application.getApplicationStatus().toString() + ".")
@@ -72,7 +71,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         getApplicationEntityById(applicationId);
         Application application = applicationMapper.dtoToEntity(applicationDto);
         application.setId(applicationId);
-        applicationRepository.save(application);
+        operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.UPDATE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
                 .result("Application with " + applicationId + " has been successfully updated.")
@@ -86,6 +85,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.setApplicationStatus(ApplicationStatus.WAITING_FOR_CALL);
         }
         ApplicationDto newDto = applicationMapper.entityToDto(application);
+        operationService.recordApplicationOperation(application, OperationType.CREATE);
         return ResponseDto.builder()
                 .result(newDto)
                 .resultCode(ResultCode.SUCCESS)
@@ -103,8 +103,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application = getApplicationEntityById(applicationId);
         application.setIsArchived(true);
         application.setApplicationStatus(ApplicationStatus.DID_NOT_APPLY_FOR_COURSES);
+        application.setArchiveReason(archiveRequest.getReason());
+        operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.ARCHIVE);
         // TODO: 12.03.2023 need to save last status before archiving for analytics
-        // also need to do something with archive reason
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
                 .result("Application with id " + applicationId + " has been successfully archived.")
@@ -115,10 +116,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ResponseDto unarchiveApplicationById(Long applicationId) {
         Application application = getApplicationEntityById(applicationId);
         application.setIsArchived(false);
-        applicationRepository.save(application);
+        operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.UNARCHIVE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
-                .result("Application with id " + applicationId + " has been successfully archived.")
+                .result("Application with id " + applicationId + " has been successfully unarchived.")
                 .build();
         // TODO: 12.03.2023 same as function above
     }
