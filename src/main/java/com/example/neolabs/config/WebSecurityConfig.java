@@ -26,13 +26,11 @@ public class WebSecurityConfig {
     final String[] WHITELISTED_ENDPOINTS = {
             "/documentation/**",
             "/v3/api-docs/**",
-            "/api/v1/auth/**",
             "/user/auth",
             "/user/forgot-password",
             "/user/confirm-code",
             "/user/reset-password",
-            "/user/registration",
-            "/api/v1/admin/registration123",
+            "/api/v1/admin/registration",
             "/ws"
     };
 
