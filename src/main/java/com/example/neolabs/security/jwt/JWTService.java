@@ -64,7 +64,7 @@ public class JWTService {
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
+        final String username = extractUsername(token); // TODO: 04.04.2023 why is the UserDetails needed here?
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 

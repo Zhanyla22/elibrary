@@ -7,6 +7,7 @@ import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.entity.Application;
 import com.example.neolabs.entity.Student;
 import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.enums.OperationType;
 import com.example.neolabs.enums.ResultCode;
 import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.ApplicationMapper;
@@ -27,21 +28,25 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentServiceImpl implements StudentService {
 
-    final ApplicationMapper applicationMapper;
+    final OperationServiceImpl operationService;
     final StudentRepository studentRepository;
     final StudentMapper studentMapper;
+    final ApplicationMapper applicationMapper;
 
     @Override
     public ResponseDto insertStudent(StudentDto studentDto) {
         Student student = studentMapper.dtoToEntity(studentDto);
-        // FIXME: 29.03.2023
-        return null;
+        operationService.recordStudentOperation(studentRepository.save(student), OperationType.CREATE);
+        return ResponseDto.builder()
+                .resultCode(ResultCode.SUCCESS)
+                .result("Student has been successfully added to the database.")
+                .build();
     }
 
     @Override
     public void insertStudentFromApplication(Application application, ConversionRequest conversionRequest) {
         Student student = applicationMapper.entityToStudentEntity(application, conversionRequest);
-        studentRepository.save(student);
+        operationService.recordStudentOperation(studentRepository.save(student), OperationType.CREATE);
     }
 
     @Override
@@ -64,7 +69,7 @@ public class StudentServiceImpl implements StudentService {
     public ResponseDto updateStudentById(Long studentId, StudentDto studentDto) {
         Student student = studentMapper.dtoToEntity(studentDto);
         student.setId(studentId);
-        studentRepository.save(student);
+        operationService.recordStudentOperation(studentRepository.save(student), OperationType.UPDATE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
                 .result("Student with id of " + studentId + " has been successfully updated.")
@@ -84,7 +89,7 @@ public class StudentServiceImpl implements StudentService {
         student.setArchiveReason(archiveRequest.getReason());
         // FIXME: 29.03.2023 need to add blacklisted here
         // FIXME: 29.03.2023 but how?
-        studentRepository.save(student);
+        operationService.recordStudentOperation(studentRepository.save(student), OperationType.ARCHIVE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
                 .result("Student has been successfully archived.")
@@ -102,7 +107,7 @@ public class StudentServiceImpl implements StudentService {
         }
         student.setIsArchived(false);
         student.setArchiveReason(null);
-        studentRepository.save(student);
+        operationService.recordStudentOperation(studentRepository.save(student), OperationType.UNARCHIVE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
                 .result("Student has been successfully unarchived.")

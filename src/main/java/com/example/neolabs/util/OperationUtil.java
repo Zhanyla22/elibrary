@@ -39,7 +39,6 @@ public class OperationUtil {
         return String.format(archiveDescriptionFormat, entityEnum, entityId);
     }
 
-    // TODO: 12.03.2023 need to add description for updates with <number of the changed fields>
     public String buildUpdateDescription(EntityEnum entityEnum, Long entityId){
         return String.format(updateDescriptionFormat, entityEnum, entityId);
     }

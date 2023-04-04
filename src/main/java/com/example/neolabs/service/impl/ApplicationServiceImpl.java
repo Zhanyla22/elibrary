@@ -13,7 +13,6 @@ import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.ApplicationMapper;
 import com.example.neolabs.repository.ApplicationRepository;
 import com.example.neolabs.service.ApplicationService;
-import com.example.neolabs.util.OperationUtil;
 import com.example.neolabs.util.StatusUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     final ApplicationRepository applicationRepository;
     final StudentServiceImpl studentService;
     final OperationServiceImpl operationService;
-    final OperationUtil opUtil;
 
     @Override
     public ApplicationDto getApplicationById(Long applicationId) {
@@ -141,5 +139,4 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new EntityNotFoundException(EntityEnum.APPLICATION, "id", applicationId);
         });
     }
-
 }
