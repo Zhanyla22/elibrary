@@ -5,14 +5,13 @@ import com.example.neolabs.entity.User;
 import com.example.neolabs.util.DateUtil;
 import org.springframework.stereotype.Component;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
 
-    public static UserDto userEntityToUserDto(User user){
+    public static UserDto entityToDto(User user){
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
         userDto.setFirstName(user.getFirstName());
@@ -24,6 +23,6 @@ public class UserMapper {
     }
 
     public static List<UserDto> entityListToDtoList(List<User> users){
-        return users.stream().map(UserMapper::userEntityToUserDto).collect(Collectors.toList());
+        return users.stream().map(UserMapper::entityToDto).collect(Collectors.toList());
     }
 }
