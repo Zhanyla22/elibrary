@@ -79,8 +79,8 @@ public class AdminController extends BaseController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    //TODO: исправить
-    @Operation(summary = "получение 1го пользователя по айди и статус")
+
+    @Operation(summary = "получение 1го пользователя по айди")
     @GetMapping("users/{id}")
     public ResponseEntity<ResponseDto> getUserById(@PathVariable Long id) {
         return  constructSuccessResponse(userService.getUserById(id));

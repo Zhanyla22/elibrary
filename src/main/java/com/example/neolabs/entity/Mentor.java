@@ -34,6 +34,9 @@ public class Mentor extends BaseEntity {
     @Column(name = "salary")
     Double salary;
 
+    @Column(name = "image_url")
+    String imageUrl;
+
     @Enumerated(EnumType.STRING)
     Status status;
 
@@ -41,7 +44,6 @@ public class Mentor extends BaseEntity {
     @JoinColumn(columnDefinition = "department_id",
             referencedColumnName = "id")
     Department department;
-
 }
 
 

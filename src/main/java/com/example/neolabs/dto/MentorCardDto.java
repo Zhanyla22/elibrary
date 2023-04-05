@@ -1,10 +1,8 @@
 package com.example.neolabs.dto;
 
+import com.example.neolabs.entity.Department;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
@@ -12,19 +10,15 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserDto {
+public class MentorCardDto {
 
-    @NotEmpty
-    @Email
-    String email;
-
-    String phoneNumber;
+    String imageUrl;
 
     String firstName;
 
     String lastName;
 
-    String lastVisitDate;
+    String email;
 
-    String lastVisitTime;
+    String department;
 }
