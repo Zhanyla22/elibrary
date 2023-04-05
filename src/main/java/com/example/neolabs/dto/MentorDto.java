@@ -11,6 +11,5 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MentorDto {
 
-    @JsonProperty(value = "id")
     Long id;
 }

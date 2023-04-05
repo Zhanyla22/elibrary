@@ -1,7 +1,6 @@
 package com.example.neolabs.entity;
 
 import com.example.neolabs.entity.base.BaseEntity;
-import com.example.neolabs.enums.Level;
 import com.example.neolabs.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,8 +20,6 @@ public class Course extends BaseEntity {
     @Column(nullable = false)
     String name;
 
-    @Enumerated(EnumType.STRING)
-    Level level;
 
     @ManyToOne(optional = false)
     @JoinColumn(columnDefinition = "department_id",

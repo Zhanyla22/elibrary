@@ -13,12 +13,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ResponseDto {
 
-    @JsonProperty(value = "result")
     Object result;
 
-    @JsonProperty(value = "result_code")
     ResultCode resultCode;
 
-    @JsonProperty(value = "details")
     String details;
 }

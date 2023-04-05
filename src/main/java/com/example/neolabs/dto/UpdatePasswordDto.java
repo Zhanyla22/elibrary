@@ -12,9 +12,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdatePasswordDto {
 
-    @JsonProperty(value = "old_password")
     String oldPassword;
 
-    @JsonProperty(value = "new_password")
     String newPassword;
 }

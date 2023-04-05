@@ -15,7 +15,6 @@ import javax.validation.constraints.NotNull;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ForgotPasswordRequestDto {
 
-    @JsonProperty(value = "email")
     @NotNull
     @Email
     String email;

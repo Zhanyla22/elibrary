@@ -14,20 +14,15 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RegistrationRequest {
 
-    @JsonProperty(value = "email")
     String email;
 
-    @JsonProperty(value = "password")
     String password;
 
 //    Role role;
 
-    @JsonProperty(value = "phone_number")
     String phoneNumber;
 
-    @JsonProperty(value = "first_name")
     String firstName;
 
-    @JsonProperty(value = "last_name")
     String lastName;
 }

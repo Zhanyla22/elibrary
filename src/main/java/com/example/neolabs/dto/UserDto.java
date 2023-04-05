@@ -17,21 +17,15 @@ public class UserDto {
 
     @NotEmpty
     @Email
-    @JsonProperty(value = "email")
     String email;
 
-    @JsonProperty(value = "phone_number")
     String phoneNumber;
 
-    @JsonProperty(value = "first_name")
     String firstName;
 
-    @JsonProperty(value = "last_name")
     String lastName;
 
-    @JsonProperty(value = "last_visit_date")
     String lastVisitDate;
 
-    @JsonProperty(value = "last_visit_time")
     String lastVisitTime;
 }

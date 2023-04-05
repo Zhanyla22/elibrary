@@ -14,10 +14,8 @@ import javax.validation.constraints.NotNull;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ForgotPasswordCodeRequestDto {
 
-    @JsonProperty(value = "code")
     String code;
 
-    @JsonProperty(value = "new_password")
     @NotNull
     String newPassword;
 }

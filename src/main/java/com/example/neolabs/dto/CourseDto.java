@@ -1,8 +1,6 @@
 package com.example.neolabs.dto;
 
 
-import com.example.neolabs.enums.Level;
-import com.example.neolabs.enums.Status;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
