@@ -13,7 +13,7 @@ public interface ApplicationService {
 
     ApplicationDto getApplicationById(Long applicationId);
 
-    List<ApplicationDto> getAllApplications(boolean includeArchived, PageRequest pageRequest);
+    List<ApplicationDto> getAllApplications(Boolean isArchived, PageRequest pageRequest);
 
     ResponseDto updateApplicationStatus(Long applicationId, Integer newStatus);
 

@@ -1,6 +1,7 @@
 package com.example.neolabs.util;
 
 import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.enums.OperationType;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,19 @@ public class OperationUtil {
     final static String createDescriptionFormat = "Created %s with ID of %d";
     final static String deleteDescriptionFormat = "Deleted %s with ID of %d";
     final static String archiveDescriptionFormat = "Archived %s with ID of %d";
+    final static String updateDescriptionFormat = "Archived %s with ID of %d";
+
+    public String buildDescription(OperationType operationType, EntityEnum entityEnum, Long entityId){
+        if (operationType == OperationType.CREATE){
+            return buildCreateDescription(entityEnum, entityId);
+        } else if (operationType == OperationType.UPDATE){
+            return buildUpdateDescription(entityEnum, entityId);
+        } else if (operationType == OperationType.ARCHIVE){
+            return buildArchiveDescription(entityEnum, entityId);
+        } else {
+            return buildDeleteDescription(entityEnum, entityId);
+        }
+    }
 
     public String buildCreateDescription(EntityEnum entityEnum, Long entityId){
         return String.format(createDescriptionFormat, entityEnum, entityId);
@@ -25,8 +39,7 @@ public class OperationUtil {
         return String.format(archiveDescriptionFormat, entityEnum, entityId);
     }
 
-    // TODO: 12.03.2023 need to add description for updates with <number of the changed fields>
-    public String buildUpdateDescription(EntityEnum entityEnum, Object oldEntity, Object newEntity){
-        return "";
+    public String buildUpdateDescription(EntityEnum entityEnum, Long entityId){
+        return String.format(updateDescriptionFormat, entityEnum, entityId);
     }
 }

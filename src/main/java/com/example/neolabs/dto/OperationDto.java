@@ -1,6 +1,9 @@
 package com.example.neolabs.dto;
 
+import com.example.neolabs.dto.UserDto;
 import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.enums.OperationType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -15,20 +18,36 @@ import java.time.LocalDateTime;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OperationDto {
+public class OperationDto implements Comparable<OperationDto> {
+    @JsonProperty("type")
+    OperationType type;
 
-    @JsonProperty(value = "operation_target")
-    EntityEnum operationTarget;
+    @JsonProperty("targetType")
+    EntityEnum targetType;
 
-    @JsonProperty(value = "operation_target_id")
-    Long operationTargetId;
+    @JsonProperty("target")
+    Object target;
 
-    @JsonProperty(value = "user")
+    @JsonProperty("targetId")
+    Long targetId;
+
+    @JsonProperty("user")
     UserDto user;
 
-    @JsonProperty(value = "description")
+    @JsonProperty("description")
     String description;
 
-    @JsonProperty(value = "time")
-    LocalDateTime time;
+    @JsonProperty("date")
+    String date;
+
+    @JsonProperty("time")
+    String time;
+
+    @JsonIgnore
+    LocalDateTime rawDate;
+
+    @Override
+    public int compareTo(OperationDto operation) {
+        return getRawDate().compareTo(operation.getRawDate());
+    }
 }

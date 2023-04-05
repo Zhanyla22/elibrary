@@ -8,9 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Controller
 @RequiredArgsConstructor
+@CrossOrigin
 public class ApplicationWebSocketController {
 
     private final SocketUtil socketUtil;
@@ -20,7 +22,4 @@ public class ApplicationWebSocketController {
     public AppStatusOutgoingMessage incomingMessageResponse(AppStatusIncomingMessage appStatusIncomingMessage){
         return socketUtil.convertAppStatusIncomingMessage(appStatusIncomingMessage);
     }
-
-
-    // TODO: 05.03.2023 topic for every dragged application card?
 }
