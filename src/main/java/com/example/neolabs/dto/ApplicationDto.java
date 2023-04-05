@@ -20,54 +20,54 @@ public class ApplicationDto {
     @JsonProperty(value = "id", access = JsonProperty.Access.READ_ONLY)
     Long id;
 
-    @JsonProperty(value = "first_name")
+    @JsonProperty(value = "firstName")
     String firstName;
 
-    @JsonProperty(value = "last_name")
+    @JsonProperty(value = "lastName")
     String lastName;
 
     @JsonProperty(value = "email")
     String email;
 
-    @JsonProperty(value = "phone_number")
+    @JsonProperty(value = "phoneNumber")
     String phoneNumber;
 
     @JsonProperty(value = "gender")
     Gender gender;
 
-    @JsonProperty(value = "has_laptop")
+    @JsonProperty(value = "hasLaptop")
     Boolean hasLaptop;
 
-    @JsonProperty(value = "marketing_strategy", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "marketingStrategy", access = JsonProperty.Access.READ_ONLY)
     MarketingStrategy marketingStrategy;
 
-    @JsonProperty(value = "marketing_strategy_id")
+    @JsonProperty(value = "marketingStrategyId")
     Long marketingStrategyId;
 
-    @JsonProperty(value = "is_archived", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "isArchived", access = JsonProperty.Access.READ_ONLY)
     Boolean isArchived;
 
     @JsonProperty(value = "reason")
     String reason;
 
-    @JsonProperty(value = "application_status_name", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "applicationStatusName", access = JsonProperty.Access.READ_ONLY)
     ApplicationStatus applicationStatus;
 
-    @JsonProperty(value = "application_status_order")
+    @JsonProperty(value = "applicationStatusOrder")
     Integer applicationStatusOrder;
 
-    @JsonProperty(value = "application_status_update_time", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "applicationStatusUpdateTime", access = JsonProperty.Access.READ_ONLY)
     LocalDateTime applicationStatusUpdateDate;
 
-    @JsonProperty(value = "creation_time", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "creationTime", access = JsonProperty.Access.READ_ONLY)
     LocalDateTime creationDate;
 
-    @JsonProperty(value = "update_time", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "updateTime", access = JsonProperty.Access.READ_ONLY)
     LocalDateTime updateDate;
 
     @JsonProperty(value = "education")
     Education education;
 
-    @JsonProperty(value = "is_urgent", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "isUrgent", access = JsonProperty.Access.READ_ONLY)
     Boolean isUrgent;
 }

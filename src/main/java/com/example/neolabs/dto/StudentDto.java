@@ -15,26 +15,30 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentDto {
+    @JsonProperty("email")
     String email;
 
-    @JsonProperty("first_name")
+    @JsonProperty("firstName")
     String firstName;
 
-    @JsonProperty("last_name")
+    @JsonProperty("lastName")
     String lastName;
 
-    @JsonProperty("phone_number")
+    @JsonProperty("phoneNumber")
     String phoneNumber;
 
+    @JsonProperty("gender")
     Gender gender;
 
+    @JsonProperty("status")
     Status status;
 
-    @JsonProperty("total_debt")
+    @JsonProperty("totalDebt")
     Integer totalDebt;
 
-    @JsonProperty("payment_percentage")
+    @JsonProperty("paymentPercentage")
     Integer totalPaymentPercentage;
 
+    @JsonProperty("groups")
     List<GroupDto> groups;
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(name = "/api/v1/operations")
+@RequestMapping("/api/v1/operations")
 @Tag(name = "Operation Resource", description = "The Operation API ")
 public class OperationController {
 
