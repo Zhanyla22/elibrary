@@ -13,13 +13,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
 @EnableWebMvc
 @RequiredArgsConstructor
-public class WebSecurityConfig {
+public class WebSecurityConfig implements WebMvcConfigurer {
     private final JWTAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
@@ -34,21 +36,11 @@ public class WebSecurityConfig {
             "/ws"
     };
 
-  //  TODO: Fix cors error
-//    @Bean
-//    public CorsFilter corsFilter() {
-//        var source = new UrlBasedCorsConfigurationSource();
-//        var config = new CorsConfiguration();
-//        config.addAllowedOrigin("**");
-//        config.addAllowedMethod(CorsConfiguration.ALL);
-//        config.setMaxAge(3600L);
-//        config.addAllowedHeader(CorsConfiguration.ALL);
-//        config.setAllowCredentials(true);
-//        source.registerCorsConfiguration("/**", config);
-//        return new CorsFilter(source);
-//    }
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
+    }
 
-    //TODO: here mb will be added cors disable
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http

@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/admin")
@@ -81,7 +80,7 @@ public class AdminController extends BaseController {
 
     //TODO: исправить
     @Operation(summary = "получение 1го пользователя по айди и статус")
-    @GetMapping("users/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<ResponseDto> getUserById(@PathVariable Long id) {
         return  constructSuccessResponse(userService.getUserById(id));
     }
