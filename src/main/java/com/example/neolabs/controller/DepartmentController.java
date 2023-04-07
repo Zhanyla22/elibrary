@@ -42,7 +42,7 @@ public class DepartmentController {
 
     @Operation(summary = "Update department by id")
     @PutMapping(value = {"/{id}"})
-    public ResponseEntity updateDepartmentById(@PathVariable("id") Long id,
+    public ResponseEntity<DepartmentDto> updateDepartmentById(@PathVariable("id") Long id,
                                                @Valid @RequestBody DepartmentDto departmentDTO){
         return ResponseEntity.ok(departmentServiceImpl.updateDepartmentById(id, departmentDTO));
     }

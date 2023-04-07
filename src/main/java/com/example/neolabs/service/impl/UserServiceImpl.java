@@ -67,6 +67,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .email(registrationRequest.getEmail())
                     .firstName(registrationRequest.getFirstName())
                     .phoneNumber(registrationRequest.getPhoneNumber())
+                    .lastVisitDate(LocalDateTime.now(DateUtil.getZoneId()))
                     .status(Status.ACTIVE)
                     .password(passwordEncoder.encode(registrationRequest.getPassword()))
                     .role(Role.ROLE_MANAGER)

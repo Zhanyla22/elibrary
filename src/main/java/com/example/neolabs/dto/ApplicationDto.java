@@ -10,8 +10,8 @@ import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -23,38 +23,47 @@ public class ApplicationDto {
     @JsonProperty(value = "id", access = JsonProperty.Access.READ_ONLY)
     Long id;
 
+    @NotEmpty
+    @NotNull
     @JsonProperty(value = "firstName")
     String firstName;
 
+    @NotEmpty
+    @NotNull
     @JsonProperty(value = "lastName")
     String lastName;
 
     @NotEmpty
+    @NotNull
     @Email
     @JsonProperty(value = "email")
     String email;
 
+    @NotEmpty
+    @NotNull
     @JsonProperty(value = "phoneNumber")
     String phoneNumber;
 
+    @NotEmpty
+    @NotNull
     @JsonProperty(value = "gender")
     Gender gender;
 
+    @NotEmpty
+    @NotNull
     @JsonProperty(value = "hasLaptop")
     Boolean hasLaptop;
 
-//    @JsonProperty(value = "marketingStrategy", access = JsonProperty.Access.READ_ONLY)
-//    MarketingStrategy marketingStrategy;
-//
-//    @JsonProperty(value = "marketingStrategyId")
-//    Long marketingStrategyId;
-
+    @NotEmpty
+    @NotNull
     @JsonProperty(value = "marketingStrategy")
     MarketingStrategyEnum marketingStrategyEnum;
 
     @JsonProperty(value = "department", access = JsonProperty.Access.READ_ONLY)
     DepartmentDto departmentDTO;
 
+    @NotEmpty
+    @NotNull
     @JsonProperty(value = "departmentId", access = JsonProperty.Access.WRITE_ONLY)
     Long departmentId;
 
@@ -85,6 +94,8 @@ public class ApplicationDto {
     @JsonProperty(value = "updateDate", access = JsonProperty.Access.READ_ONLY)
     String updateDate;
 
+    @NotEmpty
+    @NotNull
     @JsonProperty(value = "education")
     Education education;
 

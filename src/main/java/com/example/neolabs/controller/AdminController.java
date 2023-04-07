@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -79,7 +78,7 @@ public class AdminController extends BaseController {
     }
 
     //TODO: исправить
-    @Operation(summary = "получение 1го пользователя по айди и статус")
+    @Operation(summary = "получение пользователя по айди и статус")
     @GetMapping("/users/{id}")
     public ResponseEntity<ResponseDto> getUserById(@PathVariable Long id) {
         return  constructSuccessResponse(userService.getUserById(id));

@@ -12,14 +12,15 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     public static UserDto entityToDto(User user){
-        UserDto userDto = new UserDto();
-        userDto.setEmail(user.getEmail());
-        userDto.setFirstName(user.getFirstName());
-        userDto.setLastName(user.getLastName());
-        userDto.setPhoneNumber(user.getPhoneNumber());
-        userDto.setLastVisitDate(DateUtil.dateFormatter.format(user.getLastVisitDate()));
-        userDto.setLastVisitTime(DateUtil.timeFormatter.format(user.getLastVisitDate()));
-        return userDto;
+        return UserDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .phoneNumber(user.getPhoneNumber())
+                .lastVisitDate(DateUtil.dateFormatter.format(user.getLastVisitDate()))
+                .lastVisitTime(DateUtil.timeFormatter.format(user.getLastVisitDate()))
+                .build();
     }
 
     public static List<UserDto> entityListToDtoList(List<User> users){

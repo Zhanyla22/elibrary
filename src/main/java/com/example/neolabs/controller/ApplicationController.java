@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -85,7 +86,7 @@ public class ApplicationController extends BaseController {
 
     @Operation(summary = "Insert new Application")
     @PostMapping("")
-    public ResponseEntity<ResponseDto> insertApplication(@RequestBody ApplicationDto applicationDto){
+    public ResponseEntity<ResponseDto> insertApplication(@RequestBody @Valid ApplicationDto applicationDto){
         return ResponseEntity.ok(applicationService.insertApplication(applicationDto));
     }
 
