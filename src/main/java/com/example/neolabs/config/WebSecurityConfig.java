@@ -36,6 +36,7 @@ public class WebSecurityConfig{
             "/user/confirm-code",
             "/user/reset-password",
             "/ws",
+            "/ws/**"
     };
 
     @Bean

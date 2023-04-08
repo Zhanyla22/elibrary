@@ -22,21 +22,21 @@ public class GroupDto {
     @JsonProperty(value = "course")
     CourseDto course;
 
-    @JsonProperty(value = "max_capacity")
+    @JsonProperty(value = "maxCapacity")
     Integer maxCapacity;
 
     @JsonProperty(value = "mentor")
     MentorDto mentor;
 
-    @JsonProperty(value = "start_date")
+    @JsonProperty(value = "startDate")
     LocalDate startDate;
 
-    @JsonProperty(value = "end_date")
+    @JsonProperty(value = "endDate")
     LocalDate endDate;
 
     @JsonProperty(value = "status")
     Status status;
 
-    @JsonProperty(value = "is_archived")
+    @JsonProperty(value = "isArchived")
     Boolean isArchived;
 }

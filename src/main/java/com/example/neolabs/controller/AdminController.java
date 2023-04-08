@@ -8,6 +8,8 @@ import com.example.neolabs.dto.request.UpdateUserRequest;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.service.CsvExportService;
 import com.example.neolabs.service.UserService;
+import com.example.neolabs.service.impl.CsvExportServiceImpl;
+import com.example.neolabs.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,9 +27,9 @@ import java.util.List;
 @Tag(name = "Admin Resource", description = "The Admin API ")
 public class AdminController extends BaseController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    private final CsvExportService csvExportService;
+    private final CsvExportServiceImpl csvExportService;
 
     @GetMapping(path = "/download")
     public void getAllEmployeesInCsv(HttpServletResponse servletResponse) throws IOException {
