@@ -17,11 +17,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/applications")
 @RequiredArgsConstructor
@@ -48,19 +48,27 @@ public class ApplicationController extends BaseController {
             - ASC (ex. 1-2-3-4-5)
             
             - DESC (ex. 5-4-3-2-1)
+            
+            'is_archived' param:
+            
+            - 1/true/yes : finds only archived applications
+            
+            - 0/false/no : finds only non-archived applications
+            
+            - null (when param is not given) : finds all (archived + non_archived) applications
             """)
     @GetMapping("")
     public ResponseEntity<List<ApplicationDto>> getAllApplications(
-            @RequestParam(name = "include_archived", defaultValue = "1") boolean includeArchived,
+            @RequestParam(name = "is_archived", required = false) Boolean isArchived,
             @RequestParam(name = "sort_by")Optional<String> sortBy,
             @RequestParam(name = "sort_dir")Optional<String> sortDirection,
             @RequestParam(name = "page") Optional<Integer> page,
             @RequestParam(name = "size") Optional<Integer> size){
-        Sort.Direction direction = sortDirection.orElse("asc").toLowerCase().equals("asc") ?
+        Sort.Direction direction = sortDirection.orElse("asc").equalsIgnoreCase("asc") ?
                 Sort.Direction.ASC : Sort.Direction.DESC;
         PageRequest pageRequest = PageRequest.of(page.orElse(0), size.orElse(20),
                 Sort.by(direction, sortBy.orElse("id")));
-        return ResponseEntity.ok(applicationService.getAllApplications(includeArchived, pageRequest));
+        return ResponseEntity.ok(applicationService.getAllApplications(isArchived, pageRequest));
     }
 
     @Operation(summary = "Получить отсортированные заявки (без архивированных)")
@@ -78,7 +86,7 @@ public class ApplicationController extends BaseController {
 
     @Operation(summary = "Insert new Application")
     @PostMapping("")
-    public ResponseEntity<ResponseDto> insertApplication(@RequestBody ApplicationDto applicationDto){
+    public ResponseEntity<ResponseDto> insertApplication(@RequestBody @Valid ApplicationDto applicationDto){
         return ResponseEntity.ok(applicationService.insertApplication(applicationDto));
     }
 

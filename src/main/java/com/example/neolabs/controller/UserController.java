@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")

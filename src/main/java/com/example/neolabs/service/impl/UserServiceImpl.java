@@ -7,7 +7,6 @@ import com.example.neolabs.dto.request.UpdateUserClientRequest;
 import com.example.neolabs.dto.request.UpdateUserRequest;
 import com.example.neolabs.dto.response.AuthResponse2Role;
 import com.example.neolabs.dto.response.AuthenticationResponse;
-import com.example.neolabs.dto.response.RegistrationResponse;
 import com.example.neolabs.entity.ResetPassword;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.enums.EntityEnum;
@@ -68,6 +67,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .email(registrationRequest.getEmail())
                     .firstName(registrationRequest.getFirstName())
                     .phoneNumber(registrationRequest.getPhoneNumber())
+                    .lastVisitDate(LocalDateTime.now(DateUtil.getZoneId()))
                     .status(Status.ACTIVE)
                     .password(passwordEncoder.encode(registrationRequest.getPassword()))
                     .role(Role.ROLE_MANAGER)
@@ -210,7 +210,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         List<User> allUserByStatus = userRepository.findAllByStatus(status);
         List<UserDto> userDtoList = new ArrayList<>();
         for (User u : allUserByStatus) {
-            userDtoList.add(UserMapper.userEntityToUserDto(u));
+            userDtoList.add(UserMapper.entityToDto(u));
         }
         return userDtoList;
     }
@@ -223,7 +223,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new BaseException("User with id " + id + " not found", HttpStatus.BAD_REQUEST));
-        return UserMapper.userEntityToUserDto(user);
+        return UserMapper.entityToDto(user);
     }
 
 

@@ -14,6 +14,9 @@ import javax.validation.constraints.NotEmpty;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    Long id;
+
     @NotEmpty
     @Email
     String email;

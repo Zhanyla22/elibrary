@@ -10,6 +10,8 @@ import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 
 @Data
 @Builder
@@ -21,71 +23,82 @@ public class ApplicationDto {
     @JsonProperty(value = "id", access = JsonProperty.Access.READ_ONLY)
     Long id;
 
-    @JsonProperty(value = "first_name")
+    @NotEmpty
+    @NotNull
+    @JsonProperty(value = "firstName")
     String firstName;
 
-    @JsonProperty(value = "last_name")
+    @NotEmpty
+    @NotNull
+    @JsonProperty(value = "lastName")
     String lastName;
 
     @NotEmpty
+    @NotNull
     @Email
     @JsonProperty(value = "email")
     String email;
 
-    @JsonProperty(value = "phone_number")
+    @NotEmpty
+    @NotNull
+    @JsonProperty(value = "phoneNumber")
     String phoneNumber;
 
+    @NotEmpty
+    @NotNull
     @JsonProperty(value = "gender")
     Gender gender;
 
-    @JsonProperty(value = "has_laptop")
+    @NotEmpty
+    @NotNull
+    @JsonProperty(value = "hasLaptop")
     Boolean hasLaptop;
 
-//    @JsonProperty(value = "marketing_strategy", access = JsonProperty.Access.READ_ONLY)
-//    MarketingStrategy marketingStrategy;
-//
-//    @JsonProperty(value = "marketing_strategy_id")
-//    Long marketingStrategyId;
-
-    @JsonProperty(value = "marketing_strategy")
+    @NotEmpty
+    @NotNull
+    @JsonProperty(value = "marketingStrategy")
     MarketingStrategyEnum marketingStrategyEnum;
 
     @JsonProperty(value = "department", access = JsonProperty.Access.READ_ONLY)
     DepartmentDto departmentDTO;
 
-    @JsonProperty(value = "department_id", access = JsonProperty.Access.WRITE_ONLY)
+    @NotEmpty
+    @NotNull
+    @JsonProperty(value = "departmentId", access = JsonProperty.Access.WRITE_ONLY)
     Long departmentId;
 
-    @JsonProperty(value = "is_archived", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "isArchived", access = JsonProperty.Access.READ_ONLY)
     Boolean isArchived;
 
     @JsonProperty(value = "reason")
     String reason;
 
-    @JsonProperty(value = "application_status", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "applicationStatusName", access = JsonProperty.Access.READ_ONLY)
     ApplicationStatus applicationStatus;
 
-    @JsonProperty(value = "application_status_num", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "applicationStatusNum", access = JsonProperty.Access.READ_ONLY)
     Integer applicationStatusNum;
 
-    @JsonProperty(value = "application_initial_status_num", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "applicationInitialStatusNum", access = JsonProperty.Access.WRITE_ONLY)
     Integer applicationStatusInitialNum;
 
-    @JsonProperty(value = "application_status_update_date", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "applicationStatusUpdateDate", access = JsonProperty.Access.READ_ONLY)
     String applicationStatusUpdateDate;
 
-    @JsonProperty(value = "application_status_update_time", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "applicationStatusUpdateTime", access = JsonProperty.Access.READ_ONLY)
     String applicationStatusUpdateTime;
 
-    @JsonProperty(value = "creation_date", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "creationDate", access = JsonProperty.Access.READ_ONLY)
     String creationDate;
 
-    @JsonProperty(value = "update_date", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "updateDate", access = JsonProperty.Access.READ_ONLY)
     String updateDate;
 
+    @NotEmpty
+    @NotNull
     @JsonProperty(value = "education")
     Education education;
 
-    @JsonProperty(value = "is_urgent", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "isUrgent", access = JsonProperty.Access.READ_ONLY)
     Boolean isUrgent;
 }

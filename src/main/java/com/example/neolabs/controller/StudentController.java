@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping(name = "/api/v1/students")
+@RequestMapping("/api/v1/students")
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentServiceImpl studentService;

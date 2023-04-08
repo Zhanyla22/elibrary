@@ -14,7 +14,6 @@ import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.ApplicationMapper;
 import com.example.neolabs.repository.ApplicationRepository;
 import com.example.neolabs.service.ApplicationService;
-import com.example.neolabs.util.OperationUtil;
 import com.example.neolabs.util.StatusUtil;
 import com.example.neolabs.util.DateUtil;
 import lombok.AccessLevel;
@@ -36,7 +35,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     final ApplicationRepository applicationRepository;
     final StudentServiceImpl studentService;
     final OperationServiceImpl operationService;
-    final OperationUtil opUtil;
 
     @Override
     public ApplicationDto getApplicationById(Long applicationId) {
@@ -44,22 +42,24 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<ApplicationDto> getAllApplications(boolean includeArchived, PageRequest pageRequest) {
-        Page<Application> applications = includeArchived ?
-                applicationRepository.findAll(pageRequest) : applicationRepository.findAllByIsArchived(false, pageRequest);
+    public List<ApplicationDto> getAllApplications(Boolean isArchived, PageRequest pageRequest) {
+        Page<Application> applications;
+        if (isArchived != null) {
+            applications = applicationRepository.findAllByIsArchived(isArchived, pageRequest);
+        } else {
+            applications = applicationRepository.findAll(pageRequest);
+        }
         return applicationMapper.entityListToDtoList(applications.stream().toList());
     }
 
     @Override
     public ResponseDto updateApplicationStatus(Long applicationId, Integer newStatus) {
         Application application = getApplicationEntityById(applicationId);
-        System.out.println(application.getApplicationStatus());
         ApplicationStatus oldStatus = application.getApplicationStatus();
         application.setApplicationStatus(StatusUtil.getApplicationStatus(newStatus));
+        application.setApplicationStatusUpdateDate(LocalDateTime.now(DateUtil.getZoneId()));
         application.setIsArchived(newStatus > 4);
-	    application.setApplicationStatusUpdateDate(LocalDateTime.now(DateUtil.getZoneId()));
-        operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.UPDATE,
-                opUtil.buildCreateDescription(EntityEnum.APPLICATION, applicationId));
+        operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.UPDATE);
         return ResponseDto.builder()
                 .result("Application status has been successfully updated from "
                         + oldStatus.toString() + " to " + application.getApplicationStatus().toString() + ".")
@@ -89,7 +89,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         getApplicationEntityById(applicationId);
         Application application = applicationMapper.dtoToEntity(applicationDto);
         application.setId(applicationId);
-        applicationRepository.save(application);
+        operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.UPDATE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
                 .result("Application with " + applicationId + " has been successfully updated.")
@@ -105,6 +105,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setIsArchived(false);
         application.setApplicationStatusUpdateDate(LocalDateTime.now(DateUtil.getZoneId()));
         ApplicationDto newDto = applicationMapper.entityToDto(applicationRepository.save(application));
+        operationService.recordApplicationOperation(application, OperationType.CREATE);
         return ResponseDto.builder()
                 .result(newDto)
                 .resultCode(ResultCode.SUCCESS)
@@ -122,8 +123,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application = getApplicationEntityById(applicationId);
         application.setIsArchived(true);
         application.setApplicationStatus(ApplicationStatus.DID_NOT_APPLY_FOR_COURSES);
+        application.setArchiveReason(archiveRequest.getReason());
+        operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.ARCHIVE);
         // TODO: 12.03.2023 need to save last status before archiving for analytics
-        // also need to do something with archive reason
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
                 .result("Application with id " + applicationId + " has been successfully archived.")
@@ -134,10 +136,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ResponseDto unarchiveApplicationById(Long applicationId) {
         Application application = getApplicationEntityById(applicationId);
         application.setIsArchived(false);
-        applicationRepository.save(application);
+        operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.UNARCHIVE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
-                .result("Application with id " + applicationId + " has been successfully archived.")
+                .result("Application with id " + applicationId + " has been successfully unarchived.")
                 .build();
         // TODO: 12.03.2023 same as function above
     }
@@ -159,5 +161,4 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new EntityNotFoundException(EntityEnum.APPLICATION, "id", applicationId);
         });
     }
-
 }

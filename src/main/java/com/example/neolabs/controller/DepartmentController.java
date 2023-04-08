@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/department")
@@ -43,7 +42,7 @@ public class DepartmentController {
 
     @Operation(summary = "Update department by id")
     @PutMapping(value = {"/{id}"})
-    public ResponseEntity updateDepartmentById(@PathVariable("id") Long id,
+    public ResponseEntity<DepartmentDto> updateDepartmentById(@PathVariable("id") Long id,
                                                @Valid @RequestBody DepartmentDto departmentDTO){
         return ResponseEntity.ok(departmentServiceImpl.updateDepartmentById(id, departmentDTO));
     }
