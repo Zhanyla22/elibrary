@@ -11,6 +11,8 @@ public class MentorMapper {
         mentorCardDto.setLastName(mentor.getLastName());
         mentorCardDto.setImageUrl(mentor.getImageUrl());
         mentorCardDto.setDepartment(mentor.getDepartment().getName());
+        mentorCardDto.setDateArchive(mentor.getDateArchive());
+        mentorCardDto.setReasonArchive(mentor.getReasonArchive());
         return mentorCardDto;
     }
 }

@@ -22,8 +22,9 @@ public class MentorController extends BaseController {
     final MentorService mentorService;
 
     @Operation(summary = "get all mentors cards / получение всех карточек менторов")
-    @GetMapping("all-cards")
-    public ResponseEntity<ResponseDto> getAllMentorCard(@RequestBody MentorCardRequestDto mentorCardRequestDto) {
-        return  constructSuccessResponse(mentorService.getAllMentorCard(mentorCardRequestDto));
+    @GetMapping("/api/v1/all-cards")
+    public ResponseEntity<ResponseDto> getAllMentorCard(@RequestParam("department")  String department,
+                                                        @RequestParam("status") Status status) {
+        return  constructSuccessResponse(mentorService.getAllMentorCard(department,status));
     }
 }

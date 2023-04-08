@@ -21,8 +21,8 @@ public class MentorServiceImpl implements MentorService {
     final MentorRepository mentorRepository;
 
     @Override
-    public List<MentorCardDto> getAllMentorCard(MentorCardRequestDto mentorCardRequestDto) {
-        List<Mentor> mentors = mentorRepository.findAllByDepartmentNameAndStatus(mentorCardRequestDto.getDepartment(),mentorCardRequestDto.getStatus());
+    public List<MentorCardDto> getAllMentorCard(String department, Status status) {
+        List<Mentor> mentors = mentorRepository.findAllByDepartmentNameAndStatus(department,status);
         List<MentorCardDto> mentorCardDtos = new ArrayList<>();
         for (Mentor m: mentors){
             mentorCardDtos.add(MentorMapper.mentorEntityToMentorCardDto(m));

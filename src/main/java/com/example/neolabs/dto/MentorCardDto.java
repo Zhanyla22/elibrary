@@ -1,8 +1,11 @@
 package com.example.neolabs.dto;
 
 import com.example.neolabs.entity.Department;
+import jakarta.persistence.Column;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.text.SimpleDateFormat;
 
 @Getter
 @Setter
@@ -21,4 +24,8 @@ public class MentorCardDto {
     String email;
 
     String department;
+
+    SimpleDateFormat dateArchive;
+
+    String reasonArchive;
 }
