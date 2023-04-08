@@ -55,7 +55,7 @@ public class AdminController extends BaseController {
         userService.updateProfilePageWithRole(id,updateUserRequest);
         return constructSuccessResponse("profile info successfully updated");
     }
-    //TODO: Conversation with Saku
+    // TODO: Conversation with Saku
     // why is it divided by status? why is it path variable? and what is this naming "all-user"!? sry, ne uderzhalsya :)
     // 1. Because if I will create endpoint to each status - it will be duplicating(SOLID нарушается) and we have bunch of enum Status
     // 2. I just wanted to practice to put in pathvariable something new instead of id
@@ -74,6 +74,7 @@ public class AdminController extends BaseController {
     @Operation(summary = "Получение всех пользователей   || Саку")
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getAllUsers(){
+
         return ResponseEntity.ok(userService.getAllUsers());
     }
 

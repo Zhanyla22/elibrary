@@ -4,6 +4,8 @@ import com.example.neolabs.security.jwt.JWTAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,6 +23,7 @@ import java.util.Arrays;
 @EnableWebSecurity
 @EnableWebMvc
 @RequiredArgsConstructor
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class WebSecurityConfig{
     private final JWTAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
@@ -32,8 +35,7 @@ public class WebSecurityConfig{
             "/user/forgot-password",
             "/user/confirm-code",
             "/user/reset-password",
-            "/api/v1/admin/registration",
-            "/ws"
+            "/ws",
     };
 
     @Bean
@@ -41,6 +43,7 @@ public class WebSecurityConfig{
     {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -50,10 +53,10 @@ public class WebSecurityConfig{
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .cors()
-                .and()
                 .csrf()
                 .disable()
+                .cors()
+                .and()
                 .authorizeHttpRequests()
                 .requestMatchers(WHITELISTED_ENDPOINTS).permitAll()
                 .anyRequest().authenticated()
