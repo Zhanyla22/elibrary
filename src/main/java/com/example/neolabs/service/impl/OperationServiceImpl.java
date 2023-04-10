@@ -7,6 +7,7 @@ import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.enums.OperationType;
 import com.example.neolabs.mapper.OperationMapper;
 import com.example.neolabs.repository.*;
+import com.example.neolabs.repository.operation.*;
 import com.example.neolabs.service.OperationService;
 import com.example.neolabs.util.OperationUtil;
 import lombok.AccessLevel;
@@ -33,6 +34,7 @@ public class OperationServiceImpl implements OperationService {
     final DepartmentOperationRepository departmentOpRepo;
     final MentorOperationRepository mentorOpRepo;
     final PaymentOperationRepository paymentOpRepo;
+    final EnrollmentOperationRepository enrollmentOpRepo;
 
     final UserRepository userRepository;
 
@@ -124,6 +126,16 @@ public class OperationServiceImpl implements OperationService {
         paymentOpRepo.save(operation);
     }
 
+    @Override
+    public void recordEnrollmentOperation(Student student, Long groupId){
+        EnrollmentOperation operation = EnrollmentOperation.builder()
+                .user(getCurrentUserEntity())
+                .student(student)
+                .description(operationUtil.buildEnrollDescription(student.getId(), groupId))
+                .operationType(OperationType.ENROLLMENT)
+                .build();
+        enrollmentOpRepo.save(operation);
+    }
 
     @Override
     public List<OperationDto> getAllOperations(boolean includeApplications, boolean includeStudents,

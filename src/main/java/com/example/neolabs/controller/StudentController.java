@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,12 +29,23 @@ public class StudentController {
 
     @Operation(summary = "Find all Students")
     @GetMapping("")
-    public ResponseEntity<List<StudentDto>> getALlStudents(@RequestParam("include_archived") Boolean includeArchived,
-                                                           @RequestParam("sort_by")Optional<String> sortBy,
+    public ResponseEntity<List<StudentDto>> getALlStudents(@RequestParam(name = "include_archived", required = false) Boolean includeArchived,
+                                                           @RequestParam("sort_by") Optional<String> sortBy,
                                                            @RequestParam("size") Optional<Integer> size,
                                                            @RequestParam("page") Optional<Integer> page){
         return ResponseEntity.ok(studentService.getAllStudents(includeArchived,
                 PageRequest.of(page.orElse(0), size.orElse(20), Sort.by(sortBy.orElse("id")))));
+    }
+
+    @PostMapping("")
+    public ResponseEntity<ResponseDto> insertStudent(@RequestBody @Valid StudentDto studentDto){
+        return ResponseEntity.ok(studentService.insertStudent(studentDto));
+    }
+
+    @PutMapping("/enroll")
+    public ResponseEntity<ResponseDto> enrollStudentToGroup(@RequestParam("student_id") Long studentId,
+                                                            @RequestParam("group_id") Long groupId){
+        return ResponseEntity.ok(studentService.enrollStudent(studentId, groupId));
     }
 
     @PutMapping("/{studentId}")

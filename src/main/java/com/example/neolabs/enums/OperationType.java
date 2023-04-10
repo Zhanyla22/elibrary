@@ -7,6 +7,7 @@ public enum OperationType {
     UNARCHIVE,
     CREATE,
     UPDATE,
+    ENROLLMENT
 
     // TODO: 04.03.2023 add more
 }

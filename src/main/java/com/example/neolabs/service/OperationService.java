@@ -16,6 +16,7 @@ public interface OperationService {
     void recordMentorOperation(Mentor mentor, OperationType operationType);
     void recordDepartmentOperation(Department department, OperationType operationType);
     void recordPaymentOperation(Payment payment, OperationType operationType);
+    void recordEnrollmentOperation(Student student, Long groupId);
 
     List<OperationDto> getAllOperations(boolean includeApplications,
                                         boolean includeStudents,

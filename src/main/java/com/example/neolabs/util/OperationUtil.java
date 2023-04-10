@@ -14,6 +14,7 @@ public class OperationUtil {
     final static String deleteDescriptionFormat = "Deleted %s with ID of %d";
     final static String archiveDescriptionFormat = "Archived %s with ID of %d";
     final static String updateDescriptionFormat = "Archived %s with ID of %d";
+    final static String enrollDescriptionFormat = "Enrolled student with ID of %d to the group with of %d";
 
     public String buildDescription(OperationType operationType, EntityEnum entityEnum, Long entityId){
         if (operationType == OperationType.CREATE){
@@ -41,5 +42,9 @@ public class OperationUtil {
 
     public String buildUpdateDescription(EntityEnum entityEnum, Long entityId){
         return String.format(updateDescriptionFormat, entityEnum, entityId);
+    }
+
+    public String buildEnrollDescription(Long studentId, Long groupId){
+        return String.format(enrollDescriptionFormat, studentId, groupId);
     }
 }

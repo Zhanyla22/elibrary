@@ -5,10 +5,12 @@ import com.example.neolabs.dto.StudentDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.entity.Application;
+import com.example.neolabs.entity.Group;
 import com.example.neolabs.entity.Student;
 import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.enums.OperationType;
 import com.example.neolabs.enums.ResultCode;
+import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.ApplicationMapper;
 import com.example.neolabs.mapper.StudentMapper;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +32,7 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService {
 
     final OperationServiceImpl operationService;
+    final GroupServiceImpl groupService;
     final StudentRepository studentRepository;
     final StudentMapper studentMapper;
     final ApplicationMapper applicationMapper;
@@ -80,10 +84,7 @@ public class StudentServiceImpl implements StudentService {
     public ResponseDto archiveStudentById(Long studentId, ArchiveRequest archiveRequest) {
         Student student = getStudentEntityById(studentId);
         if (student.getIsArchived()) {
-            return ResponseDto.builder()
-                    .resultCode(ResultCode.EXCEPTION)
-                    .result("Student is already archived.")
-                    .build();// FIXME: 29.03.2023 better to do this section with custom exception
+            throw new BaseException("Student is archived already.", HttpStatus.CONFLICT);
         }
         student.setIsArchived(true);
         student.setArchiveReason(archiveRequest.getReason());
@@ -100,10 +101,7 @@ public class StudentServiceImpl implements StudentService {
     public ResponseDto unarchiveStudentById(Long studentId) {
         Student student = getStudentEntityById(studentId);
         if (!student.getIsArchived()) {
-            return ResponseDto.builder()
-                    .resultCode(ResultCode.EXCEPTION)
-                    .result("Student is not archived already.")
-                    .build();// FIXME: 29.03.2023 same as in the function above
+            throw new BaseException("Student is not archived already.", HttpStatus.CONFLICT);
         }
         student.setIsArchived(false);
         student.setArchiveReason(null);
@@ -111,6 +109,23 @@ public class StudentServiceImpl implements StudentService {
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
                 .result("Student has been successfully unarchived.")
+                .build();
+    }
+
+    @Override
+    public ResponseDto enrollStudent(Long studentId, Long groupId) {
+        Student student = getStudentEntityById(studentId);
+        Group group = groupService.getGroupEntityById(groupId);
+        List<Group> studentGroups = student.getGroups();
+        if (studentGroups.contains(group)) {
+            throw new BaseException("Student is already enrolled to the group.", HttpStatus.CONFLICT);
+        }
+        studentGroups.add(group);
+        student.setGroups(studentGroups);
+        operationService.recordEnrollmentOperation(studentRepository.save(student), groupId);
+        return ResponseDto.builder()
+                .resultCode(ResultCode.SUCCESS)
+                .result("Student has been successfully enrolled to the group.")
                 .build();
     }
 
