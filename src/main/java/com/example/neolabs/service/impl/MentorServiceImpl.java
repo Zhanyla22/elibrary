@@ -1,6 +1,7 @@
 package com.example.neolabs.service.impl;
 
 import com.example.neolabs.dto.CreateMentorDto;
+import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.MentorCardDto;
 import com.example.neolabs.dto.UpdateMentorDto;
 import com.example.neolabs.entity.Mentor;
@@ -29,9 +30,10 @@ public class MentorServiceImpl implements MentorService {
     @Override
     public List<MentorCardDto> getAllMentorCard(Long departmentId, Status status) {
         List<Mentor> mentors = mentorRepository.findAllByDepartmentAndStatus(
-                departmentRepository.findById(departmentId).orElseThrow(
-                        () -> new BaseException("", HttpStatus.BAD_REQUEST)
-                )
+                departmentRepository.findById(departmentId)
+                        .orElseThrow(
+                                () -> new BaseException("department wit id " + departmentId + " not found", HttpStatus.BAD_REQUEST)
+                        )
                 , status);
         List<MentorCardDto> mentorCardDtos = new ArrayList<>();
 
@@ -50,7 +52,9 @@ public class MentorServiceImpl implements MentorService {
 
     @Override
     public void deleteMentorById(Long id) {
-        Mentor mentor = mentorRepository.findById(id).orElseThrow(()->new BaseException("not found",HttpStatus.BAD_REQUEST));
+        Mentor mentor = mentorRepository.findById(id)
+                .orElseThrow(
+                        () -> new BaseException("mentor with id " + id + " not found", HttpStatus.BAD_REQUEST));
         mentor.setStatus(Status.DELETED);
         mentor.setDeletedDate(LocalDateTime.now());
         mentorRepository.save(mentor);
@@ -58,9 +62,10 @@ public class MentorServiceImpl implements MentorService {
 
     @Override
     public void updateMentorById(UpdateMentorDto updateMentorDto, Long id) {
-        Mentor mentor = mentorRepository.findById(id).orElseThrow(
-                () -> new BaseException("not found ", HttpStatus.BAD_REQUEST)
-        );
+        Mentor mentor = mentorRepository.findById(id)
+                .orElseThrow(
+                        () -> new BaseException("mentor with id " + id + " not found ", HttpStatus.BAD_REQUEST)
+                );
         mentor.setEmail(updateMentorDto.getEmail());
         mentor.setFirstName(updateMentorDto.getFirstName());
         mentor.setLastName(updateMentorDto.getLastName());
@@ -70,6 +75,30 @@ public class MentorServiceImpl implements MentorService {
         mentor.setDepartment(departmentRepository.getDepartmentByName(updateMentorDto.getDepartmentName())
                 .orElseThrow(
                         () -> new BaseException("department " + updateMentorDto.getDepartmentName() + " not found", HttpStatus.BAD_REQUEST)));
+        mentorRepository.save(mentor);
+    }
+
+    @Override
+    public void archiveMentorById(Long id, ArchiveDto mentorArchiveDto) {
+        Mentor mentor = mentorRepository.findById(id)
+                .orElseThrow(
+                        () -> new BaseException("mentor with id " + id + " not found", HttpStatus.BAD_REQUEST));
+        mentor.setDateArchive(LocalDateTime.now());
+        mentor.setReasonArchive(mentorArchiveDto.getReason());
+        mentor.setStatus(Status.ARCHIVED);
+
+        mentorRepository.save(mentor);
+    }
+
+    @Override
+    public void blackListMentorById(Long id, ArchiveDto mentorArchiveDto) {
+        Mentor mentor = mentorRepository.findById(id)
+                .orElseThrow(
+                        () -> new BaseException("mentor with id " + id + " not found", HttpStatus.BAD_REQUEST));
+        mentor.setDateArchive(LocalDateTime.now());
+        mentor.setReasonArchive(mentorArchiveDto.getReason());
+        mentor.setStatus(Status.BLACK_LIST);
+
         mentorRepository.save(mentor);
     }
 }

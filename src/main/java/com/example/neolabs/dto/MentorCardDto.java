@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,7 +26,7 @@ public class MentorCardDto {
 
     String department;
 
-    SimpleDateFormat dateArchive;
+    String dateArchive;
 
     String reasonArchive;
 }

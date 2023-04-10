@@ -13,7 +13,8 @@ public enum Status {
     //TODO: status types for now need to be added new status or changed
     ACTIVE("active"),
     DELETED("deleted"),
-    ARCHIVED("archived");
+    ARCHIVED("archived"),
+    BLACK_LIST("black list");
 
     final String name;
 }

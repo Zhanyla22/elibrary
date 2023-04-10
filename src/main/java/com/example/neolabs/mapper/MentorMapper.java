@@ -23,7 +23,7 @@ public class MentorMapper {
         mentorCardDto.setLastName(mentor.getLastName());
         mentorCardDto.setImageUrl(mentor.getImageUrl());
         mentorCardDto.setDepartment(mentor.getDepartment().getName());
-        mentorCardDto.setDateArchive(mentor.getDateArchive());
+        mentorCardDto.setDateArchive(mentor.getDateArchive().toString());
         mentorCardDto.setReasonArchive(mentor.getReasonArchive());
         return mentorCardDto;
     }
@@ -40,4 +40,5 @@ public class MentorMapper {
         mentor.setStatus(Status.ACTIVE);
         return mentor;
     }
+
 }

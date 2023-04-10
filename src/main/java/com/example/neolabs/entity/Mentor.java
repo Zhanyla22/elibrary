@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -48,7 +49,7 @@ public class Mentor extends BaseEntity{
     Department department;
 
     @Column(name = "date_archive")
-    SimpleDateFormat dateArchive;
+    LocalDateTime dateArchive;
 
     @Column(name = "reason_archive")
     String reasonArchive;
