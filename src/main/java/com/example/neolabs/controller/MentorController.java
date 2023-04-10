@@ -1,6 +1,7 @@
 package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
+import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.CreateMentorDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.UpdateMentorDto;
@@ -46,5 +47,17 @@ public class MentorController extends BaseController {
     public ResponseEntity<ResponseDto> updateMentor(@PathVariable Long id, @RequestBody UpdateMentorDto updateMentorDto) {
         mentorService.updateMentorById(updateMentorDto, id);
         return constructSuccessResponse("updated");
+    }
+
+    @Operation(summary = "archive mentors by id")
+    @PutMapping("/archive/{id}")
+    public void archiveMentorById(@PathVariable Long id, @RequestBody ArchiveDto mentorArchiveDto) {
+        mentorService.archiveMentorById(id, mentorArchiveDto);
+    }
+
+    @Operation(summary = "archive mentors by id")
+    @PutMapping("/blacklist/{id}")
+    public void blackListMentorById(@PathVariable Long id, @RequestBody ArchiveDto mentorArchiveDto) {
+        mentorService.blackListMentorById(id, mentorArchiveDto);
     }
 }
