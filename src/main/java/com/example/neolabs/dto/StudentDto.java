@@ -19,6 +19,9 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentDto {
 
+    @JsonProperty
+    Long id;
+
     @NotEmpty
     @Email
     @JsonProperty("email")

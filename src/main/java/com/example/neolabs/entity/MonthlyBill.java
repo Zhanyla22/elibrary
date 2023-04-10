@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Table(name = "month_bills")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MonthBill extends BaseEntity {
+public class MonthlyBill extends BaseEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(columnDefinition = "student_group_bill_id",
@@ -25,7 +26,9 @@ public class MonthBill extends BaseEntity {
     @Column(name = "month_number")
     Integer monthNumber;
 
-    Double debt;
+    @Column(name = "monthly_debt")
+    Double monthlyDebt;
 
-    LocalDate deadline;
+    @Column(name = "monthly_deadline")
+    LocalDate monthlyDeadline;
 }

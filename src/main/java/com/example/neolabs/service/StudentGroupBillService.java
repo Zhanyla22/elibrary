@@ -1,4 +1,11 @@
 package com.example.neolabs.service;
 
-public interface StudentGroupBill {
+import com.example.neolabs.dto.StudentGroupBillDto;
+import com.example.neolabs.entity.StudentGroupBill;
+
+public interface StudentGroupBillService {
+
+    StudentGroupBillDto getStudentGroupBill(Long studentId, Long groupId);
+
+    StudentGroupBill getStudentGroupBillById(Long id);
 }

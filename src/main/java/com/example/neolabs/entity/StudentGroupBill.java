@@ -25,6 +25,6 @@ public class StudentGroupBill extends BaseEntity {
             referencedColumnName = "id")
     Group group;
 
-    @Column(name = "debt")
-    Double debt;
+    @Column(name = "student_group_debt")
+    Double studentGroupDebt;
 }
