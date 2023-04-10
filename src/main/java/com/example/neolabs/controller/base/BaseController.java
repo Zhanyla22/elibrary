@@ -17,6 +17,17 @@ public class BaseController {
         );
     }
 
+    protected <T> ResponseEntity<ResponseDto> constructSuccessResponse(String details) {
+        return new ResponseEntity<>(
+                ResponseDto.builder()
+                        .details(details)
+                        .resultCode(ResultCode.SUCCESS)
+                        .build(),
+                HttpStatus.OK
+        );
+    }
+
+
     protected <T> ResponseEntity<ResponseDto> constructSuccessResponse(T result, String details) {
         return new ResponseEntity<>(
                 ResponseDto.builder()
