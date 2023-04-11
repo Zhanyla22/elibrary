@@ -2,6 +2,7 @@ package com.example.neolabs.mapper;
 
 import com.example.neolabs.dto.StudentDto;
 import com.example.neolabs.entity.Student;
+import com.example.neolabs.enums.Status;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,7 +25,7 @@ public class StudentMapper {
                 .gender(studentDto.getGender())
                 .email(studentDto.getEmail())
                 .phoneNumber(studentDto.getPhoneNumber())
-                .status(studentDto.getStatus())
+                .status(studentDto.getStatus() != null ? studentDto.getStatus() : Status.ACTIVE)
                 .build();
     }
 

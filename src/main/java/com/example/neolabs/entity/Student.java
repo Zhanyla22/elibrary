@@ -40,7 +40,7 @@ public class Student extends BaseEntity {
     @Enumerated(EnumType.STRING)
     Status status;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(columnDefinition = "application_id",
             referencedColumnName = "id")
     Application application;

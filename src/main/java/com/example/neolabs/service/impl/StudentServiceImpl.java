@@ -40,6 +40,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public ResponseDto insertStudent(StudentDto studentDto) {
         Student student = studentMapper.dtoToEntity(studentDto);
+        student.getGroups().add(groupService.getGroupEntityById(studentDto.getEnrollmentGroupId()));
         operationService.recordStudentOperation(studentRepository.save(student), OperationType.CREATE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
@@ -116,12 +117,10 @@ public class StudentServiceImpl implements StudentService {
     public ResponseDto enrollStudent(Long studentId, Long groupId) {
         Student student = getStudentEntityById(studentId);
         Group group = groupService.getGroupEntityById(groupId);
-        List<Group> studentGroups = student.getGroups();
-        if (studentGroups.contains(group)) {
+        if (student.getGroups().contains(group)) {
             throw new BaseException("Student is already enrolled to the group.", HttpStatus.CONFLICT);
         }
-        studentGroups.add(group);
-        student.setGroups(studentGroups);
+        student.getGroups().add(group);
         operationService.recordEnrollmentOperation(studentRepository.save(student), groupId);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)

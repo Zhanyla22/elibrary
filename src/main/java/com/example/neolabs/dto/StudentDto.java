@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentDto {
 
-    @JsonProperty
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long id;
 
     @NotEmpty
@@ -27,27 +28,35 @@ public class StudentDto {
     @JsonProperty("email")
     String email;
 
+    @NotBlank
     @JsonProperty("firstName")
     String firstName;
 
+    @NotBlank
     @JsonProperty("lastName")
     String lastName;
 
+    @NotBlank
     @JsonProperty("phoneNumber")
     String phoneNumber;
 
+    @NotBlank
     @JsonProperty("gender")
     Gender gender;
 
     @JsonProperty("status")
     Status status;
 
-    @JsonProperty("totalDebt")
+    @JsonProperty(value = "totalDebt", access = JsonProperty.Access.READ_ONLY)
     Integer totalDebt;
 
-    @JsonProperty("paymentPercentage")
+    @JsonProperty(value = "paymentPercentage", access = JsonProperty.Access.READ_ONLY)
     Integer totalPaymentPercentage;
 
-    @JsonProperty("groups")
+    @JsonProperty(value = "groups", access = JsonProperty.Access.READ_ONLY)
     List<GroupDto> groups;
+
+    @NotBlank
+    @JsonProperty(value = "enrollmentGroupId", access = JsonProperty.Access.WRITE_ONLY)
+    Long enrollmentGroupId;
 }

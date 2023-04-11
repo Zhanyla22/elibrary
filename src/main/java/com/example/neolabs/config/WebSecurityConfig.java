@@ -1,5 +1,6 @@
 package com.example.neolabs.config;
 
+import com.example.neolabs.security.UserAuthenticationEntryPoint;
 import com.example.neolabs.security.jwt.JWTAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,7 @@ import java.util.Arrays;
 public class WebSecurityConfig{
     private final JWTAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
 
     final String[] WHITELISTED_ENDPOINTS = {
             "/documentation/**",
@@ -61,6 +63,9 @@ public class WebSecurityConfig{
                 .authorizeHttpRequests()
                 .requestMatchers(WHITELISTED_ENDPOINTS).permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(userAuthenticationEntryPoint)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
