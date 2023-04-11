@@ -20,7 +20,7 @@ public class CourseMapper {
                 .id(course.getId())
                 .name(course.getName())
                 .cost(course.getCost())
-                .duration_in_month(course.getDurationInMonth())
+                .durationInMonth(course.getDurationInMonth())
                 .numberOfLessons(course.getNumberOfLessons())
                 .build();
     }
@@ -29,7 +29,7 @@ public class CourseMapper {
         return Course.builder()
                 .name(courseDTO.getName())
                 .cost(courseDTO.getCost())
-                .durationInMonth(courseDTO.getDuration_in_month())
+                .durationInMonth(courseDTO.getDurationInMonth())
                 .numberOfLessons(courseDTO.getNumberOfLessons())
                 .build();
     }

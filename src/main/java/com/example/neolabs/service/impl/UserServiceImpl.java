@@ -66,6 +66,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userRepository.save(User.builder()
                     .email(registrationRequest.getEmail())
                     .firstName(registrationRequest.getFirstName())
+                    .lastName(registrationRequest.getLastName())
                     .phoneNumber(registrationRequest.getPhoneNumber())
                     .lastVisitDate(LocalDateTime.now(DateUtil.getZoneId()))
                     .status(Status.ACTIVE)
@@ -78,7 +79,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .resultCode(ResultCode.SUCCESS)
                     .build();
         } else {
-            throw new BaseException("user already exists", HttpStatus.CONFLICT);
+            throw new BaseException("User already exists", HttpStatus.CONFLICT);
         }
     }
     //TODO: fix auth status

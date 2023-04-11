@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -14,7 +17,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Table(name = "mentors")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Mentor extends BaseEntity {
+public class Mentor extends BaseEntity{
 
     @Column(name = "email")
     String email;
@@ -34,6 +37,9 @@ public class Mentor extends BaseEntity {
     @Column(name = "salary")
     Double salary;
 
+    @Column(name = "image_url")
+    String imageUrl;
+
     @Enumerated(EnumType.STRING)
     Status status;
 
@@ -42,6 +48,11 @@ public class Mentor extends BaseEntity {
             referencedColumnName = "id")
     Department department;
 
+    @Column(name = "date_archive")
+    LocalDateTime dateArchive;
+
+    @Column(name = "reason_archive")
+    String reasonArchive;
 }
 
 

@@ -24,4 +24,6 @@ public interface StudentService {
     ResponseDto archiveStudentById(Long studentId, ArchiveRequest archiveRequest);
 
     ResponseDto unarchiveStudentById(Long studentId);
+
+    ResponseDto enrollStudent(Long studentId, Long groupId);
 }

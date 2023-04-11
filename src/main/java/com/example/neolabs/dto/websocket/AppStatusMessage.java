@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AppStatusOutgoingMessage {
+public class AppStatusMessage {
     @JsonProperty("applicationId")
     Long applicationId;
 

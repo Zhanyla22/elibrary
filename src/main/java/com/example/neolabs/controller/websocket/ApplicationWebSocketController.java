@@ -1,8 +1,7 @@
 package com.example.neolabs.controller.websocket;
 
-import com.example.neolabs.dto.websocket.AppStatusIncomingMessage;
-import com.example.neolabs.dto.websocket.AppStatusOutgoingMessage;
-import com.example.neolabs.service.impl.ApplicationServiceImpl;
+import com.example.neolabs.dto.websocket.AppStatusMessage;
+import com.example.neolabs.dto.websocket.AppStatusMessageResponse;
 import com.example.neolabs.util.SocketUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -19,7 +18,7 @@ public class ApplicationWebSocketController {
 
     @MessageMapping("/application-status")
     @SendTo("/topic/application-status")
-    public AppStatusOutgoingMessage incomingMessageResponse(AppStatusIncomingMessage appStatusIncomingMessage){
-        return socketUtil.convertAppStatusIncomingMessage(appStatusIncomingMessage);
+    public AppStatusMessageResponse messageResponse(AppStatusMessage appStatusMessage){
+        return socketUtil.convertAppStatusIncomingMessage(appStatusMessage);
     }
 }

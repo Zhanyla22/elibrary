@@ -15,12 +15,14 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DepartmentDto {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @NotBlank(message = "Name can't be empty or null")
+    @JsonProperty(value = "name")
     private String name;
 
     @NotBlank(message = "Status can't be empty or null")
+    @JsonProperty(value = "status")
     private Status status;
 }
