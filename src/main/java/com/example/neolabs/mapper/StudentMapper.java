@@ -30,6 +30,7 @@ public class StudentMapper {
 
     public StudentDto entityToDto(Student student) {
         return StudentDto.builder()
+                .id(student.getId())
                 .email(student.getEmail())
                 .firstName(student.getFirstName())
                 .lastName(student.getLastName())

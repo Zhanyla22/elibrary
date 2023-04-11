@@ -6,22 +6,25 @@ import com.example.neolabs.entity.MonthlyBill;
 import com.example.neolabs.entity.StudentGroupBill;
 import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.exception.BaseException;
-import com.example.neolabs.exception.ContentNotFoundException;
 import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.MonthlyBillMapper;
 import com.example.neolabs.repository.MonthlyBillRepository;
 import com.example.neolabs.repository.StudentGroupBillRepository;
 import com.example.neolabs.service.MonthlyBillService;
 import com.example.neolabs.service.StudentGroupBillService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MonthlyBillServiceImpl implements MonthlyBillService {
 
     final StudentGroupBillService studentGroupBillService;
@@ -51,7 +54,7 @@ public class MonthlyBillServiceImpl implements MonthlyBillService {
     @Override
     public String createMonthlyBills(Long studentGroupBillId) {
         StudentGroupBill studentGroupBill = studentGroupBillService.getStudentGroupBillById(studentGroupBillId);
-        if (getAllMonthlyBillsByStudentGroupBillId(studentGroupBillId) == null){
+        if (monthlyBillRepository.findAllMonthlyBillsByStudentGroupBillID(studentGroupBillId).isEmpty()){
 
         Integer durationInMonths = studentGroupBill.getGroup().getCourse().getDurationInMonth();
         Double courseBill = studentGroupBill.getGroup().getCourse().getCost();
@@ -60,6 +63,7 @@ public class MonthlyBillServiceImpl implements MonthlyBillService {
         for (int i = 1; i <= durationInMonths; i++) {
             MonthlyBill monthlyBills = new MonthlyBill(studentGroupBill, i, courseBill / durationInMonths,
                     monthlyDeadline.plusMonths(i));
+            monthlyBills.setCreatedDate(LocalDateTime.now());
             monthlyBillRepository.save(monthlyBills);
         }}
         else {

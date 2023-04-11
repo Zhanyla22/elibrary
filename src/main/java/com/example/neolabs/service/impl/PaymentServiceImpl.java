@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
-import java.util.prefs.BackingStoreException;
 
 @Service
 @RequiredArgsConstructor
