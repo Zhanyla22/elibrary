@@ -22,6 +22,7 @@ public class StudentGroupBillMapper {
 
     public StudentGroupBillDto entityToDto(StudentGroupBill studentGroupBill){
         return StudentGroupBillDto.builder()
+                .id(studentGroupBill.getId())
                 .groupId(groupMapper.entityToDto(studentGroupBill.getGroup()).getId())
                 .studentId(studentMapper.entityToDto(studentGroupBill.getStudent()).getId())
                 .studentGroupDebt(studentGroupBill.getStudentGroupDebt())

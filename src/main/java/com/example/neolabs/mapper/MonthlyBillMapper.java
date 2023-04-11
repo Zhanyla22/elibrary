@@ -19,6 +19,7 @@ public class MonthlyBillMapper {
 
     public MonthlyBillDto entityToDto(MonthlyBill monthlyBill){
         return MonthlyBillDto.builder()
+                .id(monthlyBill.getId())
                 .studentGroupBillId(studentGroupBillMapper.entityToDto(monthlyBill.getStudentGroupBill()).getId())
                 .monthlyDept(monthlyBill.getMonthlyDebt())
                 .monthlyDeadline(monthlyBill.getMonthlyDeadline())

@@ -4,13 +4,20 @@ package com.example.neolabs.service.impl;
 import com.example.neolabs.dto.MonthlyBillDto;
 import com.example.neolabs.entity.MonthlyBill;
 import com.example.neolabs.entity.StudentGroupBill;
+import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.ContentNotFoundException;
-import com.example.neolabs.repository.MonthBillRepository;
+import com.example.neolabs.exception.EntityNotFoundException;
+import com.example.neolabs.mapper.MonthlyBillMapper;
+import com.example.neolabs.repository.MonthlyBillRepository;
+import com.example.neolabs.repository.StudentGroupBillRepository;
 import com.example.neolabs.service.MonthlyBillService;
 import com.example.neolabs.service.StudentGroupBillService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -18,17 +25,22 @@ import java.util.List;
 public class MonthlyBillServiceImpl implements MonthlyBillService {
 
     final StudentGroupBillService studentGroupBillService;
-    final MonthBillRepository monthlyBillRepository;
+    final MonthlyBillRepository monthlyBillRepository;
+
+    final MonthlyBillMapper monthlyBillMapper;
+
+    final StudentGroupBillRepository studentGroupBillRepository;
     @Override
     public MonthlyBill getMonthlyBillById(Long id) {
         return monthlyBillRepository.findById(id).orElseThrow(() -> {
-            throw new ContentNotFoundException();
+            throw new EntityNotFoundException(EntityEnum.MONTHLY_BILL, "id", id);
         });
     }
 
     @Override
     public List<MonthlyBillDto> getAllMonthlyBillsByStudentGroupBillId(Long studentGroupBillId) {
-        return null;
+        studentGroupBillService.getStudentGroupBillById(studentGroupBillId);
+        return monthlyBillMapper.entityListToDtoList(monthlyBillRepository.findAllMonthlyBillsByStudentGroupBillID(studentGroupBillId));
     }
 
     @Override
@@ -37,19 +49,22 @@ public class MonthlyBillServiceImpl implements MonthlyBillService {
     }
 
     @Override
-    public List<MonthlyBillDto> createMonthlyBills(Long studentGroupBillId) {
+    public String createMonthlyBills(Long studentGroupBillId) {
         StudentGroupBill studentGroupBill = studentGroupBillService.getStudentGroupBillById(studentGroupBillId);
+        if (getAllMonthlyBillsByStudentGroupBillId(studentGroupBillId) == null){
 
-        MonthlyBill monthlyBill1 = new MonthlyBill(studentGroupBill,1,studentGroupBill.getGroup().getCourse().getCost()/3,
-                studentGroupBill.getGroup().getStartDate().plusMonths(1));
+        Integer durationInMonths = studentGroupBill.getGroup().getCourse().getDurationInMonth();
+        Double courseBill = studentGroupBill.getGroup().getCourse().getCost();
+        LocalDate monthlyDeadline = studentGroupBill.getGroup().getStartDate();
 
-        MonthlyBill monthlyBill2 = new MonthlyBill(studentGroupBill,2,studentGroupBill.getGroup().getCourse().getCost()/3,
-                studentGroupBill.getGroup().getStartDate().plusMonths(2));
-
-        MonthlyBill monthlyBill3 = new MonthlyBill(studentGroupBill,3,studentGroupBill.getGroup().getCourse().getCost()/3,
-                studentGroupBill.getGroup().getEndDate());
-
-        monthlyBillRepository.saveAll(List.of(monthlyBill1,monthlyBill2,monthlyBill3));
-        return null;
+        for (int i = 1; i <= durationInMonths; i++) {
+            MonthlyBill monthlyBills = new MonthlyBill(studentGroupBill, i, courseBill / durationInMonths,
+                    monthlyDeadline.plusMonths(i));
+            monthlyBillRepository.save(monthlyBills);
+        }}
+        else {
+            throw new BaseException("Monthly bills for student's group bill with id: " + studentGroupBillId + " have already been created", HttpStatus.METHOD_NOT_ALLOWED);
+        }
+        return "Monthly bills for student group bill with id: " + studentGroupBillId + " are successfully created!";
 
 }}

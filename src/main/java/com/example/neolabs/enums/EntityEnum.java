@@ -12,7 +12,7 @@ public enum EntityEnum {
     MENTOR,
     SCHEDULE,
     PAYMENT,
-    MONTH_BILL,
+    MONTHLY_BILL,
     SCHEDULE_UNIT,
     STUDENT_GROUP_BILL,
 

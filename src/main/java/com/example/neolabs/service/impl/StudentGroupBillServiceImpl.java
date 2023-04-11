@@ -3,10 +3,14 @@ package com.example.neolabs.service.impl;
 import com.example.neolabs.dto.StudentGroupBillDto;
 import com.example.neolabs.entity.StudentGroupBill;
 import com.example.neolabs.exception.ContentNotFoundException;
+import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.repository.StudentGroupBillRepository;
 import com.example.neolabs.service.StudentGroupBillService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
+
 
 
 @RequiredArgsConstructor
@@ -23,7 +27,7 @@ public class StudentGroupBillServiceImpl implements StudentGroupBillService {
     @Override
     public StudentGroupBill getStudentGroupBillById(Long id) {
         return studentGroupBillRepository.findById(id).orElseThrow(() -> {
-            throw new ContentNotFoundException();
+            throw new EntityNotFoundException(EntityEnum.STUDENT_GROUP_BILL, "id",id);
         });
     }
 }

@@ -20,6 +20,7 @@ public class PaymentMapper {
 
     public PaymentDto entityToDto(Payment payment){
         return PaymentDto.builder()
+                .id(payment.getId())
                 .amount(payment.getAmount())
                 .transactionType(payment.getTransactionType())
                 .monthlyBillID(monthlyBillMapper.entityToDto(payment.getMonthlyBill()).getId())

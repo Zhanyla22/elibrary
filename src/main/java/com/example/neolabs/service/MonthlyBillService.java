@@ -10,7 +10,7 @@ public interface MonthlyBillService {
     List<MonthlyBillDto> getAllMonthlyBillsByStudentGroupBillId(Long studentGroupBillId);
     MonthlyBillDto getMonthlyBillByMonthNumber(Long studentGroupBillId, Integer monthNumber);
 
-    List<MonthlyBillDto> createMonthlyBills(Long studentGroupBillId);
+    String createMonthlyBills(Long studentGroupBillId);
 
 
 }
