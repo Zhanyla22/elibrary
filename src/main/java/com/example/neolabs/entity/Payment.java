@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,17 +18,17 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Payment extends BaseEntity {
 
-    @Column(name = "value")
-    Double value;
+    Double amount;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "transaction_type")
     TransactionType transactionType;
 
-    LocalDate date;
+    @Column(name = "payment_date")
+    LocalDateTime paymentDate;
 
     @ManyToOne(optional = false)
     @JoinColumn(columnDefinition = "month_bill_id",
             referencedColumnName = "id")
-    MonthBill monthBill;
+    MonthlyBill monthlyBill;
 }
