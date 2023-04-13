@@ -48,4 +48,8 @@ public interface UserService {
 
     UserDto getUserById(Long id);
 
+    void archiveUserById(Long userId, ArchiveDto archiveUserDto);
+
+    void blacklistUserById(Long userId, ArchiveDto blacklistUserDto);
+
 }

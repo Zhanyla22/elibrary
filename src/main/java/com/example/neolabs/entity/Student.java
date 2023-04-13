@@ -48,8 +48,8 @@ public class Student extends BaseEntity {
     @Column(name = "is_archived")
     Boolean isArchived;
 
-    @Column(name = "archive_reason")
-    String archiveReason;
+    @Column(name = "reason_changed_status")
+    String reason;
 
     @Column(name = "total_debt")
     Integer totalDebt;

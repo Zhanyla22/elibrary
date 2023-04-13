@@ -26,7 +26,7 @@ public class GroupDto {
     Integer maxCapacity;
 
     @JsonProperty(value = "mentor")
-    MentorDto mentor;
+    MentorCardDto mentor;
 
     @JsonProperty(value = "startDate")
     LocalDate startDate;

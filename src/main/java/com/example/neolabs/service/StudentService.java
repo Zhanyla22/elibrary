@@ -1,8 +1,8 @@
 package com.example.neolabs.service;
 
+import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.StudentDto;
-import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.entity.Application;
 import org.springframework.data.domain.PageRequest;
@@ -21,9 +21,13 @@ public interface StudentService {
 
     ResponseDto updateStudentById(Long studentId, StudentDto studentDto);
 
-    ResponseDto archiveStudentById(Long studentId, ArchiveRequest archiveRequest);
-
-    ResponseDto unarchiveStudentById(Long studentId);
+//    ResponseDto archiveStudentById(Long studentId, ArchiveRequest archiveRequest);
+//
+//    ResponseDto unarchiveStudentById(Long studentId);
 
     ResponseDto enrollStudent(Long studentId, Long groupId);
+
+    void archiveStudentById(Long studentId, ArchiveDto archiveStudentDto);
+
+    void blacklistStudentById(Long studentId, ArchiveDto blacklistStudentDto);
 }

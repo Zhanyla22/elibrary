@@ -1,14 +1,15 @@
 package com.example.neolabs.service.impl;
 
-import com.example.neolabs.dto.CreateMentorDto;
 import com.example.neolabs.dto.ArchiveDto;
+import com.example.neolabs.dto.CreateMentorDto;
 import com.example.neolabs.dto.MentorCardDto;
 import com.example.neolabs.dto.UpdateMentorDto;
+import com.example.neolabs.entity.Course;
 import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.mapper.MentorMapper;
-import com.example.neolabs.repository.DepartmentRepository;
+import com.example.neolabs.repository.CourseRepository;
 import com.example.neolabs.repository.MentorRepository;
 import com.example.neolabs.service.MentorService;
 import lombok.RequiredArgsConstructor;
@@ -24,17 +25,16 @@ import java.util.List;
 public class MentorServiceImpl implements MentorService {
 
     final MentorRepository mentorRepository;
-    final DepartmentRepository departmentRepository;
+    final CourseRepository courseRepository;
     final MentorMapper mentorMapper;
 
     @Override
-    public List<MentorCardDto> getAllMentorCard(Long departmentId, Status status) {
-        List<Mentor> mentors = mentorRepository.findAllByDepartmentAndStatus(
-                departmentRepository.findById(departmentId)
-                        .orElseThrow(
-                                () -> new BaseException("department wit id " + departmentId + " not found", HttpStatus.BAD_REQUEST)
-                        )
-                , status);
+    public List<MentorCardDto> getAllMentorCard(Long courseId, Status status) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(
+                        () -> new BaseException("course wit id " + courseId + " not found", HttpStatus.BAD_REQUEST)
+                );
+        List<Mentor> mentors = mentorRepository.findAllByCourseAndStatus(course, status);
         List<MentorCardDto> mentorCardDtos = new ArrayList<>();
 
         mentors.forEach(x -> mentorCardDtos.add(MentorMapper.mentorEntityToMentorCardDto(x)));
@@ -72,9 +72,9 @@ public class MentorServiceImpl implements MentorService {
         mentor.setPhoneNumber(updateMentorDto.getPhoneNumber());
         mentor.setPatentNumber(updateMentorDto.getPatentNumber());
         mentor.setSalary(updateMentorDto.getSalary());
-        mentor.setDepartment(departmentRepository.getDepartmentByName(updateMentorDto.getDepartmentName())
+        mentor.setCourse(courseRepository.findCourseByName(updateMentorDto.getCourseName())
                 .orElseThrow(
-                        () -> new BaseException("department " + updateMentorDto.getDepartmentName() + " not found", HttpStatus.BAD_REQUEST)));
+                        () -> new BaseException("course " + updateMentorDto.getCourseName() + " not found", HttpStatus.BAD_REQUEST)));
         mentorRepository.save(mentor);
     }
 
@@ -83,20 +83,20 @@ public class MentorServiceImpl implements MentorService {
         Mentor mentor = mentorRepository.findById(id)
                 .orElseThrow(
                         () -> new BaseException("mentor with id " + id + " not found", HttpStatus.BAD_REQUEST));
-        mentor.setDateArchive(LocalDateTime.now());
-        mentor.setReasonArchive(mentorArchiveDto.getReason());
+        mentor.setUpdatedDate(LocalDateTime.now());
+        mentor.setReason(mentorArchiveDto.getReason());
         mentor.setStatus(Status.ARCHIVED);
 
         mentorRepository.save(mentor);
     }
 
     @Override
-    public void blackListMentorById(Long id, ArchiveDto mentorArchiveDto) {
+    public void blackListMentorById(Long id, ArchiveDto mentorBlacklistDto) {
         Mentor mentor = mentorRepository.findById(id)
                 .orElseThrow(
                         () -> new BaseException("mentor with id " + id + " not found", HttpStatus.BAD_REQUEST));
-        mentor.setDateArchive(LocalDateTime.now());
-        mentor.setReasonArchive(mentorArchiveDto.getReason());
+        mentor.setUpdatedDate(LocalDateTime.now());
+        mentor.setReason(mentorBlacklistDto.getReason());
         mentor.setStatus(Status.BLACK_LIST);
 
         mentorRepository.save(mentor);

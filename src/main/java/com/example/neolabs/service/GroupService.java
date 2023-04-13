@@ -1,5 +1,6 @@
 package com.example.neolabs.service;
 
+import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.GroupDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
@@ -16,7 +17,13 @@ public interface GroupService {
 
     GroupDto updateGroupById(Long groupId, GroupDto groupDto);
 
-    ResponseDto archiveGroupById(Long groupId, ArchiveRequest archiveRequest);
+//    ResponseDto archiveGroupById(Long groupId, ArchiveRequest archiveRequest);
+//
+//    ResponseDto unarchiveGroupById(Long groupId);
 
-    ResponseDto unarchiveGroupById(Long groupId);
+    void archiveGroupById(Long groupId, ArchiveDto groupArchiveDto);
+
+    void blackListGroupById(Long groupId, ArchiveDto groupBlacklistDto);
+
+
 }

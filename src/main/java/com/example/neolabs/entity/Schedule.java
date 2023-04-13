@@ -2,7 +2,6 @@ package com.example.neolabs.entity;
 
 import com.example.neolabs.entity.base.BaseEntity;
 import com.example.neolabs.enums.DayOfTheWeek;
-import com.example.neolabs.enums.Room;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -34,7 +33,4 @@ public class Schedule extends BaseEntity {
     @Column(name = "end_time")
     LocalTime endTime;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "room")
-    Room room;
 }

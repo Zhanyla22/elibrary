@@ -1,5 +1,6 @@
 package com.example.neolabs.controller;
 
+import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.StudentDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
@@ -54,14 +55,26 @@ public class StudentController {
         return ResponseEntity.ok(studentService.updateStudentById(studentId, studentDto));
     }
 
-    @PutMapping("/archive")
-    public ResponseEntity<ResponseDto> archiveStudentById(@RequestParam("student_id") Long studentId,
-                                                          @RequestBody ArchiveRequest archiveRequest){
-        return ResponseEntity.ok(studentService.archiveStudentById(studentId, archiveRequest));
+    @Operation(summary = "archive student by id")
+    @PutMapping("/archive/{id}")
+    public void archiveStudentById(@PathVariable Long id, @RequestBody ArchiveDto studentArchiveDto) {
+        studentService.archiveStudentById(id, studentArchiveDto);
     }
 
-    @PutMapping("/unarchive")
-    public ResponseEntity<ResponseDto> unarchiveStudentById(@RequestParam("student_id") Long studentId){
-        return ResponseEntity.ok(studentService.unarchiveStudentById(studentId));
+    @Operation(summary = "blacklist student by id")
+    @PutMapping("/blacklist/{id}")
+    public void blackListStudentById(@PathVariable Long id, @RequestBody ArchiveDto studentBlacklistDto) {
+        studentService.blacklistStudentById(id, studentBlacklistDto);
     }
+
+//    @PutMapping("/archive")
+//    public ResponseEntity<ResponseDto> archiveStudentById(@RequestParam("student_id") Long studentId,
+//                                                          @RequestBody ArchiveRequest archiveRequest){
+//        return ResponseEntity.ok(studentService.archiveStudentById(studentId, archiveRequest));
+//    }
+
+//    @PutMapping("/unarchive")
+//    public ResponseEntity<ResponseDto> unarchiveStudentById(@RequestParam("student_id") Long studentId){
+//        return ResponseEntity.ok(studentService.unarchiveStudentById(studentId));
+//    }
 }

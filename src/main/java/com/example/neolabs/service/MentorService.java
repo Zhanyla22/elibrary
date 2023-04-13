@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface MentorService {
 
-    List<MentorCardDto> getAllMentorCard(Long departmentId, Status status);
+    List<MentorCardDto> getAllMentorCard(Long courseId, Status status);
 
     void addNewMentor(CreateMentorDto createMentorDto);
 
@@ -21,4 +21,5 @@ public interface MentorService {
     void archiveMentorById(Long id, ArchiveDto mentorArchiveDto);
 
     void blackListMentorById(Long id, ArchiveDto mentorArchiveDto);
+
 }

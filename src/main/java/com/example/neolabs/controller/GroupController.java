@@ -1,5 +1,6 @@
 package com.example.neolabs.controller;
 
+import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.GroupDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.service.impl.GroupServiceImpl;
@@ -43,5 +44,17 @@ public class GroupController {
     public ResponseEntity<GroupDto> updateDepartmentById(@PathVariable("groupId") Long groupId,
                                                @Valid @RequestBody GroupDto groupDto){
         return ResponseEntity.ok(groupService.updateGroupById(groupId, groupDto));
+    }
+
+    @Operation(summary = "archive group by id")
+    @PutMapping("/archive/{id}")
+    public void archiveGroupById(@PathVariable Long id, @RequestBody ArchiveDto groupArchiveDto) {
+        groupService.archiveGroupById(id, groupArchiveDto);
+    }
+
+    @Operation(summary = "blacklist groups by id")
+    @PutMapping("/blacklist/{id}")
+    public void blackListGroupById(@PathVariable Long id, @RequestBody ArchiveDto groupBlacklistDto) {
+        groupService.blackListGroupById(id, groupBlacklistDto);
     }
 }

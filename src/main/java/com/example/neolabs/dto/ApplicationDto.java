@@ -59,8 +59,9 @@ public class ApplicationDto {
     @JsonProperty(value = "marketingStrategy")
     MarketingStrategyEnum marketingStrategyEnum;
 
-    @JsonProperty(value = "department", access = JsonProperty.Access.READ_ONLY)
-    DepartmentDto departmentDTO;
+    //TODO: SAKU LOOK
+//    @JsonProperty(value = "department", access = JsonProperty.Access.READ_ONLY)
+//    DepartmentDto departmentDTO;
 
     @NotEmpty
     @NotNull

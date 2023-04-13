@@ -13,8 +13,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CourseMapper {
 
-    private final DepartmentMapper departmentMapper;
-
     public CourseDto entityToDto(Course course) {
         return CourseDto.builder()
                 .id(course.getId())

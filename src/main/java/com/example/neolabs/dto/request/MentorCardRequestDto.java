@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MentorCardRequestDto {
 
-    String department;
+    String course;
 
     Status status;
 }

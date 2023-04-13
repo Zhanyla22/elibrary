@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 @Getter
@@ -44,15 +43,12 @@ public class Mentor extends BaseEntity{
     Status status;
 
     @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "department_id",
+    @JoinColumn(columnDefinition = "course_id",
             referencedColumnName = "id")
-    Department department;
+    Course course;
 
-    @Column(name = "date_archive")
-    LocalDateTime dateArchive;
-
-    @Column(name = "reason_archive")
-    String reasonArchive;
+    @Column(name = "reason_changed_status")
+    String reason;
 }
 
 

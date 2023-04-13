@@ -7,6 +7,7 @@ import com.example.neolabs.dto.request.UpdateUserClientRequest;
 import com.example.neolabs.dto.request.UpdateUserRequest;
 import com.example.neolabs.dto.response.AuthResponse2Role;
 import com.example.neolabs.dto.response.AuthenticationResponse;
+import com.example.neolabs.entity.Group;
 import com.example.neolabs.entity.ResetPassword;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.enums.EntityEnum;
@@ -82,6 +83,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new BaseException("User already exists", HttpStatus.CONFLICT);
         }
     }
+
     //TODO: fix auth status
     @Override
     public AuthResponse2Role auth(AuthenticationRequest authenticationRequest) {
@@ -225,6 +227,30 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new BaseException("User with id " + id + " not found", HttpStatus.BAD_REQUEST));
         return UserMapper.entityToDto(user);
+    }
+
+    @Override
+    public void archiveUserById(Long userId, ArchiveDto archiveUserDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(
+                        () -> new BaseException("group with id " + userId + " not found", HttpStatus.BAD_REQUEST));
+        user.setUpdatedDate(LocalDateTime.now());
+        user.setReason(archiveUserDto.getReason());
+        user.setStatus(Status.ARCHIVED);
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void blacklistUserById(Long userId, ArchiveDto blacklistUserDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(
+                        () -> new BaseException("user with id " + userId + " not found", HttpStatus.BAD_REQUEST));
+        user.setUpdatedDate(LocalDateTime.now());
+        user.setReason(blacklistUserDto.getReason());
+        user.setStatus(Status.BLACK_LIST);
+
+        userRepository.save(user);
     }
 
 

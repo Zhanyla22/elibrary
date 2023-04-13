@@ -55,9 +55,9 @@ public class MentorController extends BaseController {
         mentorService.archiveMentorById(id, mentorArchiveDto);
     }
 
-    @Operation(summary = "archive mentors by id")
+    @Operation(summary = "blacklist mentors by id")
     @PutMapping("/blacklist/{id}")
-    public void blackListMentorById(@PathVariable Long id, @RequestBody ArchiveDto mentorArchiveDto) {
-        mentorService.blackListMentorById(id, mentorArchiveDto);
+    public void blackListMentorById(@PathVariable Long id, @RequestBody ArchiveDto mentorBlacklistDto) {
+        mentorService.blackListMentorById(id, mentorBlacklistDto);
     }
 }

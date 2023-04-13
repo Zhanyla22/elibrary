@@ -20,11 +20,6 @@ public class Course extends BaseEntity {
     @Column(nullable = false)
     String name;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "department_id",
-            referencedColumnName = "id")
-    Department department;
-
     @Column(nullable = false)
     Double cost;
 

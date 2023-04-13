@@ -5,7 +5,6 @@ import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.entity.Application;
 import com.example.neolabs.entity.Group;
 import com.example.neolabs.entity.Student;
-import com.example.neolabs.service.impl.DepartmentServiceImpl;
 import com.example.neolabs.service.impl.GroupServiceImpl;
 import com.example.neolabs.util.DateUtil;
 import com.example.neolabs.util.StatusUtil;
@@ -22,9 +21,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ApplicationMapper {
 
-    final DepartmentMapper departmentMapper;
+    //TODO:SAKU LOOK
+//    final DepartmentMapper departmentMapper;
     final GroupServiceImpl groupService;
-    final DepartmentServiceImpl departmentService;
+    //TODO:SAKU LOOK
+//    final DepartmentServiceImpl departmentService;
 
     public ApplicationDto entityToDto(Application application) {
         return ApplicationDto.builder()
@@ -45,8 +46,9 @@ public class ApplicationMapper {
                 .isArchived(application.getIsArchived())
                 .isUrgent(DateUtil.findDifference(LocalDateTime.now(),
                         application.getApplicationStatusUpdateDate(), ChronoUnit.SECONDS) > 86400)
-                .departmentId(application.getDepartment().getId())
-                .departmentDTO(departmentMapper.entityToDto(application.getDepartment()))
+                //TODO:SAKU LOOK
+//                .departmentId(application.getDepartment().getId())
+//                .departmentDTO(departmentMapper.entityToDto(application.getDepartment()))
                 .reason(application.getReason())
                 .phoneNumber(application.getPhoneNumber())
                 .hasLaptop(application.getHasLaptop())
@@ -63,7 +65,8 @@ public class ApplicationMapper {
                 .gender(applicationDto.getGender())
                 .applicationStatus(applicationDto.getApplicationStatusInitialNum() != null ?
                         StatusUtil.getApplicationStatus(applicationDto.getApplicationStatusInitialNum()) : null)
-                .department(departmentService.getDepartmentEntityById(applicationDto.getDepartmentId()))
+                //TODO: SAKU LOOK
+//                .department(departmentService.getDepartmentEntityById(applicationDto.getDepartmentId()))
                 .hasLaptop(applicationDto.getHasLaptop())
                 .marketingStrategyEnum(applicationDto.getMarketingStrategyEnum())
                 .phoneNumber(applicationDto.getPhoneNumber())

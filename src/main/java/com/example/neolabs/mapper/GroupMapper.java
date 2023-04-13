@@ -1,6 +1,7 @@
 package com.example.neolabs.mapper;
 
 import com.example.neolabs.dto.GroupDto;
+import com.example.neolabs.dto.MentorDto;
 import com.example.neolabs.entity.Group;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,8 @@ public class GroupMapper {
                 .id(group.getId())
                 .course(courseMapper.entityToDto(group.getCourse()))
                 .maxCapacity(group.getMaxCapacity())
+                //TODO: SAKU LOOK added mentor's info
+                .mentor(MentorMapper.mentorEntityToMentorCardDto(group.getMentor()))
                 .startDate(group.getStartDate())
                 .endDate(group.getEndDate())
                 .status(group.getStatus())

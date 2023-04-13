@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -49,4 +50,7 @@ public class Group extends BaseEntity {
 
     @ManyToMany(mappedBy = "groups")
     Set<Student> students;
+
+    @Column(name = "reason_changed_status")
+    String reason;
 }

@@ -1,10 +1,12 @@
 package com.example.neolabs.service.impl;
 
+import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.GroupDto;
 import com.example.neolabs.dto.ResponseDto;
-import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.entity.Group;
 import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.enums.Status;
+import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.GroupMapper;
 import com.example.neolabs.repository.GroupRepository;
@@ -12,8 +14,10 @@ import com.example.neolabs.service.GroupService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -48,13 +52,27 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ResponseDto archiveGroupById(Long groupId, ArchiveRequest archiveRequest) {
-        return null;
+    public void archiveGroupById(Long groupId, ArchiveDto groupArchiveDto) {
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(
+                        () -> new BaseException("group with id " + groupId + " not found", HttpStatus.BAD_REQUEST));
+        group.setUpdatedDate(LocalDateTime.now());
+        group.setReason(groupArchiveDto.getReason());
+        group.setStatus(Status.ARCHIVED);
+
+        groupRepository.save(group);
     }
 
     @Override
-    public ResponseDto unarchiveGroupById(Long groupId) {
-        return null;
+    public void blackListGroupById(Long groupId, ArchiveDto groupBlacklistDto) {
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(
+                        () -> new BaseException("group with id " + groupId + " not found", HttpStatus.BAD_REQUEST));
+        group.setUpdatedDate(LocalDateTime.now());
+        group.setReason(groupBlacklistDto.getReason());
+        group.setStatus(Status.BLACK_LIST);
+
+        groupRepository.save(group);
     }
 
     public Group getGroupEntityById(Long groupId) {

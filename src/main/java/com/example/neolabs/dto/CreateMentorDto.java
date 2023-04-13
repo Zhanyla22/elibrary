@@ -20,5 +20,5 @@ public class CreateMentorDto {
 
     String phoneNumber;
 
-    String departmentName;
+    String courseName;
 }

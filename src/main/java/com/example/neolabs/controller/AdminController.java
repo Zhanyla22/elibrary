@@ -1,13 +1,12 @@
 package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
+import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.UserDto;
 import com.example.neolabs.dto.request.RegistrationRequest;
 import com.example.neolabs.dto.request.UpdateUserRequest;
 import com.example.neolabs.enums.Status;
-import com.example.neolabs.service.CsvExportService;
-import com.example.neolabs.service.UserService;
 import com.example.neolabs.service.impl.CsvExportServiceImpl;
 import com.example.neolabs.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -40,7 +39,7 @@ public class AdminController extends BaseController {
 
     @Operation(summary = "Регистрация нового пользователя   || Саку")
     @PostMapping("/registration")
-    public ResponseEntity<ResponseDto> emergencyRegistration(@RequestBody RegistrationRequest registrationRequest){
+    public ResponseEntity<ResponseDto> emergencyRegistration(@RequestBody RegistrationRequest registrationRequest) {
         return constructSuccessResponse(userService.registration(registrationRequest));
     }
 
@@ -53,10 +52,11 @@ public class AdminController extends BaseController {
 
     @Operation(summary = "обновление данных пользователя - для админов - есть и роль")
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseDto> updateProfilePageUser(@PathVariable Long id,@RequestBody UpdateUserRequest updateUserRequest) {
-        userService.updateProfilePageWithRole(id,updateUserRequest);
+    public ResponseEntity<ResponseDto> updateProfilePageUser(@PathVariable Long id, @RequestBody UpdateUserRequest updateUserRequest) {
+        userService.updateProfilePageWithRole(id, updateUserRequest);
         return constructSuccessResponse("profile info successfully updated");
     }
+
     // TODO: Conversation with Saku
     // why is it divided by status? why is it path variable? and what is this naming "all-user"!? sry, ne uderzhalsya :)
     // 1. Because if I will create endpoint to each status - it will be duplicating(SOLID нарушается) and we have bunch of enum Status
@@ -75,7 +75,7 @@ public class AdminController extends BaseController {
     // TODO: 25.03.2023 its Sakubek's code (emergency)
     @Operation(summary = "Получение всех пользователей   || Саку")
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getAllUsers(){
+    public ResponseEntity<List<UserDto>> getAllUsers() {
 
         return ResponseEntity.ok(userService.getAllUsers());
     }
@@ -84,6 +84,18 @@ public class AdminController extends BaseController {
     @Operation(summary = "получение 1го пользователя по айди")
     @GetMapping("users/{id}")
     public ResponseEntity<ResponseDto> getUserById(@PathVariable Long id) {
-        return  constructSuccessResponse(userService.getUserById(id));
+        return constructSuccessResponse(userService.getUserById(id));
+    }
+
+    @Operation(summary = "archive user by id")
+    @PutMapping("/archive/{id}")
+    public void archiveMentorById(@PathVariable Long id, @RequestBody ArchiveDto userArchiveDto) {
+        userService.archiveUserById(id, userArchiveDto);
+    }
+
+    @Operation(summary = "blacklist user by id")
+    @PutMapping("/blacklist/{id}")
+    public void blackListUserById(@PathVariable Long id, @RequestBody ArchiveDto userBlacklistDto) {
+        userService.blacklistUserById(id, userBlacklistDto);
     }
 }
