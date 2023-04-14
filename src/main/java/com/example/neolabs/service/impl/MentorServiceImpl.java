@@ -36,13 +36,6 @@ public class MentorServiceImpl implements MentorService {
 
     @Override
     public List<MentorCardDto> getAllMentorCards(Long courseId, Status status) {
-//        Course course = courseService.getCourseEntityById(courseId);
-//        List<Mentor> mentors = mentorRepository.findAllByCourseAndStatus(course, status);
-//        List<MentorCardDto> mentorCardDtos = new ArrayList<>();
-//
-//        mentors.forEach(x -> mentorCardDtos.add(MentorMapper.mentorEntityToMentorCardDto(x)));
-//
-//        return mentorCardDtos;
         ExampleMatcher exampleMatcher = getExampleMatcherForCards();
         Mentor probe = Mentor.builder()
                 .status(status)
@@ -71,10 +64,7 @@ public class MentorServiceImpl implements MentorService {
 
     @Override
     public void updateMentorById(UpdateMentorDto updateMentorDto, Long id) {
-        Mentor mentor = mentorRepository.findById(id)
-                .orElseThrow(
-                        () -> new BaseException("mentor with id " + id + " not found ", HttpStatus.BAD_REQUEST)
-                ); // TODO: 14.04.2023 wouldnt it be better to use new function getMentorEntityById like i made as a draft in 2 functions below? 
+        Mentor mentor = getMentorEntityById(id);
         mentor.setEmail(updateMentorDto.getEmail());
         mentor.setFirstName(updateMentorDto.getFirstName());
         mentor.setLastName(updateMentorDto.getLastName());
@@ -89,7 +79,7 @@ public class MentorServiceImpl implements MentorService {
 
     @Override
     public void archiveMentorById(Long mentorId, ArchiveDto mentorArchiveDto) {
-        Mentor mentor = getMentorEntityById(mentorId);// TODO: 14.04.2023 here 
+        Mentor mentor = getMentorEntityById(mentorId);
         mentor.setUpdatedDate(LocalDateTime.now());
         mentor.setReason(mentorArchiveDto.getReason());
         mentor.setStatus(Status.ARCHIVED);
@@ -99,7 +89,7 @@ public class MentorServiceImpl implements MentorService {
 
     @Override
     public void blackListMentorById(Long mentorId, ArchiveDto mentorBlacklistDto) {
-        Mentor mentor = getMentorEntityById(mentorId);// TODO: 14.04.2023 and here 
+        Mentor mentor = getMentorEntityById(mentorId);
         mentor.setUpdatedDate(LocalDateTime.now());
         mentor.setReason(mentorBlacklistDto.getReason());
         mentor.setStatus(Status.BLACK_LIST);

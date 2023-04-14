@@ -25,9 +25,9 @@ public class MentorController extends BaseController {
 
     @Operation(summary = "get all mentors cards / получение всех карточек менторов")
     @GetMapping("/all-cards")
-    public ResponseEntity<ResponseDto> getAllMentorCard(@RequestParam("departmentId") Optional<Long> departmentId,
+    public ResponseEntity<ResponseDto> getAllMentorCard(@RequestParam("courseId") Optional<Long> courseId,
                                                         @RequestParam("status") Optional<Status> status) {
-        return constructSuccessResponse(mentorService.getAllMentorCards(departmentId.orElse(null), status.orElse(null)));
+        return constructSuccessResponse(mentorService.getAllMentorCards(courseId.orElse(null), status.orElse(null)));
     }
 
     @Operation(summary = "add new mentor")

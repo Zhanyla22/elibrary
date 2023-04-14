@@ -37,9 +37,9 @@ public class MentorMapper {
         mentor.setFirstName(createMentorRequest.getFirstName());
         mentor.setLastName(createMentorRequest.getLastName());
         mentor.setPhoneNumber(createMentorRequest.getPhoneNumber());
-        mentor.setCourse(courseRepository.findCourseByName(createMentorRequest.getCourseName())
+        mentor.setCourse(courseRepository.findById(createMentorRequest.getCourseId())
                 .orElseThrow(
-                        () -> new BaseException("course " + createMentorRequest.getCourseName() + " not found", HttpStatus.BAD_REQUEST)));
+                        () -> new BaseException("course with id" + createMentorRequest.getCourseId()+ " not found", HttpStatus.BAD_REQUEST)));
         mentor.setStatus(Status.ACTIVE);
         return mentor;
     }
