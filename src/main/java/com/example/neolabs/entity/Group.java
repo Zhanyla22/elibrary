@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -44,9 +45,12 @@ public class Group extends BaseEntity {
     @Enumerated(EnumType.STRING)
     Status status;
 
-    @Column(name = "is_archived")
-    Boolean isArchived;
+    @Column(name = "image_url")
+    String imageUrl;
 
     @ManyToMany(mappedBy = "groups")
     Set<Student> students;
+
+    @Column(name = "reason_changed_status")
+    String reason;
 }

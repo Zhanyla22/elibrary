@@ -1,15 +1,16 @@
 package com.example.neolabs.service;
 
-import com.example.neolabs.dto.request.UpdateUserClientRequest;
-import com.example.neolabs.dto.request.UpdateUserRequest;
+import com.example.neolabs.dto.request.update.UpdateUserClientRequest;
+import com.example.neolabs.dto.request.update.UpdateUserRequest;
 import com.example.neolabs.dto.*;
 import com.example.neolabs.dto.response.AuthResponse2Role;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.dto.request.AuthenticationRequest;
 import com.example.neolabs.dto.request.RegistrationRequest;
 import com.example.neolabs.dto.response.AuthenticationResponse;
-import com.example.neolabs.dto.response.RegistrationResponse;
+import com.example.neolabs.enums.Role;
 import com.example.neolabs.enums.Status;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
@@ -42,10 +43,16 @@ public interface UserService {
 
     void deleteUserById(Long id);
 
-    List<UserDto> getAllUserByStatus(Status status);
+    List<UserDto> search(String email, String firstName, String lastName, String firstOrLastName, String phoneNumber);
 
-    List<UserDto> getAllUsers();
+    List<UserDto> filter(Status status, Role role);
+
+    List<UserDto> getAllUsers(PageRequest pageRequest);
 
     UserDto getUserById(Long id);
+
+    void archiveUserById(Long userId, ArchiveDto archiveUserDto);
+
+    void blacklistUserById(Long userId, ArchiveDto blacklistUserDto);
 
 }

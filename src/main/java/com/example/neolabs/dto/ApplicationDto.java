@@ -8,9 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 
 @Data
@@ -58,9 +56,6 @@ public class ApplicationDto {
     @NotNull
     @JsonProperty(value = "marketingStrategy")
     MarketingStrategyEnum marketingStrategyEnum;
-
-    @JsonProperty(value = "department", access = JsonProperty.Access.READ_ONLY)
-    DepartmentDto departmentDTO;
 
     @NotEmpty
     @NotNull

@@ -3,7 +3,7 @@ package com.example.neolabs.controller;
 import com.example.neolabs.controller.base.BaseController;
 import com.example.neolabs.dto.*;
 import com.example.neolabs.dto.request.AuthenticationRequest;
-import com.example.neolabs.dto.request.UpdateUserClientRequest;
+import com.example.neolabs.dto.request.update.UpdateUserClientRequest;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;

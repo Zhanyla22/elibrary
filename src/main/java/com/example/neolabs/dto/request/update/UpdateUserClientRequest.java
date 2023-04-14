@@ -1,6 +1,6 @@
-package com.example.neolabs.dto;
+package com.example.neolabs.dto.request.update;
 
-
+import com.example.neolabs.enums.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,15 +10,13 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CreateMentorDto {
+public class UpdateUserClientRequest {
 
     String email;
+
+    String phoneNumber;
 
     String firstName;
 
     String lastName;
-
-    String phoneNumber;
-
-    String departmentName;
 }

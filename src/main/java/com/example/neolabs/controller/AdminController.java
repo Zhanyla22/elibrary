@@ -1,25 +1,27 @@
 package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
+import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.UserDto;
 import com.example.neolabs.dto.request.RegistrationRequest;
-import com.example.neolabs.dto.request.UpdateUserRequest;
+import com.example.neolabs.dto.request.update.UpdateUserRequest;
+import com.example.neolabs.enums.Role;
 import com.example.neolabs.enums.Status;
-import com.example.neolabs.service.CsvExportService;
-import com.example.neolabs.service.UserService;
 import com.example.neolabs.service.impl.CsvExportServiceImpl;
 import com.example.neolabs.service.impl.UserServiceImpl;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,7 +42,7 @@ public class AdminController extends BaseController {
 
     @Operation(summary = "Регистрация нового пользователя   || Саку")
     @PostMapping("/registration")
-    public ResponseEntity<ResponseDto> emergencyRegistration(@RequestBody RegistrationRequest registrationRequest){
+    public ResponseEntity<ResponseDto> emergencyRegistration(@RequestBody RegistrationRequest registrationRequest) {
         return constructSuccessResponse(userService.registration(registrationRequest));
     }
 
@@ -53,37 +55,54 @@ public class AdminController extends BaseController {
 
     @Operation(summary = "обновление данных пользователя - для админов - есть и роль")
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseDto> updateProfilePageUser(@PathVariable Long id,@RequestBody UpdateUserRequest updateUserRequest) {
-        userService.updateProfilePageWithRole(id,updateUserRequest);
+    public ResponseEntity<ResponseDto> updateProfilePageUser(@PathVariable Long id, @RequestBody UpdateUserRequest updateUserRequest) {
+        userService.updateProfilePageWithRole(id, updateUserRequest);
         return constructSuccessResponse("profile info successfully updated");
     }
-    // TODO: Conversation with Saku
-    // why is it divided by status? why is it path variable? and what is this naming "all-user"!? sry, ne uderzhalsya :)
-    // 1. Because if I will create endpoint to each status - it will be duplicating(SOLID нарушается) and we have bunch of enum Status
-    // 2. I just wanted to practice to put in pathvariable something new instead of id
-    // 3. I can make it /all/{status}/user, no problem
-    // And I think this endpoint make sense, instead of writing endpoint to each status we can make it in one
-    // (this endpoint for filtration)
-    @Hidden
-    @Operation(summary = "получение всех пользователей по статусу")
-    @GetMapping("/all-users/{status}")
-    public ResponseEntity<ResponseDto> getAllUserByStatus(@PathVariable Status status) {
-        userService.getAllUserByStatus(status);
-        return constructSuccessResponse(userService.getAllUserByStatus(status));
+
+    @GetMapping("/users/filter")
+    public ResponseEntity<List<UserDto>> filterUsers(@RequestParam("status") Optional<Status> status,
+                                                     @RequestParam("role") Optional<Role> role){
+        return ResponseEntity.ok(userService.filter(status.orElse(null), role.orElse(null)));
     }
 
-    // TODO: 25.03.2023 its Sakubek's code (emergency)
-    @Operation(summary = "Получение всех пользователей   || Саку")
-    @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getAllUsers(){
+    @GetMapping("/users/search")
+    public ResponseEntity<List<UserDto>> searchUsers(@RequestParam("email") Optional<String> email,
+                                                     @RequestParam("firstName") Optional<String> firstName,
+                                                     @RequestParam("lastName") Optional<String> lastName,
+                                                     @RequestParam("firstOrLastName") Optional<String> firstOrLastName,
+                                                     @RequestParam("phoneNumber") Optional<String> phoneNumber){
+        return ResponseEntity.ok(userService.search(email.orElse(null), firstName.orElse(null),
+                lastName.orElse(null), firstOrLastName.orElse(null), phoneNumber.orElse(null)));
+    }
 
-        return ResponseEntity.ok(userService.getAllUsers());
+    @Operation(summary = "Получение всех пользователей")
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDto>> getAllUsers(@RequestParam("sortBy") Optional<String> sortBy,
+                                                     @RequestParam("size") Optional<Integer> size,
+                                                     @RequestParam("page") Optional<Integer> page) {
+
+        return ResponseEntity.ok(userService.getAllUsers(
+                PageRequest.of(page.orElse(0), size.orElse(20), Sort.by(sortBy.orElse("id")))
+        ));
     }
 
 
     @Operation(summary = "получение 1го пользователя по айди")
     @GetMapping("users/{id}")
     public ResponseEntity<ResponseDto> getUserById(@PathVariable Long id) {
-        return  constructSuccessResponse(userService.getUserById(id));
+        return constructSuccessResponse(userService.getUserById(id));
+    }
+
+    @Operation(summary = "archive user by id")
+    @PutMapping("/archive/{id}")
+    public void archiveMentorById(@PathVariable Long id, @RequestBody ArchiveDto userArchiveDto) {
+        userService.archiveUserById(id, userArchiveDto);
+    }
+
+    @Operation(summary = "blacklist user by id")
+    @PutMapping("/blacklist/{id}")
+    public void blackListUserById(@PathVariable Long id, @RequestBody ArchiveDto userBlacklistDto) {
+        userService.blacklistUserById(id, userBlacklistDto);
     }
 }

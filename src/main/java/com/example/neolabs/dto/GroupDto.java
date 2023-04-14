@@ -2,6 +2,7 @@ package com.example.neolabs.dto;
 
 import com.example.neolabs.enums.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,27 +17,30 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GroupDto {
 
-    @JsonProperty(value = "id")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long id;
 
-    @JsonProperty(value = "course")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    String name;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     CourseDto course;
 
-    @JsonProperty(value = "maxCapacity")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Integer maxCapacity;
 
-    @JsonProperty(value = "mentor")
-    MentorDto mentor;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    MentorCardDto mentor;
 
-    @JsonProperty(value = "startDate")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     LocalDate startDate;
 
-    @JsonProperty(value = "endDate")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    String imageUrl;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     LocalDate endDate;
 
-    @JsonProperty(value = "status")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Status status;
-
-    @JsonProperty(value = "isArchived")
-    Boolean isArchived;
 }

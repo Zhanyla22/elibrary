@@ -14,16 +14,18 @@ public interface OperationService {
     void recordCourseOperation(Course course, OperationType operationType);
     void recordUserOperation(User user, OperationType operationType);
     void recordMentorOperation(Mentor mentor, OperationType operationType);
-    void recordDepartmentOperation(Department department, OperationType operationType);
+    //TODO: SAKU LOOK
+//    void recordDepartmentOperation(Department department, OperationType operationType);
     void recordPaymentOperation(Payment payment, OperationType operationType);
     void recordEnrollmentOperation(Student student, Long groupId);
 
-    List<OperationDto> getAllOperations(boolean includeApplications,
-                                        boolean includeStudents,
-                                        boolean includeGroups,
-                                        boolean includeCourses,
-                                        boolean includeUsers,
-                                        boolean includeMentors,
-                                        boolean includeDepartments,
-                                        boolean includePayments);
+    //TODO:SAKU LOOK
+//    List<OperationDto> getAllOperations(boolean includeApplications,
+//                                        boolean includeStudents,
+//                                        boolean includeGroups,
+//                                        boolean includeCourses,
+//                                        boolean includeUsers,
+//                                        boolean includeMentors,
+//                                        boolean includeDepartments,
+//                                        boolean includePayments);
 }

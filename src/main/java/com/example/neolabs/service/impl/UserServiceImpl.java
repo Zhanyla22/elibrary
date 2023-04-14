@@ -3,8 +3,8 @@ package com.example.neolabs.service.impl;
 import com.example.neolabs.dto.*;
 import com.example.neolabs.dto.request.AuthenticationRequest;
 import com.example.neolabs.dto.request.RegistrationRequest;
-import com.example.neolabs.dto.request.UpdateUserClientRequest;
-import com.example.neolabs.dto.request.UpdateUserRequest;
+import com.example.neolabs.dto.request.update.UpdateUserClientRequest;
+import com.example.neolabs.dto.request.update.UpdateUserRequest;
 import com.example.neolabs.dto.response.AuthResponse2Role;
 import com.example.neolabs.dto.response.AuthenticationResponse;
 import com.example.neolabs.entity.ResetPassword;
@@ -26,6 +26,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,7 +44,6 @@ import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,6 +84,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new BaseException("User already exists", HttpStatus.CONFLICT);
         }
     }
+
     //TODO: fix auth status
     @Override
     public AuthResponse2Role auth(AuthenticationRequest authenticationRequest) {
@@ -199,32 +202,72 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void deleteUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new BaseException("user doesnt exist", HttpStatus.BAD_REQUEST));
+        User user = getUserEntityById(id);
         user.setStatus(Status.DELETED);
         user.setDeletedDate(LocalDateTime.now());
-
         userRepository.save(user);
     }
 
     @Override
-    public List<UserDto> getAllUserByStatus(Status status) {
-        List<User> allUserByStatus = userRepository.findAllByStatus(status);
-        List<UserDto> userDtoList = new ArrayList<>();
-        for (User u : allUserByStatus) {
-            userDtoList.add(UserMapper.entityToDto(u));
+    public List<UserDto> search(String email, String firstName, String lastName, String firstOrLastName,
+                                String phoneNumber) {
+        ExampleMatcher exampleMatcher = getSearchExampleMatcher();
+        if (firstOrLastName != null) {
+            firstName = firstOrLastName;
+            lastName = firstOrLastName;
         }
-        return userDtoList;
+        User probe = User.builder()
+                .email(email)
+                .firstName(firstName)
+                .lastName(lastName)
+                .phoneNumber(phoneNumber)
+                .build();
+        return UserMapper.entityListToDtoList(userRepository.findAll(Example.of(probe, exampleMatcher)));
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
-        return UserMapper.entityListToDtoList(userRepository.findAll());
+    public List<UserDto> filter(Status status, Role role) {
+        ExampleMatcher exampleMatcher = getFilterExampleMatcher();
+        User probe = User.builder()
+                .status(status)
+                .role(role)
+                .build();
+        return UserMapper.entityListToDtoList(userRepository.findAll(Example.of(probe, exampleMatcher)));
+    }
+
+    @Override
+    public List<UserDto> getAllUsers(PageRequest pageRequest) {
+        return UserMapper.entityListToDtoList(userRepository.findAll(pageRequest).stream().toList());
     }
 
     @Override
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new BaseException("User with id " + id + " not found", HttpStatus.BAD_REQUEST));
         return UserMapper.entityToDto(user);
+    }
+
+    @Override
+    public void archiveUserById(Long userId, ArchiveDto archiveUserDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(
+                        () -> new BaseException("group with id " + userId + " not found", HttpStatus.BAD_REQUEST));
+        user.setUpdatedDate(LocalDateTime.now());
+        user.setReason(archiveUserDto.getReason());
+        user.setStatus(Status.ARCHIVED);
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void blacklistUserById(Long userId, ArchiveDto blacklistUserDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(
+                        () -> new BaseException("user with id " + userId + " not found", HttpStatus.BAD_REQUEST));
+        user.setUpdatedDate(LocalDateTime.now());
+        user.setReason(blacklistUserDto.getReason());
+        user.setStatus(Status.BLACK_LIST);
+
+        userRepository.save(user);
     }
 
 
@@ -256,5 +299,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User getCurrentUserEntity() {
         return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new BaseException("User not found", HttpStatus.NOT_FOUND));
+    }
+
+    private ExampleMatcher getFilterExampleMatcher(){
+        return ExampleMatcher.matchingAll()
+                .withMatcher("status", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withMatcher("role", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withIgnorePaths("id");
+    }
+
+    private ExampleMatcher getSearchExampleMatcher(){
+        return ExampleMatcher.matchingAny()
+                .withMatcher("firstName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("lastName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("phoneNumber", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withIgnorePaths("id");
     }
 }

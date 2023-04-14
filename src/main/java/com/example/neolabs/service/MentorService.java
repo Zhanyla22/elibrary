@@ -1,7 +1,7 @@
 package com.example.neolabs.service;
 
 import com.example.neolabs.dto.ArchiveDto;
-import com.example.neolabs.dto.CreateMentorDto;
+import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.dto.MentorCardDto;
 import com.example.neolabs.dto.UpdateMentorDto;
 import com.example.neolabs.enums.Status;
@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface MentorService {
 
-    List<MentorCardDto> getAllMentorCard(Long departmentId, Status status);
+    List<MentorCardDto> getAllMentorCard(Long courseId, Status status);
 
-    void addNewMentor(CreateMentorDto createMentorDto);
+    void addNewMentor(CreateMentorRequest createMentorRequest);
 
     void deleteMentorById(Long id);
 
@@ -21,4 +21,5 @@ public interface MentorService {
     void archiveMentorById(Long id, ArchiveDto mentorArchiveDto);
 
     void blackListMentorById(Long id, ArchiveDto mentorArchiveDto);
+
 }

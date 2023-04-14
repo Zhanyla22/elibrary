@@ -1,11 +1,11 @@
 package com.example.neolabs.mapper;
 
-import com.example.neolabs.dto.CreateMentorDto;
+import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.dto.MentorCardDto;
 import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
-import com.example.neolabs.repository.DepartmentRepository;
+import com.example.neolabs.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MentorMapper {
 
-    final DepartmentRepository departmentRepository;
+    final CourseRepository courseRepository;
 
     public static MentorCardDto mentorEntityToMentorCardDto(Mentor mentor) {
         MentorCardDto mentorCardDto = new MentorCardDto();
@@ -22,21 +22,21 @@ public class MentorMapper {
         mentorCardDto.setFirstName(mentor.getFirstName());
         mentorCardDto.setLastName(mentor.getLastName());
         mentorCardDto.setImageUrl(mentor.getImageUrl());
-        mentorCardDto.setDepartment(mentor.getDepartment().getName());
-        mentorCardDto.setDateArchive(mentor.getDateArchive().toString());
-        mentorCardDto.setReasonArchive(mentor.getReasonArchive());
+        mentorCardDto.setCourse(mentor.getCourse().getName());
+        mentorCardDto.setDateArchive(mentor.getUpdatedDate());
+        mentorCardDto.setReasonArchive(mentor.getReason());
         return mentorCardDto;
     }
 
-    public Mentor createMentorDtoToMentorEntity(CreateMentorDto createMentorDto) {
+    public Mentor createMentorDtoToMentorEntity(CreateMentorRequest createMentorRequest) {
         Mentor mentor = new Mentor();
-        mentor.setEmail(createMentorDto.getEmail());
-        mentor.setFirstName(createMentorDto.getFirstName());
-        mentor.setLastName(createMentorDto.getLastName());
-        mentor.setPhoneNumber(createMentorDto.getPhoneNumber());
-        mentor.setDepartment(departmentRepository.getDepartmentByName(createMentorDto.getDepartmentName())
+        mentor.setEmail(createMentorRequest.getEmail());
+        mentor.setFirstName(createMentorRequest.getFirstName());
+        mentor.setLastName(createMentorRequest.getLastName());
+        mentor.setPhoneNumber(createMentorRequest.getPhoneNumber());
+        mentor.setCourse(courseRepository.findCourseByName(createMentorRequest.getCourseName())
                 .orElseThrow(
-                        () -> new BaseException("department " + createMentorDto.getDepartmentName() + " not found", HttpStatus.BAD_REQUEST)));
+                        () -> new BaseException("course " + createMentorRequest.getCourseName() + " not found", HttpStatus.BAD_REQUEST)));
         mentor.setStatus(Status.ACTIVE);
         return mentor;
     }

@@ -1,6 +1,6 @@
 package com.example.neolabs.entity.operation;
 
-import com.example.neolabs.entity.Department;
+
 import com.example.neolabs.entity.Student;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.entity.base.BaseEntity;
@@ -8,8 +8,6 @@ import com.example.neolabs.enums.OperationType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

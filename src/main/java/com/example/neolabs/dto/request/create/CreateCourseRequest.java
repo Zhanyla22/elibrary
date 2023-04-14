@@ -1,12 +1,9 @@
-package com.example.neolabs.dto;
+package com.example.neolabs.dto.request.create;
 
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 
 @Getter
 @Setter
@@ -14,13 +11,10 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CourseDto {
+public class CreateCourseRequest {
 
-    @JsonProperty(value = "id", access = JsonProperty.Access.READ_ONLY)
-    Long id;
-
-    @NotBlank(message = "Name can't be empty or null")
-    @JsonProperty(value = "name")
+    @NotBlank
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String name;
 
     @NotBlank(message = "Cost can't be empty or null")

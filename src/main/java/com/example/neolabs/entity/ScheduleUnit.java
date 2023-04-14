@@ -1,7 +1,6 @@
 package com.example.neolabs.entity;
 
 import com.example.neolabs.entity.base.BaseEntity;
-import com.example.neolabs.enums.Room;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -29,7 +28,4 @@ public class ScheduleUnit extends BaseEntity {
     @Column(name = "end_timestamp")
     LocalTime endTimestamp;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "room")
-    Room room;
 }

@@ -4,6 +4,7 @@ import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
+import com.example.neolabs.dto.request.create.CreateApplicationRequest;
 import com.example.neolabs.entity.Application;
 import org.springframework.data.domain.PageRequest;
 
@@ -17,9 +18,9 @@ public interface ApplicationService {
 
     ResponseDto updateApplicationStatus(Long applicationId, Integer newStatus);
 
-    ResponseDto updateApplicationById(Long applicationId, ApplicationDto applicationDto);
+    ResponseDto updateApplicationById(Long applicationId, CreateApplicationRequest createApplicationRequest);
 
-    ResponseDto insertApplication(ApplicationDto applicationDto);
+    ResponseDto insertApplication(CreateApplicationRequest createApplicationRequest);
 
     ResponseDto deleteApplicationById(Long applicationId);
 

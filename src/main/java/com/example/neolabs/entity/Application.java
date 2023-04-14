@@ -41,14 +41,9 @@ public class Application extends BaseEntity {
     Boolean hasLaptop;
 
     @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "department_id",
+    @JoinColumn(columnDefinition = "course_id",
             referencedColumnName = "id")
-    Department department;
-
-    @ManyToOne
-    @JoinColumn(columnDefinition = "marketing_strategy_id",
-            referencedColumnName = "id")
-    MarketingStrategy marketingStrategy;
+    Course course;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "market_strat")

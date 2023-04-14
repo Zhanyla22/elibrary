@@ -2,7 +2,7 @@ package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
 import com.example.neolabs.dto.ArchiveDto;
-import com.example.neolabs.dto.CreateMentorDto;
+import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.UpdateMentorDto;
 import com.example.neolabs.enums.Status;
@@ -30,8 +30,8 @@ public class MentorController extends BaseController {
 
     @Operation(summary = "add new mentor")
     @PostMapping("/add")
-    public ResponseEntity<ResponseDto> addNewMentor(@RequestBody CreateMentorDto createMentorDto) {
-        mentorService.addNewMentor(createMentorDto);
+    public ResponseEntity<ResponseDto> addNewMentor(@RequestBody CreateMentorRequest createMentorRequest) {
+        mentorService.addNewMentor(createMentorRequest);
         return constructSuccessResponse("created");
     }
 
@@ -55,9 +55,9 @@ public class MentorController extends BaseController {
         mentorService.archiveMentorById(id, mentorArchiveDto);
     }
 
-    @Operation(summary = "archive mentors by id")
+    @Operation(summary = "blacklist mentors by id")
     @PutMapping("/blacklist/{id}")
-    public void blackListMentorById(@PathVariable Long id, @RequestBody ArchiveDto mentorArchiveDto) {
-        mentorService.blackListMentorById(id, mentorArchiveDto);
+    public void blackListMentorById(@PathVariable Long id, @RequestBody ArchiveDto mentorBlacklistDto) {
+        mentorService.blackListMentorById(id, mentorBlacklistDto);
     }
 }

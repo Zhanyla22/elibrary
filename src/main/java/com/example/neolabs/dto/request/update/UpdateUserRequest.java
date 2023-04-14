@@ -1,4 +1,4 @@
-package com.example.neolabs.dto.request;
+package com.example.neolabs.dto.request.update;
 
 import com.example.neolabs.enums.Role;
 import lombok.*;
@@ -10,9 +10,11 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateUserClientRequest {
+public class UpdateUserRequest {
 
     String email;
+
+    Role role;
 
     String phoneNumber;
 

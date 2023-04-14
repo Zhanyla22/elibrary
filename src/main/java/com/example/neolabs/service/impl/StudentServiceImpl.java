@@ -1,15 +1,15 @@
 package com.example.neolabs.service.impl;
 
+import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.StudentDto;
-import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
+import com.example.neolabs.dto.request.create.CreateStudentRequest;
+import com.example.neolabs.dto.request.update.UpdateStudentRequest;
 import com.example.neolabs.entity.Application;
 import com.example.neolabs.entity.Group;
 import com.example.neolabs.entity.Student;
-import com.example.neolabs.enums.EntityEnum;
-import com.example.neolabs.enums.OperationType;
-import com.example.neolabs.enums.ResultCode;
+import com.example.neolabs.enums.*;
 import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.ApplicationMapper;
@@ -19,11 +19,15 @@ import com.example.neolabs.service.StudentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,9 +42,12 @@ public class StudentServiceImpl implements StudentService {
     final ApplicationMapper applicationMapper;
 
     @Override
-    public ResponseDto insertStudent(StudentDto studentDto) {
-        Student student = studentMapper.dtoToEntity(studentDto);
-        student.getGroups().add(groupService.getGroupEntityById(studentDto.getEnrollmentGroupId()));
+    public ResponseDto insertStudent(CreateStudentRequest createStudentRequest) {
+        Student student = studentMapper.createRequestToEntity(createStudentRequest);
+        if (student.getGroups() == null){
+            student.setGroups(new ArrayList<>());
+        }
+        student.getGroups().add(groupService.getGroupEntityById(createStudentRequest.getEnrollmentGroupId()));
         operationService.recordStudentOperation(studentRepository.save(student), OperationType.CREATE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
@@ -55,14 +62,41 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDto> getAllStudents(Boolean isArchived, PageRequest pageRequest) {
+    public List<StudentDto> getAllStudents(Status status, PageRequest pageRequest) {
         Page<Student> students;
-        if (isArchived != null) {
-            students = studentRepository.findAllByIsArchived(isArchived, pageRequest);
+        if (status != null) {
+            students = studentRepository.findAllByStatus(status, pageRequest);
         } else {
             students = studentRepository.findAll(pageRequest);
         }
         return studentMapper.entityListToDtoList(students.stream().toList());
+    }
+
+    @Override
+    public List<StudentDto> filter(Long groupId, Status status) {
+        ExampleMatcher exampleMatcher = getFilterExampleMatcher();
+        Student probe = Student.builder()
+                .status(status)
+                .groups(List.of(groupService.getGroupEntityById(groupId)))
+                .build();
+        return studentMapper.entityListToDtoList(studentRepository.findAll(Example.of(probe, exampleMatcher)));
+    }
+
+    @Override
+    public List<StudentDto> search(String email, String firstName, String lastName, String firstOrLastName,
+                                   String phoneNumber) {
+        ExampleMatcher exampleMatcher = getSearchExampleMatcher();
+        if (firstOrLastName != null) {
+            firstName = firstOrLastName;
+            lastName = firstOrLastName;
+        }
+        Student probe = Student.builder()
+                .email(email)
+                .firstName(firstName)
+                .lastName(lastName)
+                .phoneNumber(phoneNumber)
+                .build();
+        return studentMapper.entityListToDtoList(studentRepository.findAll(Example.of(probe, exampleMatcher)));
     }
 
     @Override
@@ -71,45 +105,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public ResponseDto updateStudentById(Long studentId, StudentDto studentDto) {
-        Student student = studentMapper.dtoToEntity(studentDto);
+    public ResponseDto updateStudentById(Long studentId, UpdateStudentRequest request) {
+        Student student = studentMapper.updateRequestToEntity(request);
         student.setId(studentId);
         operationService.recordStudentOperation(studentRepository.save(student), OperationType.UPDATE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
                 .result("Student with id of " + studentId + " has been successfully updated.")
-                .build();
-    }
-
-    @Override
-    public ResponseDto archiveStudentById(Long studentId, ArchiveRequest archiveRequest) {
-        Student student = getStudentEntityById(studentId);
-        if (student.getIsArchived()) {
-            throw new BaseException("Student is archived already.", HttpStatus.CONFLICT);
-        }
-        student.setIsArchived(true);
-        student.setArchiveReason(archiveRequest.getReason());
-        // FIXME: 29.03.2023 need to add blacklisted here
-        // FIXME: 29.03.2023 but how?
-        operationService.recordStudentOperation(studentRepository.save(student), OperationType.ARCHIVE);
-        return ResponseDto.builder()
-                .resultCode(ResultCode.SUCCESS)
-                .result("Student has been successfully archived.")
-                .build();
-    }
-
-    @Override
-    public ResponseDto unarchiveStudentById(Long studentId) {
-        Student student = getStudentEntityById(studentId);
-        if (!student.getIsArchived()) {
-            throw new BaseException("Student is not archived already.", HttpStatus.CONFLICT);
-        }
-        student.setIsArchived(false);
-        student.setArchiveReason(null);
-        operationService.recordStudentOperation(studentRepository.save(student), OperationType.UNARCHIVE);
-        return ResponseDto.builder()
-                .resultCode(ResultCode.SUCCESS)
-                .result("Student has been successfully unarchived.")
                 .build();
     }
 
@@ -120,6 +122,9 @@ public class StudentServiceImpl implements StudentService {
         if (student.getGroups().contains(group)) {
             throw new BaseException("Student is already enrolled to the group.", HttpStatus.CONFLICT);
         }
+        if (student.getGroups() == null){
+            student.setGroups(new ArrayList<>());
+        }
         student.getGroups().add(group);
         operationService.recordEnrollmentOperation(studentRepository.save(student), groupId);
         return ResponseDto.builder()
@@ -128,9 +133,45 @@ public class StudentServiceImpl implements StudentService {
                 .build();
     }
 
+    @Override
+    public void archiveStudentById(Long studentId, ArchiveDto archiveStudentDto) {
+        Student student = getStudentEntityById(studentId);
+        student.setUpdatedDate(LocalDateTime.now());
+        student.setReason(archiveStudentDto.getReason());
+        student.setStatus(Status.ARCHIVED);
+
+        studentRepository.save(student);
+    }
+
+    @Override
+    public void blacklistStudentById(Long studentId, ArchiveDto blacklistStudentDto) {
+        Student student = getStudentEntityById(studentId);
+        student.setUpdatedDate(LocalDateTime.now());
+        student.setReason(blacklistStudentDto.getReason());
+        student.setStatus(Status.BLACK_LIST);
+
+        studentRepository.save(student);
+    }
+
     public Student getStudentEntityById(Long studentId) {
         return studentRepository.findById(studentId).orElseThrow(() -> {
             throw new EntityNotFoundException(EntityEnum.STUDENT, "id", studentId);
         });
+    }
+
+    private ExampleMatcher getFilterExampleMatcher(){
+        return ExampleMatcher.matchingAll()
+                .withMatcher("status", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withMatcher("group", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withIgnorePaths("id");
+    }
+
+    private ExampleMatcher getSearchExampleMatcher(){
+        return ExampleMatcher.matchingAny()
+                .withMatcher("firstName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("lastName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("phoneNumber", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withIgnorePaths("id");
     }
 }

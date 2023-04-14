@@ -45,11 +45,8 @@ public class Student extends BaseEntity {
             referencedColumnName = "id")
     Application application;
 
-    @Column(name = "is_archived")
-    Boolean isArchived;
-
-    @Column(name = "archive_reason")
-    String archiveReason;
+    @Column(name = "reason")
+    String reason;
 
     @Column(name = "total_debt")
     Integer totalDebt;
