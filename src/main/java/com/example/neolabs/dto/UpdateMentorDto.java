@@ -21,7 +21,7 @@ public class UpdateMentorDto {
 
     String patentNumber;
 
-    String courseName;
+    Long courseId;
 
     Double salary;
 }
