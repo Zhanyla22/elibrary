@@ -15,6 +15,8 @@ import com.example.neolabs.repository.CourseRepository;
 import com.example.neolabs.repository.MentorRepository;
 import com.example.neolabs.service.MentorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +35,20 @@ public class MentorServiceImpl implements MentorService {
     final CourseServiceImpl courseService;
 
     @Override
-    public List<MentorCardDto> getAllMentorCard(Long courseId, Status status) {
-        Course course = courseService.getCourseEntityById(courseId);
-        List<Mentor> mentors = mentorRepository.findAllByCourseAndStatus(course, status);
-        List<MentorCardDto> mentorCardDtos = new ArrayList<>();
-
-        mentors.forEach(x -> mentorCardDtos.add(MentorMapper.mentorEntityToMentorCardDto(x)));
-
-        return mentorCardDtos;
+    public List<MentorCardDto> getAllMentorCards(Long courseId, Status status) {
+//        Course course = courseService.getCourseEntityById(courseId);
+//        List<Mentor> mentors = mentorRepository.findAllByCourseAndStatus(course, status);
+//        List<MentorCardDto> mentorCardDtos = new ArrayList<>();
+//
+//        mentors.forEach(x -> mentorCardDtos.add(MentorMapper.mentorEntityToMentorCardDto(x)));
+//
+//        return mentorCardDtos;
+        ExampleMatcher exampleMatcher = getExampleMatcherForCards();
+        Mentor probe = Mentor.builder()
+                .status(status)
+                .course(courseId != null ? courseService.getCourseEntityById(courseId) : null)
+                .build();
+        return mentorMapper.entityListToCardList(mentorRepository.findAll(Example.of(probe, exampleMatcher)));
     }
 
     @Override
@@ -104,5 +112,12 @@ public class MentorServiceImpl implements MentorService {
                 .orElseThrow(
                         () -> new EntityNotFoundException(EntityEnum.MENTOR, "id", mentorId)
                 );
+    }
+
+    private ExampleMatcher getExampleMatcherForCards(){
+        return ExampleMatcher.matchingAll()
+                .withMatcher("status", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withMatcher("course", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withIgnorePaths("id");
     }
 }

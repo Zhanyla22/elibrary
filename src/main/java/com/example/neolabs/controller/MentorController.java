@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/mentors")
@@ -23,9 +25,9 @@ public class MentorController extends BaseController {
 
     @Operation(summary = "get all mentors cards / получение всех карточек менторов")
     @GetMapping("/all-cards")
-    public ResponseEntity<ResponseDto> getAllMentorCard(@RequestParam("departmentId") Long departmentId,
-                                                        @RequestParam("status") Status status) {
-        return constructSuccessResponse(mentorService.getAllMentorCard(departmentId, status));
+    public ResponseEntity<ResponseDto> getAllMentorCard(@RequestParam("departmentId") Optional<Long> departmentId,
+                                                        @RequestParam("status") Optional<Status> status) {
+        return constructSuccessResponse(mentorService.getAllMentorCards(departmentId.orElse(null), status.orElse(null)));
     }
 
     @Operation(summary = "add new mentor")

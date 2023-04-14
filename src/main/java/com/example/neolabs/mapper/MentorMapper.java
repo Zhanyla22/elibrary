@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class MentorMapper {
@@ -39,6 +42,10 @@ public class MentorMapper {
                         () -> new BaseException("course " + createMentorRequest.getCourseName() + " not found", HttpStatus.BAD_REQUEST)));
         mentor.setStatus(Status.ACTIVE);
         return mentor;
+    }
+
+    public List<MentorCardDto> entityListToCardList(List<Mentor> mentors){
+        return mentors.stream().map(MentorMapper::mentorEntityToMentorCardDto).collect(Collectors.toList());
     }
 
 }

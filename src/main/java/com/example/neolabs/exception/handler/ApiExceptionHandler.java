@@ -24,6 +24,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<ResponseDto> handleRuntimeException(final RuntimeException e) {
+        e.printStackTrace();
         return buildBaseResponseMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
