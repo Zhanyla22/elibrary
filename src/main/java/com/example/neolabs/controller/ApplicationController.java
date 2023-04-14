@@ -5,6 +5,7 @@ import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
+import com.example.neolabs.dto.request.create.CreateApplicationRequest;
 import com.example.neolabs.dto.response.SortedApplicationResponse;
 import com.example.neolabs.service.impl.ApplicationServiceImpl;
 import com.example.neolabs.service.impl.CsvExportServiceImpl;
@@ -17,7 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -86,8 +87,8 @@ public class ApplicationController extends BaseController {
 
     @Operation(summary = "Insert new Application")
     @PostMapping("")
-    public ResponseEntity<ResponseDto> insertApplication(@RequestBody @Valid ApplicationDto applicationDto){
-        return ResponseEntity.ok(applicationService.insertApplication(applicationDto));
+    public ResponseEntity<ResponseDto> insertApplication(@RequestBody @Valid CreateApplicationRequest createApplicationRequest){
+        return ResponseEntity.ok(applicationService.insertApplication(createApplicationRequest));
     }
 
     @Operation(summary = "Archive Application by ID")

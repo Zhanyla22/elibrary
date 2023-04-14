@@ -1,6 +1,8 @@
 package com.example.neolabs.mapper;
 
 import com.example.neolabs.dto.StudentDto;
+import com.example.neolabs.dto.request.create.CreateStudentRequest;
+import com.example.neolabs.dto.request.update.UpdateStudentRequest;
 import com.example.neolabs.entity.Student;
 import com.example.neolabs.enums.Status;
 import lombok.AccessLevel;
@@ -18,14 +20,23 @@ public class StudentMapper {
 
     final GroupMapper groupMapper;
 
-    public Student dtoToEntity(StudentDto studentDto) {
+    public Student createRequestToEntity(CreateStudentRequest request) {
         return Student.builder()
-                .firstName(studentDto.getFirstName())
-                .lastName(studentDto.getLastName())
-                .gender(studentDto.getGender())
-                .email(studentDto.getEmail())
-                .phoneNumber(studentDto.getPhoneNumber())
-                .status(studentDto.getStatus() != null ? studentDto.getStatus() : Status.ACTIVE)
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .gender(request.getGender())
+                .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
+                .status(request.getStatus() != null ? request.getStatus() : Status.ACTIVE)
+                .build();
+    }
+
+    public Student updateRequestToEntity(UpdateStudentRequest request) {
+        return Student.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
                 .build();
     }
 

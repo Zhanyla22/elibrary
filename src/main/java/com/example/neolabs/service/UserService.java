@@ -1,14 +1,13 @@
 package com.example.neolabs.service;
 
-import com.example.neolabs.dto.request.UpdateUserClientRequest;
-import com.example.neolabs.dto.request.UpdateUserRequest;
+import com.example.neolabs.dto.request.update.UpdateUserClientRequest;
+import com.example.neolabs.dto.request.update.UpdateUserRequest;
 import com.example.neolabs.dto.*;
 import com.example.neolabs.dto.response.AuthResponse2Role;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.dto.request.AuthenticationRequest;
 import com.example.neolabs.dto.request.RegistrationRequest;
 import com.example.neolabs.dto.response.AuthenticationResponse;
-import com.example.neolabs.dto.response.RegistrationResponse;
 import com.example.neolabs.enums.Role;
 import com.example.neolabs.enums.Status;
 import org.springframework.data.domain.PageRequest;

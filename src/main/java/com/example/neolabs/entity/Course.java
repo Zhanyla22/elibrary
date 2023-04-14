@@ -34,4 +34,7 @@ public class Course extends BaseEntity {
 
     @Column(name = "number_of_lessons")
     Integer numberOfLessons;
+
+    @Column(name = "image_url")
+    String imageUrl;
 }

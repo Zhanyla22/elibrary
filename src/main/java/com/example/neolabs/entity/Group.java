@@ -45,8 +45,8 @@ public class Group extends BaseEntity {
     @Enumerated(EnumType.STRING)
     Status status;
 
-    @Column(name = "is_archived")
-    Boolean isArchived;
+    @Column(name = "image_url")
+    String imageUrl;
 
     @ManyToMany(mappedBy = "groups")
     Set<Student> students;

@@ -3,11 +3,10 @@ package com.example.neolabs.service.impl;
 import com.example.neolabs.dto.*;
 import com.example.neolabs.dto.request.AuthenticationRequest;
 import com.example.neolabs.dto.request.RegistrationRequest;
-import com.example.neolabs.dto.request.UpdateUserClientRequest;
-import com.example.neolabs.dto.request.UpdateUserRequest;
+import com.example.neolabs.dto.request.update.UpdateUserClientRequest;
+import com.example.neolabs.dto.request.update.UpdateUserRequest;
 import com.example.neolabs.dto.response.AuthResponse2Role;
 import com.example.neolabs.dto.response.AuthenticationResponse;
-import com.example.neolabs.entity.Group;
 import com.example.neolabs.entity.ResetPassword;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.enums.EntityEnum;
@@ -30,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,7 +44,6 @@ import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -212,7 +209,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<UserDto> search(String email, String firstName, String lastName, String firstOrLastName, String phoneNumber) {
+    public List<UserDto> search(String email, String firstName, String lastName, String firstOrLastName,
+                                String phoneNumber) {
         ExampleMatcher exampleMatcher = getSearchExampleMatcher();
         if (firstOrLastName != null) {
             firstName = firstOrLastName;
@@ -224,8 +222,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .lastName(lastName)
                 .phoneNumber(phoneNumber)
                 .build();
-        List<User> users = userRepository.findAll(Example.of(probe, exampleMatcher));
-        return UserMapper.entityListToDtoList(users);
+        return UserMapper.entityListToDtoList(userRepository.findAll(Example.of(probe, exampleMatcher)));
     }
 
     @Override
@@ -235,8 +232,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .status(status)
                 .role(role)
                 .build();
-        List<User> users = userRepository.findAll(Example.of(probe, exampleMatcher));
-        return UserMapper.entityListToDtoList(users);
+        return UserMapper.entityListToDtoList(userRepository.findAll(Example.of(probe, exampleMatcher)));
     }
 
     @Override
@@ -314,10 +310,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private ExampleMatcher getSearchExampleMatcher(){
         return ExampleMatcher.matchingAny()
-                .withMatcher("firstName", ExampleMatcher.GenericPropertyMatchers.contains()).withIgnoreCase()
-                .withMatcher("lastName", ExampleMatcher.GenericPropertyMatchers.contains()).withIgnoreCase()
-                .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.contains()).withIgnoreCase()
-                .withMatcher("phoneNumber", ExampleMatcher.GenericPropertyMatchers.contains()).withIgnoreCase()
+                .withMatcher("firstName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("lastName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("phoneNumber", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withIgnorePaths("id");
     }
 }

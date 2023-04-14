@@ -3,7 +3,8 @@ package com.example.neolabs.controller;
 import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.StudentDto;
-import com.example.neolabs.dto.request.ArchiveRequest;
+import com.example.neolabs.dto.request.create.CreateStudentRequest;
+import com.example.neolabs.dto.request.update.UpdateStudentRequest;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.service.impl.StudentServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,8 +41,24 @@ public class StudentController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseDto> insertStudent(@RequestBody @Valid StudentDto studentDto){
-        return ResponseEntity.ok(studentService.insertStudent(studentDto));
+    public ResponseEntity<ResponseDto> insertStudent(@RequestBody @Valid CreateStudentRequest createStudentRequest){
+        return ResponseEntity.ok(studentService.insertStudent(createStudentRequest));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<StudentDto>> filterStudents(@RequestParam("groupId") Optional<Long> groupId,
+                                                           @RequestParam("status") Optional<Status> status){
+        return ResponseEntity.ok(studentService.filter(groupId.orElse(null), status.orElse(null)));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<StudentDto>> searchStudents(@RequestParam("email") Optional<String> email,
+                                                           @RequestParam("firstName") Optional<String> firstName,
+                                                           @RequestParam("lastName") Optional<String> lastName,
+                                                           @RequestParam("firstOrLastName") Optional<String> firstOrLastName,
+                                                           @RequestParam("phoneNumber") Optional<String> phoneNumber){
+        return ResponseEntity.ok(studentService.search(email.orElse(null), firstName.orElse(null),
+                lastName.orElse(null), firstOrLastName.orElse(null), phoneNumber.orElse(null)));
     }
 
     @PutMapping("/enroll")
@@ -52,8 +69,8 @@ public class StudentController {
 
     @PutMapping("/{studentId}")
     public ResponseEntity<ResponseDto> updateStudentById(@PathVariable("studentId") Long studentId,
-                                                         @RequestBody StudentDto studentDto){
-        return ResponseEntity.ok(studentService.updateStudentById(studentId, studentDto));
+                                                         @RequestBody UpdateStudentRequest updateStudentRequest){
+        return ResponseEntity.ok(studentService.updateStudentById(studentId, updateStudentRequest));
     }
 
     @Operation(summary = "archive student by id")

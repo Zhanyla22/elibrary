@@ -1,11 +1,9 @@
 package com.example.neolabs.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 @Getter
 @Setter
@@ -18,4 +16,5 @@ public class ForgotPasswordRequestDto {
     @NotNull
     @Email
     String email;
+
 }

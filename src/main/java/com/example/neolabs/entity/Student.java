@@ -45,7 +45,7 @@ public class Student extends BaseEntity {
             referencedColumnName = "id")
     Application application;
 
-    @Column(name = "reason_changed_status")
+    @Column(name = "reason")
     String reason;
 
     @Column(name = "total_debt")

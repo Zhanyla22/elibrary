@@ -2,6 +2,7 @@ package com.example.neolabs.mapper;
 
 import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.dto.request.ConversionRequest;
+import com.example.neolabs.dto.request.create.CreateApplicationRequest;
 import com.example.neolabs.entity.Application;
 import com.example.neolabs.entity.Group;
 import com.example.neolabs.entity.Student;
@@ -21,11 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ApplicationMapper {
 
-    //TODO:SAKU LOOK
-//    final DepartmentMapper departmentMapper;
     final GroupServiceImpl groupService;
-    //TODO:SAKU LOOK
-//    final DepartmentServiceImpl departmentService;
 
     public ApplicationDto entityToDto(Application application) {
         return ApplicationDto.builder()
@@ -46,9 +43,6 @@ public class ApplicationMapper {
                 .isArchived(application.getIsArchived())
                 .isUrgent(DateUtil.findDifference(LocalDateTime.now(),
                         application.getApplicationStatusUpdateDate(), ChronoUnit.SECONDS) > 86400)
-                //TODO:SAKU LOOK
-//                .departmentId(application.getDepartment().getId())
-//                .departmentDTO(departmentMapper.entityToDto(application.getDepartment()))
                 .reason(application.getReason())
                 .phoneNumber(application.getPhoneNumber())
                 .hasLaptop(application.getHasLaptop())
@@ -56,31 +50,8 @@ public class ApplicationMapper {
                 .build();
     }
 
-    public Application dtoToEntity(ApplicationDto applicationDto) {
-        return Application.builder()
-                .firstName(applicationDto.getFirstName())
-                .lastName(applicationDto.getLastName())
-                .email(applicationDto.getEmail())
-                .education(applicationDto.getEducation())
-                .gender(applicationDto.getGender())
-                .applicationStatus(applicationDto.getApplicationStatusInitialNum() != null ?
-                        StatusUtil.getApplicationStatus(applicationDto.getApplicationStatusInitialNum()) : null)
-                //TODO: SAKU LOOK
-//                .department(departmentService.getDepartmentEntityById(applicationDto.getDepartmentId()))
-                .hasLaptop(applicationDto.getHasLaptop())
-                .marketingStrategyEnum(applicationDto.getMarketingStrategyEnum())
-                .phoneNumber(applicationDto.getPhoneNumber())
-                .reason(applicationDto.getReason())
-                .build();
-    }
-
     public List<ApplicationDto> entityListToDtoList(List<Application> applications) {
         return applications.stream().map(this::entityToDto).collect(Collectors.toList());
-    }
-
-    //redundant?
-    public List<Application> dtoListToEntityList(List<ApplicationDto> applicationDtos) {
-        return applicationDtos.stream().map(this::dtoToEntity).collect(Collectors.toList());
     }
 
     public Student entityToStudentEntity(Application application, ConversionRequest conversionRequest) {
@@ -94,6 +65,22 @@ public class ApplicationMapper {
                 .phoneNumber(application.getPhoneNumber())
                 .gender(application.getGender())
                 .groups(groups)
+                .build();
+    }
+
+    public Application createRequestToEntity(CreateApplicationRequest request){
+        return Application.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
+                .education(request.getEducation())
+                .gender(request.getGender())
+                .applicationStatus(request.getApplicationStatusInitialNum() != null ?
+                        StatusUtil.getApplicationStatus(request.getApplicationStatusInitialNum()) : null)
+                .hasLaptop(request.getHasLaptop())
+                .marketingStrategyEnum(request.getMarketingStrategyEnum())
+                .phoneNumber(request.getPhoneNumber())
+                .reason(request.getReason())
                 .build();
     }
 }

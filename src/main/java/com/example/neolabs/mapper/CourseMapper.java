@@ -1,6 +1,7 @@
 package com.example.neolabs.mapper;
 
 import com.example.neolabs.dto.CourseDto;
+import com.example.neolabs.dto.request.create.CreateCourseRequest;
 import com.example.neolabs.entity.Course;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,16 +20,18 @@ public class CourseMapper {
                 .name(course.getName())
                 .cost(course.getCost())
                 .durationInMonth(course.getDurationInMonth())
+                .imageUrl(course.getImageUrl())
                 .numberOfLessons(course.getNumberOfLessons())
                 .build();
     }
 
-    public Course dtoToEntity(CourseDto courseDTO) {
+    public Course createRequestToEntity(CreateCourseRequest request) {
         return Course.builder()
-                .name(courseDTO.getName())
-                .cost(courseDTO.getCost())
-                .durationInMonth(courseDTO.getDurationInMonth())
-                .numberOfLessons(courseDTO.getNumberOfLessons())
+                .name(request.getName())
+                .cost(request.getCost())
+                .durationInMonth(request.getDurationInMonth())
+                .numberOfLessons(request.getNumberOfLessons())
+                .imageUrl(request.getImageUrl())
                 .build();
     }
 

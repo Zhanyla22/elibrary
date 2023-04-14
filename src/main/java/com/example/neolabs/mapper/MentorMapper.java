@@ -1,6 +1,6 @@
 package com.example.neolabs.mapper;
 
-import com.example.neolabs.dto.CreateMentorDto;
+import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.dto.MentorCardDto;
 import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.Status;
@@ -28,15 +28,15 @@ public class MentorMapper {
         return mentorCardDto;
     }
 
-    public Mentor createMentorDtoToMentorEntity(CreateMentorDto createMentorDto) {
+    public Mentor createMentorDtoToMentorEntity(CreateMentorRequest createMentorRequest) {
         Mentor mentor = new Mentor();
-        mentor.setEmail(createMentorDto.getEmail());
-        mentor.setFirstName(createMentorDto.getFirstName());
-        mentor.setLastName(createMentorDto.getLastName());
-        mentor.setPhoneNumber(createMentorDto.getPhoneNumber());
-        mentor.setCourse(courseRepository.findCourseByName(createMentorDto.getCourseName())
+        mentor.setEmail(createMentorRequest.getEmail());
+        mentor.setFirstName(createMentorRequest.getFirstName());
+        mentor.setLastName(createMentorRequest.getLastName());
+        mentor.setPhoneNumber(createMentorRequest.getPhoneNumber());
+        mentor.setCourse(courseRepository.findCourseByName(createMentorRequest.getCourseName())
                 .orElseThrow(
-                        () -> new BaseException("course " + createMentorDto.getCourseName() + " not found", HttpStatus.BAD_REQUEST)));
+                        () -> new BaseException("course " + createMentorRequest.getCourseName() + " not found", HttpStatus.BAD_REQUEST)));
         mentor.setStatus(Status.ACTIVE);
         return mentor;
     }

@@ -1,13 +1,15 @@
 package com.example.neolabs.service.impl;
 
 import com.example.neolabs.dto.ArchiveDto;
-import com.example.neolabs.dto.CreateMentorDto;
+import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.dto.MentorCardDto;
 import com.example.neolabs.dto.UpdateMentorDto;
 import com.example.neolabs.entity.Course;
 import com.example.neolabs.entity.Mentor;
+import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
+import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.MentorMapper;
 import com.example.neolabs.repository.CourseRepository;
 import com.example.neolabs.repository.MentorRepository;
@@ -25,15 +27,14 @@ import java.util.List;
 public class MentorServiceImpl implements MentorService {
 
     final MentorRepository mentorRepository;
-    final CourseRepository courseRepository;
     final MentorMapper mentorMapper;
+    // TODO: 14.04.2023 if possible its better to NOT use other repos in service class
+    final CourseRepository courseRepository;
+    final CourseServiceImpl courseService;
 
     @Override
     public List<MentorCardDto> getAllMentorCard(Long courseId, Status status) {
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(
-                        () -> new BaseException("course wit id " + courseId + " not found", HttpStatus.BAD_REQUEST)
-                );
+        Course course = courseService.getCourseEntityById(courseId);
         List<Mentor> mentors = mentorRepository.findAllByCourseAndStatus(course, status);
         List<MentorCardDto> mentorCardDtos = new ArrayList<>();
 
@@ -43,11 +44,11 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public void addNewMentor(CreateMentorDto createMentorDto) {
-        if (!mentorRepository.existsByEmail(createMentorDto.getEmail())) {
-            mentorRepository.save(mentorMapper.createMentorDtoToMentorEntity(createMentorDto));
+    public void addNewMentor(CreateMentorRequest createMentorRequest) {
+        if (!mentorRepository.existsByEmail(createMentorRequest.getEmail())) {
+            mentorRepository.save(mentorMapper.createMentorDtoToMentorEntity(createMentorRequest));
         } else
-            throw new BaseException("mentor with email " + createMentorDto.getEmail() + " already exists", HttpStatus.BAD_REQUEST);
+            throw new BaseException("mentor with email " + createMentorRequest.getEmail() + " already exists", HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class MentorServiceImpl implements MentorService {
         Mentor mentor = mentorRepository.findById(id)
                 .orElseThrow(
                         () -> new BaseException("mentor with id " + id + " not found ", HttpStatus.BAD_REQUEST)
-                );
+                ); // TODO: 14.04.2023 wouldnt it be better to use new function getMentorEntityById like i made as a draft in 2 functions below? 
         mentor.setEmail(updateMentorDto.getEmail());
         mentor.setFirstName(updateMentorDto.getFirstName());
         mentor.setLastName(updateMentorDto.getLastName());
@@ -79,10 +80,8 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public void archiveMentorById(Long id, ArchiveDto mentorArchiveDto) {
-        Mentor mentor = mentorRepository.findById(id)
-                .orElseThrow(
-                        () -> new BaseException("mentor with id " + id + " not found", HttpStatus.BAD_REQUEST));
+    public void archiveMentorById(Long mentorId, ArchiveDto mentorArchiveDto) {
+        Mentor mentor = getMentorEntityById(mentorId);// TODO: 14.04.2023 here 
         mentor.setUpdatedDate(LocalDateTime.now());
         mentor.setReason(mentorArchiveDto.getReason());
         mentor.setStatus(Status.ARCHIVED);
@@ -91,14 +90,19 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public void blackListMentorById(Long id, ArchiveDto mentorBlacklistDto) {
-        Mentor mentor = mentorRepository.findById(id)
-                .orElseThrow(
-                        () -> new BaseException("mentor with id " + id + " not found", HttpStatus.BAD_REQUEST));
+    public void blackListMentorById(Long mentorId, ArchiveDto mentorBlacklistDto) {
+        Mentor mentor = getMentorEntityById(mentorId);// TODO: 14.04.2023 and here 
         mentor.setUpdatedDate(LocalDateTime.now());
         mentor.setReason(mentorBlacklistDto.getReason());
         mentor.setStatus(Status.BLACK_LIST);
 
         mentorRepository.save(mentor);
+    }
+
+    public Mentor getMentorEntityById(Long mentorId){
+        return mentorRepository.findById(mentorId)
+                .orElseThrow(
+                        () -> new EntityNotFoundException(EntityEnum.MENTOR, "id", mentorId)
+                );
     }
 }

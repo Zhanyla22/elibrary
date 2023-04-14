@@ -1,4 +1,4 @@
-package com.example.neolabs.dto.request;
+package com.example.neolabs.dto.request.update;
 
 import com.example.neolabs.enums.Role;
 import lombok.*;

@@ -4,6 +4,7 @@ import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
+import com.example.neolabs.dto.request.create.CreateApplicationRequest;
 import com.example.neolabs.dto.response.SortedApplicationResponse;
 import com.example.neolabs.entity.Application;
 import com.example.neolabs.enums.ApplicationStatus;
@@ -85,9 +86,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public ResponseDto updateApplicationById(Long applicationId, ApplicationDto applicationDto) {
+    public ResponseDto updateApplicationById(Long applicationId, CreateApplicationRequest request) {
         getApplicationEntityById(applicationId);
-        Application application = applicationMapper.dtoToEntity(applicationDto);
+        Application application = applicationMapper.createRequestToEntity(request);
         application.setId(applicationId);
         operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.UPDATE);
         return ResponseDto.builder()
@@ -97,8 +98,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public ResponseDto insertApplication(ApplicationDto applicationDto) {
-        Application application = applicationRepository.save(applicationMapper.dtoToEntity(applicationDto));
+    public ResponseDto insertApplication(CreateApplicationRequest request) {
+        Application application = applicationRepository.save(applicationMapper.createRequestToEntity(request));
         if (application.getApplicationStatus() == null) {
             application.setApplicationStatus(ApplicationStatus.WAITING_FOR_CALL);
         }
