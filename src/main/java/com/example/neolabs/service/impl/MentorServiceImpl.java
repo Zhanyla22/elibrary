@@ -54,9 +54,7 @@ public class MentorServiceImpl implements MentorService {
 
     @Override
     public void deleteMentorById(Long id) {
-        Mentor mentor = mentorRepository.findById(id)
-                .orElseThrow(
-                        () -> new BaseException("mentor with id " + id + " not found", HttpStatus.BAD_REQUEST));
+        Mentor mentor = getMentorEntityById(id);
         mentor.setStatus(Status.DELETED);
         mentor.setDeletedDate(LocalDateTime.now());
         mentorRepository.save(mentor);
@@ -71,9 +69,9 @@ public class MentorServiceImpl implements MentorService {
         mentor.setPhoneNumber(updateMentorDto.getPhoneNumber());
         mentor.setPatentNumber(updateMentorDto.getPatentNumber());
         mentor.setSalary(updateMentorDto.getSalary());
-        mentor.setCourse(courseRepository.findCourseByName(updateMentorDto.getCourseName())
+        mentor.setCourse(courseRepository.findById(updateMentorDto.getCourseId())
                 .orElseThrow(
-                        () -> new BaseException("course " + updateMentorDto.getCourseName() + " not found", HttpStatus.BAD_REQUEST)));
+                        () -> new BaseException("course with id  " + updateMentorDto.getCourseId() + " not found", HttpStatus.BAD_REQUEST)));
         mentorRepository.save(mentor);
     }
 
