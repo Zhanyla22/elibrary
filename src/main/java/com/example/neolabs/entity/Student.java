@@ -45,9 +45,6 @@ public class Student extends BaseEntity {
             referencedColumnName = "id")
     Application application;
 
-    @Column(name = "is_archived")
-    Boolean isArchived;
-
     @Column(name = "reason_changed_status")
     String reason;
 

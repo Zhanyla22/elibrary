@@ -4,6 +4,7 @@ import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.StudentDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
+import com.example.neolabs.enums.Status;
 import com.example.neolabs.service.impl.StudentServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -30,11 +31,11 @@ public class StudentController {
 
     @Operation(summary = "Find all Students")
     @GetMapping("")
-    public ResponseEntity<List<StudentDto>> getALlStudents(@RequestParam(name = "include_archived", required = false) Boolean includeArchived,
-                                                           @RequestParam("sort_by") Optional<String> sortBy,
+    public ResponseEntity<List<StudentDto>> getALlStudents(@RequestParam(name = "status", required = false) Status status,
+                                                           @RequestParam("sortBy") Optional<String> sortBy,
                                                            @RequestParam("size") Optional<Integer> size,
                                                            @RequestParam("page") Optional<Integer> page){
-        return ResponseEntity.ok(studentService.getAllStudents(includeArchived,
+        return ResponseEntity.ok(studentService.getAllStudents(status,
                 PageRequest.of(page.orElse(0), size.orElse(20), Sort.by(sortBy.orElse("id")))));
     }
 
@@ -66,15 +67,4 @@ public class StudentController {
     public void blackListStudentById(@PathVariable Long id, @RequestBody ArchiveDto studentBlacklistDto) {
         studentService.blacklistStudentById(id, studentBlacklistDto);
     }
-
-//    @PutMapping("/archive")
-//    public ResponseEntity<ResponseDto> archiveStudentById(@RequestParam("student_id") Long studentId,
-//                                                          @RequestBody ArchiveRequest archiveRequest){
-//        return ResponseEntity.ok(studentService.archiveStudentById(studentId, archiveRequest));
-//    }
-
-//    @PutMapping("/unarchive")
-//    public ResponseEntity<ResponseDto> unarchiveStudentById(@RequestParam("student_id") Long studentId){
-//        return ResponseEntity.ok(studentService.unarchiveStudentById(studentId));
-//    }
 }

@@ -45,11 +45,6 @@ public class Application extends BaseEntity {
             referencedColumnName = "id")
     Course course;
 
-    @ManyToOne
-    @JoinColumn(columnDefinition = "marketing_strategy_id",
-            referencedColumnName = "id")
-    MarketingStrategy marketingStrategy;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "market_strat")
     MarketingStrategyEnum marketingStrategyEnum;

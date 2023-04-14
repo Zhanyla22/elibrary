@@ -55,7 +55,6 @@ public class CsvExportServiceImpl implements CsvExportService {
                         app.getPhoneNumber(),
                         app.getEducation(),
                         app.getHasLaptop() ? "YES" : "NO",
-                        app.getMarketingStrategy(),
                         app.getReason(),
                         app.getApplicationStatus(),
                         app.getApplicationStatusUpdateDate(),

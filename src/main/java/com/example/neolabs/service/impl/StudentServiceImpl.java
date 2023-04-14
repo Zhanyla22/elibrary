@@ -26,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,6 +43,9 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public ResponseDto insertStudent(StudentDto studentDto) {
         Student student = studentMapper.dtoToEntity(studentDto);
+        if (student.getGroups() == null){
+            student.setGroups(new ArrayList<>());
+        }
         student.getGroups().add(groupService.getGroupEntityById(studentDto.getEnrollmentGroupId()));
         operationService.recordStudentOperation(studentRepository.save(student), OperationType.CREATE);
         return ResponseDto.builder()
@@ -57,10 +61,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDto> getAllStudents(Boolean isArchived, PageRequest pageRequest) {
+    public List<StudentDto> getAllStudents(Status status, PageRequest pageRequest) {
         Page<Student> students;
-        if (isArchived != null) {
-            students = studentRepository.findAllByIsArchived(isArchived, pageRequest);
+        if (status != null) {
+            students = studentRepository.findAllByStatus(status, pageRequest);
         } else {
             students = studentRepository.findAll(pageRequest);
         }
@@ -83,45 +87,15 @@ public class StudentServiceImpl implements StudentService {
                 .build();
     }
 
-    //TODO:SAKU LOOK commented these codes for now
-//    @Override
-//    public ResponseDto archiveStudentById(Long studentId, ArchiveRequest archiveRequest) {
-//        Student student = getStudentEntityById(studentId);
-//        if (student.getIsArchived()) {
-//            throw new BaseException("Student is archived already.", HttpStatus.CONFLICT);
-//        }
-//        student.setIsArchived(true);
-//        student.setArchiveReason(archiveRequest.getReason());
-//        // FIXME: 29.03.2023 need to add blacklisted here
-//        // FIXME: 29.03.2023 but how?
-//        operationService.recordStudentOperation(studentRepository.save(student), OperationType.ARCHIVE);
-//        return ResponseDto.builder()
-//                .resultCode(ResultCode.SUCCESS)
-//                .result("Student has been successfully archived.")
-//                .build();
-//    }
-//
-//    @Override
-//    public ResponseDto unarchiveStudentById(Long studentId) {
-//        Student student = getStudentEntityById(studentId);
-//        if (!student.getIsArchived()) {
-//            throw new BaseException("Student is not archived already.", HttpStatus.CONFLICT);
-//        }
-//        student.setIsArchived(false);
-//        student.setArchiveReason(null);
-//        operationService.recordStudentOperation(studentRepository.save(student), OperationType.UNARCHIVE);
-//        return ResponseDto.builder()
-//                .resultCode(ResultCode.SUCCESS)
-//                .result("Student has been successfully unarchived.")
-//                .build();
-//    }
-
     @Override
     public ResponseDto enrollStudent(Long studentId, Long groupId) {
         Student student = getStudentEntityById(studentId);
         Group group = groupService.getGroupEntityById(groupId);
         if (student.getGroups().contains(group)) {
             throw new BaseException("Student is already enrolled to the group.", HttpStatus.CONFLICT);
+        }
+        if (student.getGroups() == null){
+            student.setGroups(new ArrayList<>());
         }
         student.getGroups().add(group);
         operationService.recordEnrollmentOperation(studentRepository.save(student), groupId);
@@ -133,9 +107,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void archiveStudentById(Long studentId, ArchiveDto archiveStudentDto) {
-        Student student = studentRepository.findById(studentId)
-                .orElseThrow(
-                        () -> new BaseException("student with id " + studentId + " not found", HttpStatus.BAD_REQUEST));
+        Student student = getStudentEntityById(studentId);
         student.setUpdatedDate(LocalDateTime.now());
         student.setReason(archiveStudentDto.getReason());
         student.setStatus(Status.ARCHIVED);
@@ -145,9 +117,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void blacklistStudentById(Long studentId, ArchiveDto blacklistStudentDto) {
-        Student student = studentRepository.findById(studentId)
-                .orElseThrow(
-                        () -> new BaseException("student with id " + studentId + " not found", HttpStatus.BAD_REQUEST));
+        Student student = getStudentEntityById(studentId);
         student.setUpdatedDate(LocalDateTime.now());
         student.setReason(blacklistStudentDto.getReason());
         student.setStatus(Status.BLACK_LIST);

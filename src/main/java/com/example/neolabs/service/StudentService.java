@@ -5,6 +5,7 @@ import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.StudentDto;
 import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.entity.Application;
+import com.example.neolabs.enums.Status;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
@@ -15,15 +16,11 @@ public interface StudentService {
 
     void insertStudentFromApplication(Application application, ConversionRequest conversionRequest);
 
-    List<StudentDto> getAllStudents(Boolean includeArchived, PageRequest pageRequest);
+    List<StudentDto> getAllStudents(Status status, PageRequest pageRequest);
 
     StudentDto getStudentById(Long studentId);
 
     ResponseDto updateStudentById(Long studentId, StudentDto studentDto);
-
-//    ResponseDto archiveStudentById(Long studentId, ArchiveRequest archiveRequest);
-//
-//    ResponseDto unarchiveStudentById(Long studentId);
 
     ResponseDto enrollStudent(Long studentId, Long groupId);
 

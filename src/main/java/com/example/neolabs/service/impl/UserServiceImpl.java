@@ -27,6 +27,10 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -201,26 +205,43 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void deleteUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new BaseException("user doesnt exist", HttpStatus.BAD_REQUEST));
+        User user = getUserEntityById(id);
         user.setStatus(Status.DELETED);
         user.setDeletedDate(LocalDateTime.now());
-
         userRepository.save(user);
     }
 
     @Override
-    public List<UserDto> getAllUserByStatus(Status status) {
-        List<User> allUserByStatus = userRepository.findAllByStatus(status);
-        List<UserDto> userDtoList = new ArrayList<>();
-        for (User u : allUserByStatus) {
-            userDtoList.add(UserMapper.entityToDto(u));
+    public List<UserDto> search(String email, String firstName, String lastName, String firstOrLastName, String phoneNumber) {
+        ExampleMatcher exampleMatcher = getSearchExampleMatcher();
+        if (firstOrLastName != null) {
+            firstName = firstOrLastName;
+            lastName = firstOrLastName;
         }
-        return userDtoList;
+        User probe = User.builder()
+                .email(email)
+                .firstName(firstName)
+                .lastName(lastName)
+                .phoneNumber(phoneNumber)
+                .build();
+        List<User> users = userRepository.findAll(Example.of(probe, exampleMatcher));
+        return UserMapper.entityListToDtoList(users);
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
-        return UserMapper.entityListToDtoList(userRepository.findAll());
+    public List<UserDto> filter(Status status, Role role) {
+        ExampleMatcher exampleMatcher = getFilterExampleMatcher();
+        User probe = User.builder()
+                .status(status)
+                .role(role)
+                .build();
+        List<User> users = userRepository.findAll(Example.of(probe, exampleMatcher));
+        return UserMapper.entityListToDtoList(users);
+    }
+
+    @Override
+    public List<UserDto> getAllUsers(PageRequest pageRequest) {
+        return UserMapper.entityListToDtoList(userRepository.findAll(pageRequest).stream().toList());
     }
 
     @Override
@@ -282,5 +303,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User getCurrentUserEntity() {
         return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new BaseException("User not found", HttpStatus.NOT_FOUND));
+    }
+
+    private ExampleMatcher getFilterExampleMatcher(){
+        return ExampleMatcher.matchingAll()
+                .withMatcher("status", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withMatcher("role", ExampleMatcher.GenericPropertyMatchers.exact())
+                .withIgnorePaths("id");
+    }
+
+    private ExampleMatcher getSearchExampleMatcher(){
+        return ExampleMatcher.matchingAny()
+                .withMatcher("firstName", ExampleMatcher.GenericPropertyMatchers.contains()).withIgnoreCase()
+                .withMatcher("lastName", ExampleMatcher.GenericPropertyMatchers.contains()).withIgnoreCase()
+                .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.contains()).withIgnoreCase()
+                .withMatcher("phoneNumber", ExampleMatcher.GenericPropertyMatchers.contains()).withIgnoreCase()
+                .withIgnorePaths("id");
     }
 }
