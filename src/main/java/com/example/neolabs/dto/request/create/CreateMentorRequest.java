@@ -26,6 +26,6 @@ public class CreateMentorRequest {
     String phoneNumber;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String courseName;
+    Long courseId;
 
 }
