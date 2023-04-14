@@ -103,8 +103,8 @@ public class MentorServiceImpl implements MentorService {
         Mentor mentor = getMentorEntityById(id);
         MentorResponse mentorResponse = new MentorResponse();
         mentorResponse.setFirstName(mentor.getFirstName());
-        mentorResponse.setLastName(mentorResponse.getLastName());
-        mentorResponse.setPhoneNumber(mentorResponse.getPhoneNumber());
+        mentorResponse.setLastName(mentor.getLastName());
+        mentorResponse.setPhoneNumber(mentor.getPhoneNumber());
         mentorResponse.setPatentNumber(mentor.getPatentNumber());
         mentorResponse.setEmail(mentor.getEmail());
         mentorResponse.setCourseName(mentor.getCourse().getName());
