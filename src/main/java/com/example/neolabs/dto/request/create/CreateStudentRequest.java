@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 
 @Getter
 @Setter
@@ -42,7 +41,7 @@ public class CreateStudentRequest {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Status status;
 
-    @NotBlank
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Long enrollmentGroupId;
 

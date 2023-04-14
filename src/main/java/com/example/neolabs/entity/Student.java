@@ -51,6 +51,9 @@ public class Student extends BaseEntity {
     @Column(name = "total_debt")
     Integer totalDebt;
 
+    @Column(name = "total_payment")
+    Integer totalPayment;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "students_groups",
             joinColumns = { @JoinColumn(name = "student_id") },
