@@ -49,7 +49,7 @@ public class StudentMapper {
                 .phoneNumber(student.getPhoneNumber())
                 .gender(student.getGender())
                 .groups(groupMapper.entityListToDtoList(student.getGroups()))
-                .status(student.getStatus())
+                .status(student.getStatus().getRussian())
                 .totalDebt(null) // FIXME: 16.03.2023
                 .totalPaymentPercentage(null)
                 .build();

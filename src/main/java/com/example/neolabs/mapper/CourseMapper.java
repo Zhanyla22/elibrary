@@ -20,6 +20,7 @@ public class CourseMapper {
                 .name(course.getName())
                 .cost(course.getCost())
                 .durationInMonth(course.getDurationInMonth())
+                .isArchived(course.getIsArchived())
                 .imageUrl(course.getImageUrl())
                 .numberOfLessons(course.getNumberOfLessons())
                 .build();

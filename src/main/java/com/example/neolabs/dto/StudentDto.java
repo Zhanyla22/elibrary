@@ -20,40 +20,33 @@ public class StudentDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long id;
 
-    @NotEmpty
-    @Email
-    @JsonProperty("email")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String email;
 
-    @NotBlank
-    @JsonProperty("firstName")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String firstName;
 
-    @NotBlank
-    @JsonProperty("lastName")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String lastName;
 
-    @NotBlank
-    @JsonProperty("phoneNumber")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String phoneNumber;
 
-    @NotBlank
-    @JsonProperty("gender")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Gender gender;
 
-    @JsonProperty("status")
-    Status status;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    String status;
 
-    @JsonProperty(value = "totalDebt", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Integer totalDebt;
 
-    @JsonProperty(value = "paymentPercentage", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Integer totalPaymentPercentage;
 
-    @JsonProperty(value = "groups", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     List<GroupDto> groups;
 
-    @NotBlank
-    @JsonProperty(value = "enrollmentGroupId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long enrollmentGroupId;
 }

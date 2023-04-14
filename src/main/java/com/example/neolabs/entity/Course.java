@@ -21,7 +21,7 @@ public class Course extends BaseEntity {
     String name;
 
     @Column(nullable = false)
-    Double cost;
+    Integer cost;
 
     @Column(name = "duration_in_month", nullable = false)
     Integer durationInMonth;

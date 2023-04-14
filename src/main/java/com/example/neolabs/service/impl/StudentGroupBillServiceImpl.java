@@ -43,7 +43,7 @@ public class StudentGroupBillServiceImpl implements StudentGroupBillService {
     @Override
     public StudentGroupBillDto createStudentGroupBill(CreateStudentGroupBillDto createStudentGroupBillDto){
         StudentGroupBill studentGroupBill = new StudentGroupBill();
-        studentGroupBill.setStudentGroupDebt(groupService.getGroupEntityById(createStudentGroupBillDto.getGroupId()).getCourse().getCost());
+        studentGroupBill.setStudentGroupDebt(groupService.getGroupEntityById(createStudentGroupBillDto.getGroupId()).getCourse().getCost() * 1.0);
         studentGroupBill.setGroup(groupService.getGroupEntityById(createStudentGroupBillDto.getGroupId()));
         studentGroupBill.setStudent(studentService.getStudentEntityById(createStudentGroupBillDto.getStudentId()));
         studentGroupBill.setCreatedDate(LocalDateTime.now());

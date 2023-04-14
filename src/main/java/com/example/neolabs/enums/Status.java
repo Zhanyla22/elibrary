@@ -11,10 +11,31 @@ import lombok.experimental.FieldDefaults;
 public enum Status {
     //TODO: пока что так(черновой вариант) потом добавим еще
     //TODO: status types for now need to be added new status or changed
-    ACTIVE("active"),
-    DELETED("deleted"),
-    ARCHIVED("archived"),
-    BLACK_LIST("black list");
+    ACTIVE("active"){
+        @Override
+        public String getRussian(){
+            return "Активный";
+        }
+    },
+    DELETED("deleted"){
+        @Override
+        public String getRussian(){
+            return "Удален";
+        }
+    },
+    ARCHIVED("archived"){
+        @Override
+        public String getRussian(){
+            return "Архивирован";
+        }
+    },
+    BLACK_LIST("blacklist"){
+        @Override
+        public String getRussian(){
+            return "В черном списке";
+        }
+    };
 
     final String name;
+    public String getRussian() {return "Статус";}
 }

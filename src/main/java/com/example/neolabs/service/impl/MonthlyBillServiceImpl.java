@@ -57,7 +57,7 @@ public class MonthlyBillServiceImpl implements MonthlyBillService {
         if (monthlyBillRepository.findAllMonthlyBillsByStudentGroupBillID(studentGroupBillId).isEmpty()){
 
         Integer durationInMonths = studentGroupBill.getGroup().getCourse().getDurationInMonth();
-        Double courseBill = studentGroupBill.getGroup().getCourse().getCost();
+        Double courseBill = studentGroupBill.getGroup().getCourse().getCost() * 1.0;
         LocalDate monthlyDeadline = studentGroupBill.getGroup().getStartDate();
 
         for (int i = 1; i <= durationInMonths; i++) {

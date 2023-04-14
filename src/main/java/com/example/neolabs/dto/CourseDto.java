@@ -1,9 +1,8 @@
 package com.example.neolabs.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,24 +15,24 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CourseDto {
 
-    @JsonProperty(value = "id", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long id;
 
-    @NotBlank(message = "Name can't be empty or null")
-    @JsonProperty(value = "name")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String name;
 
-    @NotBlank(message = "Cost can't be empty or null")
-    @JsonProperty(value = "cost")
-    Double cost;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    Integer cost;
 
-    @NotBlank(message = "Duration can't be empty or null")
-    @JsonProperty(value = "durationInMonth")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    Boolean isArchived;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Integer durationInMonth;
 
-    @JsonProperty(value = "numberOfLessons")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Integer numberOfLessons;
 
-    @JsonProperty(value = "imageUrl")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String imageUrl;
 }

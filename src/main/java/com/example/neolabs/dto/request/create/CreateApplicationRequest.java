@@ -37,7 +37,7 @@ public class CreateApplicationRequest {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Gender gender;
 
-    @NotBlank
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Boolean hasLaptop;
 

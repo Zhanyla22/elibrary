@@ -1,7 +1,7 @@
 package com.example.neolabs.dto.request.create;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,14 +17,15 @@ public class CreateCourseRequest {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String name;
 
-    @NotBlank(message = "Cost can't be empty or null")
+    @NotNull(message = "Cost can't be empty or null")
     @JsonProperty(value = "cost")
-    Double cost;
+    Integer cost;
 
-    @NotBlank(message = "Duration can't be empty or null")
+    @NotNull(message = "Duration can't be empty or null")
     @JsonProperty(value = "durationInMonth")
     Integer durationInMonth;
 
+    @NotNull
     @JsonProperty(value = "numberOfLessons")
     Integer numberOfLessons;
 

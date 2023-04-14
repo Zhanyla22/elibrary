@@ -35,7 +35,6 @@ public class ApplicationMapper {
                 .applicationStatusNum(application.getApplicationStatus().getOrder())
                 .applicationStatusUpdateDate(DateUtil.dateFormatter.format(application.getApplicationStatusUpdateDate()))
                 .applicationStatusUpdateTime(DateUtil.timeFormatter.format(application.getApplicationStatusUpdateDate()))
-                .applicationStatusInitialNum(application.getApplicationStatus().getOrder())
                 .creationDate(DateUtil.dateFormatter.format(application.getCreatedDate()))
                 .updateDate(application.getUpdatedDate() != null ?
                         DateUtil.dateFormatter.format(application.getUpdatedDate()) : null)

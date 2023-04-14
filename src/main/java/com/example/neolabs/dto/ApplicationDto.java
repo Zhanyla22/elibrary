@@ -57,11 +57,6 @@ public class ApplicationDto {
     @JsonProperty(value = "marketingStrategy")
     MarketingStrategyEnum marketingStrategyEnum;
 
-    @NotEmpty
-    @NotNull
-    @JsonProperty(value = "departmentId", access = JsonProperty.Access.WRITE_ONLY)
-    Long departmentId;
-
     @JsonProperty(value = "isArchived", access = JsonProperty.Access.READ_ONLY)
     Boolean isArchived;
 
@@ -73,9 +68,6 @@ public class ApplicationDto {
 
     @JsonProperty(value = "applicationStatusNum", access = JsonProperty.Access.READ_ONLY)
     Integer applicationStatusNum;
-
-    @JsonProperty(value = "applicationInitialStatusNum", access = JsonProperty.Access.WRITE_ONLY)
-    Integer applicationStatusInitialNum;
 
     @JsonProperty(value = "applicationStatusUpdateDate", access = JsonProperty.Access.READ_ONLY)
     String applicationStatusUpdateDate;

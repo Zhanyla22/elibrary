@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 
 @Getter
 @Setter
@@ -19,7 +19,7 @@ public class CreateGroupRequest {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String name;
 
-    @NotBlank
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Long mentorId;
 
@@ -27,7 +27,7 @@ public class CreateGroupRequest {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Long courseId;
 
-    @NotBlank
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Integer maxCapacity;
 
