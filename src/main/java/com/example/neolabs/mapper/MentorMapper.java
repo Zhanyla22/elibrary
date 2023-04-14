@@ -1,7 +1,7 @@
 package com.example.neolabs.mapper;
 
-import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.dto.MentorCardDto;
+import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
@@ -39,13 +39,12 @@ public class MentorMapper {
         mentor.setPhoneNumber(createMentorRequest.getPhoneNumber());
         mentor.setCourse(courseRepository.findById(createMentorRequest.getCourseId())
                 .orElseThrow(
-                        () -> new BaseException("course with id" + createMentorRequest.getCourseId()+ " not found", HttpStatus.BAD_REQUEST)));
+                        () -> new BaseException("course with id" + createMentorRequest.getCourseId() + " not found", HttpStatus.BAD_REQUEST)));
         mentor.setStatus(Status.ACTIVE);
         return mentor;
     }
 
-    public List<MentorCardDto> entityListToCardList(List<Mentor> mentors){
+    public List<MentorCardDto> entityListToCardList(List<Mentor> mentors) {
         return mentors.stream().map(MentorMapper::mentorEntityToMentorCardDto).collect(Collectors.toList());
     }
-
 }

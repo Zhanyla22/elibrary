@@ -1,6 +1,7 @@
 package com.example.neolabs.service;
 
 import com.example.neolabs.dto.ArchiveDto;
+import com.example.neolabs.dto.MentorResponse;
 import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.dto.MentorCardDto;
 import com.example.neolabs.dto.UpdateMentorDto;
@@ -21,5 +22,7 @@ public interface MentorService {
     void archiveMentorById(Long id, ArchiveDto mentorArchiveDto);
 
     void blackListMentorById(Long id, ArchiveDto mentorArchiveDto);
+
+    MentorResponse getMentorById(Long id);
 
 }

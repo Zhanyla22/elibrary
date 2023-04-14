@@ -2,9 +2,9 @@ package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
 import com.example.neolabs.dto.ArchiveDto;
-import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.UpdateMentorDto;
+import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.service.MentorService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +28,12 @@ public class MentorController extends BaseController {
     public ResponseEntity<ResponseDto> getAllMentorCard(@RequestParam("courseId") Optional<Long> courseId,
                                                         @RequestParam("status") Optional<Status> status) {
         return constructSuccessResponse(mentorService.getAllMentorCards(courseId.orElse(null), status.orElse(null)));
+    }
+
+    @Operation(summary = "get  mentor by id")
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDto> getMentorById(@PathVariable Long id) {
+        return constructSuccessResponse(mentorService.getMentorById(id));
     }
 
     @Operation(summary = "add new mentor")
