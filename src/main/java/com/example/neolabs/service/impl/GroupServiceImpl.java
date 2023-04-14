@@ -3,14 +3,12 @@ package com.example.neolabs.service.impl;
 import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.GroupDto;
 import com.example.neolabs.dto.ResponseDto;
-import com.example.neolabs.dto.request.create.CreateCourseRequest;
 import com.example.neolabs.dto.request.create.CreateGroupRequest;
 import com.example.neolabs.entity.Course;
 import com.example.neolabs.entity.Group;
 import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.enums.ResultCode;
 import com.example.neolabs.enums.Status;
-import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.GroupMapper;
 import com.example.neolabs.repository.GroupRepository;
@@ -18,7 +16,6 @@ import com.example.neolabs.service.GroupService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -57,6 +54,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupDto getGroupById(Long groupId) {
+
         return groupMapper.entityToDto(getGroupEntityById(groupId));
     }
 
