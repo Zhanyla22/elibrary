@@ -9,6 +9,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -31,6 +32,11 @@ public class ApiExceptionHandler {
     @ExceptionHandler(value = JwtException.class)
     public ResponseEntity<ResponseDto> handleJwtException(final JwtException e) {
         return buildBaseResponseMessage(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<ResponseDto> handleMANVException(final MethodArgumentNotValidException e) {
+        return buildBaseResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     private ResponseEntity<ResponseDto> buildBaseResponseMessage(String message, HttpStatus status) {

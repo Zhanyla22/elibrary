@@ -33,11 +33,11 @@ public class CreateStudentRequest {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String phoneNumber;
 
-    @NotBlank
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Gender gender;
 
-    @NotBlank
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Status status;
 

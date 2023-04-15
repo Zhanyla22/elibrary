@@ -32,11 +32,11 @@ public class StudentController {
 
     @Operation(summary = "Find all Students")
     @GetMapping("")
-    public ResponseEntity<List<StudentDto>> getALlStudents(@RequestParam(name = "status", required = false) Status status,
-                                                           @RequestParam("sortBy") Optional<String> sortBy,
-                                                           @RequestParam("size") Optional<Integer> size,
-                                                           @RequestParam("page") Optional<Integer> page){
-        return ResponseEntity.ok(studentService.getAllStudents(status,
+    public ResponseEntity<List<StudentDto>> getALlStudents(@RequestParam(name = "status") Optional<Status> status,
+                                                           @RequestParam(name = "sortBy") Optional<String> sortBy,
+                                                           @RequestParam(name = "size") Optional<Integer> size,
+                                                           @RequestParam(name = "page") Optional<Integer> page){
+        return ResponseEntity.ok(studentService.getAllStudents(status.orElse(Status.ACTIVE),
                 PageRequest.of(page.orElse(0), size.orElse(20), Sort.by(sortBy.orElse("id")))));
     }
 
@@ -46,17 +46,17 @@ public class StudentController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<StudentDto>> filterStudents(@RequestParam("groupId") Optional<Long> groupId,
-                                                           @RequestParam("status") Optional<Status> status){
+    public ResponseEntity<List<StudentDto>> filterStudents(@RequestParam(name = "groupId") Optional<Long> groupId,
+                                                           @RequestParam(name = "status") Optional<Status> status){
         return ResponseEntity.ok(studentService.filter(groupId.orElse(null), status.orElse(null)));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<StudentDto>> searchStudents(@RequestParam("email") Optional<String> email,
-                                                           @RequestParam("firstName") Optional<String> firstName,
-                                                           @RequestParam("lastName") Optional<String> lastName,
-                                                           @RequestParam("firstOrLastName") Optional<String> firstOrLastName,
-                                                           @RequestParam("phoneNumber") Optional<String> phoneNumber){
+    public ResponseEntity<List<StudentDto>> searchStudents(@RequestParam(name = "email") Optional<String> email,
+                                                           @RequestParam(name = "firstName") Optional<String> firstName,
+                                                           @RequestParam(name = "lastName") Optional<String> lastName,
+                                                           @RequestParam(name = "firstOrLastName") Optional<String> firstOrLastName,
+                                                           @RequestParam(name = "phoneNumber") Optional<String> phoneNumber){
         return ResponseEntity.ok(studentService.search(email.orElse(null), firstName.orElse(null),
                 lastName.orElse(null), firstOrLastName.orElse(null), phoneNumber.orElse(null)));
     }

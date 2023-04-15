@@ -77,7 +77,7 @@ public class StudentServiceImpl implements StudentService {
         ExampleMatcher exampleMatcher = getFilterExampleMatcher();
         Student probe = Student.builder()
                 .status(status)
-                .groups(List.of(groupService.getGroupEntityById(groupId)))
+                .groups(groupId != null ? List.of(groupService.getGroupEntityById(groupId)) : null)
                 .build();
         return studentMapper.entityListToDtoList(studentRepository.findAll(Example.of(probe, exampleMatcher)));
     }

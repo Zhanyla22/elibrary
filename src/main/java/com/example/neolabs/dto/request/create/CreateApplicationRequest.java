@@ -33,7 +33,7 @@ public class CreateApplicationRequest {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String phoneNumber;
 
-    @NotBlank
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Gender gender;
 
@@ -41,13 +41,13 @@ public class CreateApplicationRequest {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Boolean hasLaptop;
 
-    @NotBlank
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     MarketingStrategyEnum marketingStrategyEnum;
 
-    @NotBlank
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    Long departmentId;
+    Long courseId;
 
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -56,7 +56,7 @@ public class CreateApplicationRequest {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Integer applicationStatusInitialNum;
 
-    @NotBlank
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Education education;
 }

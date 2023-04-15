@@ -35,6 +35,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     final ApplicationMapper applicationMapper;
     final ApplicationRepository applicationRepository;
     final StudentServiceImpl studentService;
+    final CourseServiceImpl courseService;
     final OperationServiceImpl operationService;
 
     @Override
@@ -99,10 +100,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ResponseDto insertApplication(CreateApplicationRequest request) {
-        Application application = applicationRepository.save(applicationMapper.createRequestToEntity(request));
+        Application application = applicationMapper.createRequestToEntity(request);
         if (application.getApplicationStatus() == null) {
             application.setApplicationStatus(ApplicationStatus.WAITING_FOR_CALL);
         }
+        application.setCourse(courseService.getCourseEntityById(request.getCourseId()));
         application.setIsArchived(false);
         application.setApplicationStatusUpdateDate(LocalDateTime.now(DateUtil.getZoneId()));
         ApplicationDto newDto = applicationMapper.entityToDto(applicationRepository.save(application));

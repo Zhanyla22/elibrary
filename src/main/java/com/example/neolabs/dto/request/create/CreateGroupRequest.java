@@ -23,7 +23,7 @@ public class CreateGroupRequest {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Long mentorId;
 
-    @NotBlank
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Long courseId;
 
