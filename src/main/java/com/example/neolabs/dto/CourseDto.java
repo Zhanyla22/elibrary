@@ -6,6 +6,8 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -33,4 +35,6 @@ public class CourseDto {
     Integer numberOfGroups;
 
     String imageUrl;
+
+    List<GroupStudentsDto> groupStudents;
 }

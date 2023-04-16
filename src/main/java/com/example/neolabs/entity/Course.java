@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -48,8 +49,8 @@ public class Course extends BaseEntity {
     String reason;
 
     @OneToMany(mappedBy = "course")
-    List<Group> groups;
+    List<Group> groups = new ArrayList<>();
 
     @OneToMany(mappedBy = "course")
-    List<Mentor> mentors;
+    List<Mentor> mentors = new ArrayList<>();
 }

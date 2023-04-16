@@ -36,7 +36,7 @@ public class StudentController {
                                                            @RequestParam(name = "sortBy") Optional<String> sortBy,
                                                            @RequestParam(name = "size") Optional<Integer> size,
                                                            @RequestParam(name = "page") Optional<Integer> page){
-        return ResponseEntity.ok(studentService.getAllStudents(status.orElse(Status.ACTIVE),
+        return ResponseEntity.ok(studentService.getAllStudents(status.orElse(null),
                 PageRequest.of(page.orElse(0), size.orElse(20), Sort.by(sortBy.orElse("id")))));
     }
 

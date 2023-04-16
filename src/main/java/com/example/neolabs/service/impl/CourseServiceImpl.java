@@ -37,6 +37,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseDto insertCourse(CreateCourseRequest createCourseRequest) {
         Course course = courseMapper.createRequestToEntity(createCourseRequest);
+        if (courseRepository.existsByName(createCourseRequest.getName())){
+            throw new BaseException("Course name is already in use.", HttpStatus.CONFLICT);
+        }
+        course.setStatus(Status.ACTIVE);
         return courseMapper.entityToDto(courseRepository.save(course));
     }
 
