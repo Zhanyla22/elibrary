@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,6 +48,9 @@ public class Student extends BaseEntity {
 
     @Column(name = "reason")
     String reason;
+
+    @Column(name = "archive_date")
+    LocalDateTime archiveDate;
 
     @Column(name = "total_debt")
     Integer totalDebt;

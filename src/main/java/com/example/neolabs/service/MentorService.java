@@ -3,6 +3,7 @@ package com.example.neolabs.service;
 import com.example.neolabs.dto.*;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateMentorRequest;
+import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.Status;
 
 import java.util.List;
@@ -23,4 +24,5 @@ public interface MentorService {
 
     MentorResponse getMentorById(Long id);
 
+    List<Mentor> getBlacklist();
 }

@@ -55,6 +55,9 @@ public class Application extends BaseEntity {
     @Column(name = "is_archived")
     Boolean isArchived;
 
+    @Column(name = "archive_date")
+    LocalDateTime archiveDate;
+
     @Column(name = "archive_reason")
     String archiveReason;
 

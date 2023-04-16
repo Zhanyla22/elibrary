@@ -1,6 +1,5 @@
 package com.example.neolabs.service.impl;
 
-import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.StudentDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
@@ -17,6 +16,7 @@ import com.example.neolabs.mapper.ApplicationMapper;
 import com.example.neolabs.mapper.StudentMapper;
 import com.example.neolabs.repository.StudentRepository;
 import com.example.neolabs.service.StudentService;
+import com.example.neolabs.util.DateUtil;
 import com.example.neolabs.util.ResponseUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -146,6 +146,7 @@ public class StudentServiceImpl implements StudentService {
         }
         student.setReason(archiveRequest.getReason());
         student.setStatus(isBlacklist ? Status.BLACKLIST : Status.ARCHIVED);
+        student.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
         studentRepository.save(student);
         return ResponseUtil.buildSuccessResponse("Student has been successfully " + (isBlacklist ? "blacklisted." : "archived."));
     }
@@ -158,8 +159,14 @@ public class StudentServiceImpl implements StudentService {
         }
         student.setStatus(Status.ACTIVE);
         student.setReason(null);
+        student.setArchiveDate(null);
         studentRepository.save(student);
         return ResponseUtil.buildSuccessResponse("Student has been successfully unarchived.");
+    }
+
+    @Override
+    public List<Student> getBlacklist(){
+        return studentRepository.findAllByStatus(Status.BLACKLIST);
     }
 
 

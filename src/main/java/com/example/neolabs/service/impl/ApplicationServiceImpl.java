@@ -127,6 +127,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setIsArchived(true);
         application.setApplicationStatus(ApplicationStatus.DID_NOT_APPLY_FOR_COURSES);
         application.setArchiveReason(archiveRequest.getReason());
+        application.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
         operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.ARCHIVE);
         // TODO: 12.03.2023 need to save last status before archiving for analytics
         return ResponseDto.builder()
@@ -139,6 +140,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ResponseDto unarchiveApplicationById(Long applicationId) {
         Application application = getApplicationEntityById(applicationId);
         application.setIsArchived(false);
+        application.setArchiveDate(null);
         operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.UNARCHIVE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)

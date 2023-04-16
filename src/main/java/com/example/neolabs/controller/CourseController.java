@@ -51,6 +51,6 @@ public class CourseController {
 
     @PutMapping("/unarchive")
     public ResponseEntity<ResponseDto> unarchiveCourseById(@RequestParam("courseId") Long courseId){
-        return ResponseEntity.ok(courseService.unarchiveCourse(courseId));
+        return ResponseEntity.ok(courseService.unarchiveCourseById(courseId));
     }
 }

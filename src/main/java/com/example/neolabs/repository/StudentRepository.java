@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
     Page<Student> findAllByStatus(Status status, Pageable pageable);
+    List<Student> findAllByStatus(Status status);
 }

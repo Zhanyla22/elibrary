@@ -13,4 +13,5 @@ public interface MentorRepository extends JpaRepository<Mentor, Long> {
 
     Boolean existsByEmail(String email);
 
+    List<Mentor> findAllByStatus(Status status);
 }

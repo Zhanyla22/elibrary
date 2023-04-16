@@ -258,6 +258,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         user.setReason(archiveRequest.getReason());
         user.setStatus(isBlacklist ? Status.BLACKLIST : Status.ARCHIVED);
+        user.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
         userRepository.save(user);
         return ResponseUtil.buildSuccessResponse("User has been successfully " + (isBlacklist ? "blacklisted." : "archived."));
     }
@@ -270,8 +271,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         user.setStatus(Status.ACTIVE);
         user.setReason(null);
+        user.setArchiveDate(null);
         userRepository.save(user);
         return ResponseUtil.buildSuccessResponse("User has been successfully unarchived.");
+    }
+
+    @Override
+    public List<User> getBlacklist() {
+        return userRepository.findAllByStatus(Status.BLACKLIST);
     }
 
 

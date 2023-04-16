@@ -25,8 +25,8 @@ public class OperationMapper {
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
-                .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
-                .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
+                .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
+                .time(DateUtil.datetimeFormatter.format(operation.getCreatedDate()))
                 .build();
     }
 
@@ -43,8 +43,8 @@ public class OperationMapper {
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
-                .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
-                .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
+                .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
+                .time(DateUtil.datetimeFormatter.format(operation.getCreatedDate()))
                 .build();
     }
 
@@ -61,8 +61,8 @@ public class OperationMapper {
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
-                .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
-                .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
+                .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
+                .time(DateUtil.datetimeFormatter.format(operation.getCreatedDate()))
                 .build();
     }
 
@@ -79,8 +79,8 @@ public class OperationMapper {
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
-                .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
-                .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
+                .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
+                .time(DateUtil.datetimeFormatter.format(operation.getCreatedDate()))
                 .build();
     }
 
@@ -97,8 +97,8 @@ public class OperationMapper {
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
-                .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
-                .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
+                .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
+                .time(DateUtil.datetimeFormatter.format(operation.getCreatedDate()))
                 .build();
     }
 
@@ -115,34 +115,14 @@ public class OperationMapper {
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
-                .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
-                .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
+                .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
+                .time(DateUtil.datetimeFormatter.format(operation.getCreatedDate()))
                 .build();
     }
 
     public List<OperationDto> mentorOperationListToDtoList(List<MentorOperation> operations){
         return operations.stream().map(this::mentorOperationToDto).collect(Collectors.toList());
     }
-
-//TODO:SAKU LOOK
-
-//    public OperationDto departmentOperationToDto(DepartmentOperation operation){
-//        return OperationDto.builder()
-//                .target(operation.getDepartment())
-//                .targetId(operation.getDepartment().getId())
-//                .targetType(EntityEnum.APPLICATION)
-//                .description(operation.getDescription())
-//                .user(UserMapper.entityToDto(operation.getUser()))
-//                .type(operation.getOperationType())
-//                .rawDate(operation.getCreatedDate())
-//                .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
-//                .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
-//                .build();
-//    }
-//
-//    public List<OperationDto> departmentOperationListToDtoList(List<DepartmentOperation> operations){
-//        return operations.stream().map(this::departmentOperationToDto).collect(Collectors.toList());
-//    }
 
     public OperationDto paymentOperationToDto(PaymentOperation operation){
         return OperationDto.builder()
@@ -153,8 +133,8 @@ public class OperationMapper {
                 .user(UserMapper.entityToDto(operation.getUser()))
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
-                .date(DateUtil.dateFormatter.format(operation.getCreatedDate()))
-                .time(DateUtil.timeFormatter.format(operation.getCreatedDate()))
+                .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
+                .time(DateUtil.datetimeFormatter.format(operation.getCreatedDate()))
                 .build();
     }
 
@@ -162,41 +142,36 @@ public class OperationMapper {
         return operations.stream().map(this::paymentOperationToDto).collect(Collectors.toList());
     }
 
-    //TODO:SAKULOOK
-//    public List<OperationDto> allOperationListToDtoList(List<ApplicationOperation> applicationOperations,
-//                                                        List<UserOperation> userOperations,
-//                                                        List<GroupOperation> groupOperations,
-//                                                        List<StudentOperation> studentOperations,
-//                                                        List<DepartmentOperation> departmentOperations,
-//                                                        List<CourseOperation> courseOperations,
-//                                                        List<MentorOperation> mentorOperations,
-//                                                        List<PaymentOperation> paymentOperations){
-//        List<OperationDto> operations = new ArrayList<>();
-//        if (applicationOperations != null){
-//            operations.addAll(applicationOperationListToDtoList(applicationOperations));
-//        }
-//        if (userOperations != null){
-//            operations.addAll(userOperationListToDtoList(userOperations));
-//        }
-//        if (groupOperations != null){
-//            operations.addAll(groupOperationListToDtoList(groupOperations));
-//        }
-//        if (studentOperations != null){
-//            operations.addAll(studentOperationListToDtoList(studentOperations));
-//        }
-//        if (departmentOperations != null){
-//            operations.addAll(departmentOperationListToDtoList(departmentOperations));
-//        }
-//        if (courseOperations != null){
-//            operations.addAll(courseOperationListToDtoList(courseOperations));
-//        }
-//        if (mentorOperations != null){
-//            operations.addAll(mentorOperationListToDtoList(mentorOperations));
-//        }
-//        if (paymentOperations != null){
-//            operations.addAll(paymentOperationListToDtoList(paymentOperations));
-//        }
-//        Collections.sort(operations);
-//        return operations;
-//    }
+    public List<OperationDto> allOperationListToDtoList(List<ApplicationOperation> applicationOperations,
+                                                        List<UserOperation> userOperations,
+                                                        List<GroupOperation> groupOperations,
+                                                        List<StudentOperation> studentOperations,
+                                                        List<CourseOperation> courseOperations,
+                                                        List<MentorOperation> mentorOperations,
+                                                        List<PaymentOperation> paymentOperations){
+        List<OperationDto> operations = new ArrayList<>();
+        if (applicationOperations != null){
+            operations.addAll(applicationOperationListToDtoList(applicationOperations));
+        }
+        if (userOperations != null){
+            operations.addAll(userOperationListToDtoList(userOperations));
+        }
+        if (groupOperations != null){
+            operations.addAll(groupOperationListToDtoList(groupOperations));
+        }
+        if (studentOperations != null){
+            operations.addAll(studentOperationListToDtoList(studentOperations));
+        }
+        if (courseOperations != null){
+            operations.addAll(courseOperationListToDtoList(courseOperations));
+        }
+        if (mentorOperations != null){
+            operations.addAll(mentorOperationListToDtoList(mentorOperations));
+        }
+        if (paymentOperations != null){
+            operations.addAll(paymentOperationListToDtoList(paymentOperations));
+        }
+        Collections.sort(operations);
+        return operations;
+    }
 }

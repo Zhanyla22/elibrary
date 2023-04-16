@@ -1,6 +1,5 @@
 package com.example.neolabs.service;
 
-import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.GroupDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;

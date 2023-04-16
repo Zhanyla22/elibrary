@@ -2,8 +2,6 @@ package com.example.neolabs.repository;
 
 import com.example.neolabs.entity.User;
 import com.example.neolabs.enums.Status;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -19,5 +17,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserById(Long id);
 
-    Page<User> findAllByStatus(Status status, Pageable pageable);
+    List<User> findAllByStatus(Status status);
 }

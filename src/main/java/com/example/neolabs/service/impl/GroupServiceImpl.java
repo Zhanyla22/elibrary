@@ -1,6 +1,5 @@
 package com.example.neolabs.service.impl;
 
-import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.GroupDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
@@ -8,13 +7,13 @@ import com.example.neolabs.dto.request.create.CreateGroupRequest;
 import com.example.neolabs.entity.Course;
 import com.example.neolabs.entity.Group;
 import com.example.neolabs.enums.EntityEnum;
-import com.example.neolabs.enums.ResultCode;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.GroupMapper;
 import com.example.neolabs.repository.GroupRepository;
 import com.example.neolabs.service.GroupService;
+import com.example.neolabs.util.DateUtil;
 import com.example.neolabs.util.ResponseUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +21,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -73,6 +73,7 @@ public class GroupServiceImpl implements GroupService {
         }
         group.setReason(archiveRequest.getReason());
         group.setStatus(Status.ARCHIVED);
+        group.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
         groupRepository.save(group);
         return ResponseUtil.buildSuccessResponse("Group has been successfully archived.");
     }
@@ -85,6 +86,7 @@ public class GroupServiceImpl implements GroupService {
         }
         group.setStatus(Status.ACTIVE);
         group.setReason(null);
+        group.setArchiveDate(null);
         groupRepository.save(group);
         return ResponseUtil.buildSuccessResponse("Group has been successfully unarchived.");
     }

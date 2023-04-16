@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
@@ -31,6 +33,9 @@ public class Course extends BaseEntity {
 
     @Column(name = "is_archived")
     Boolean isArchived;
+
+    @Column(name = "archive_date")
+    LocalDateTime archiveDate;
 
     @Column(name = "number_of_lessons")
     Integer numberOfLessons;

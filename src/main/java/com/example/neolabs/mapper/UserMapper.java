@@ -18,8 +18,8 @@ public class UserMapper {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .phoneNumber(user.getPhoneNumber())
-                .lastVisitDate(DateUtil.dateFormatter.format(user.getLastVisitDate()))
-                .lastVisitTime(DateUtil.timeFormatter.format(user.getLastVisitDate()))
+                .lastVisitDate(DateUtil.datetimeToDateFormatter.format(user.getLastVisitDate()))
+                .lastVisitTime(DateUtil.datetimeFormatter.format(user.getLastVisitDate()))
                 .build();
     }
 

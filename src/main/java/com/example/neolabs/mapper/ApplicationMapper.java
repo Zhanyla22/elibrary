@@ -33,11 +33,11 @@ public class ApplicationMapper {
                 .gender(application.getGender())
                 .applicationStatus(application.getApplicationStatus())
                 .applicationStatusNum(application.getApplicationStatus().getOrder())
-                .applicationStatusUpdateDate(DateUtil.dateFormatter.format(application.getApplicationStatusUpdateDate()))
-                .applicationStatusUpdateTime(DateUtil.timeFormatter.format(application.getApplicationStatusUpdateDate()))
-                .creationDate(DateUtil.dateFormatter.format(application.getCreatedDate()))
+                .applicationStatusUpdateDate(DateUtil.datetimeToDateFormatter.format(application.getApplicationStatusUpdateDate()))
+                .applicationStatusUpdateTime(DateUtil.datetimeFormatter.format(application.getApplicationStatusUpdateDate()))
+                .creationDate(DateUtil.datetimeToDateFormatter.format(application.getCreatedDate()))
                 .updateDate(application.getUpdatedDate() != null ?
-                        DateUtil.dateFormatter.format(application.getUpdatedDate()) : null)
+                        DateUtil.datetimeToDateFormatter.format(application.getUpdatedDate()) : null)
                 .education(application.getEducation())
                 .isArchived(application.getIsArchived())
                 .isUrgent(DateUtil.findDifference(LocalDateTime.now(),

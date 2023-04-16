@@ -58,6 +58,9 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "reason_changed_status")
     String reason;
 
+    @Column(name = "archive_date")
+    LocalDateTime archiveDate;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority(role.name()));

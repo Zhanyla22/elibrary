@@ -14,6 +14,7 @@ import com.example.neolabs.repository.CourseRepository;
 import com.example.neolabs.repository.GroupRepository;
 import com.example.neolabs.repository.MentorRepository;
 import com.example.neolabs.service.MentorService;
+import com.example.neolabs.util.DateUtil;
 import com.example.neolabs.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
@@ -88,6 +89,7 @@ public class MentorServiceImpl implements MentorService {
         }
         mentor.setReason(archiveRequest.getReason());
         mentor.setStatus(isBlacklist ? Status.BLACKLIST : Status.ARCHIVED);
+        mentor.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
         mentorRepository.save(mentor);
         return ResponseUtil.buildSuccessResponse("Mentor has been successfully " + (isBlacklist ? "blacklisted." : "archived."));
     }
@@ -100,6 +102,7 @@ public class MentorServiceImpl implements MentorService {
         }
         mentor.setStatus(Status.ACTIVE);
         mentor.setReason(null);
+        mentor.setArchiveDate(null);
         mentorRepository.save(mentor);
         return ResponseUtil.buildSuccessResponse("Mentor has been successfully unarchived.");
     }
@@ -118,6 +121,11 @@ public class MentorServiceImpl implements MentorService {
 
         return mentorResponse;
 
+    }
+
+    @Override
+    public List<Mentor> getBlacklist(){
+        return mentorRepository.findAllByStatus(Status.BLACKLIST);
     }
 
     public Mentor getMentorEntityById(Long mentorId) {

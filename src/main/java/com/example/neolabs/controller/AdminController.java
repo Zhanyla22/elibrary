@@ -1,7 +1,6 @@
 package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
-import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.UserDto;
 import com.example.neolabs.dto.request.ArchiveRequest;

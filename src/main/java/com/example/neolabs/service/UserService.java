@@ -56,4 +56,5 @@ public interface UserService {
 
     ResponseDto unarchiveUserById(Long userId);
 
+    List<User> getBlacklist();
 }

@@ -11,12 +11,14 @@ import com.example.neolabs.exception.ContentNotFoundException;
 import com.example.neolabs.mapper.CourseMapper;
 import com.example.neolabs.repository.CourseRepository;
 import com.example.neolabs.service.CourseService;
+import com.example.neolabs.util.DateUtil;
 import com.example.neolabs.util.ResponseUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -54,6 +56,7 @@ public class CourseServiceImpl implements CourseService {
         course.setReason(archiveRequest.getReason());
         course.setStatus(Status.ARCHIVED);
         courseRepository.save(course);
+        course.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
         return ResponseUtil.buildSuccessResponse("Course has been successfully archived.");
     }
 
@@ -65,6 +68,7 @@ public class CourseServiceImpl implements CourseService {
         }
         course.setStatus(Status.ACTIVE);
         course.setReason(null);
+        course.setArchiveDate(null);
         courseRepository.save(course);
         return ResponseUtil.buildSuccessResponse("Course has been successfully unarchived.");
     }

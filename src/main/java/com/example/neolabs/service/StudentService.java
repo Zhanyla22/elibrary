@@ -1,6 +1,5 @@
 package com.example.neolabs.service;
 
-import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.StudentDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
@@ -8,6 +7,7 @@ import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.dto.request.create.CreateStudentRequest;
 import com.example.neolabs.dto.request.update.UpdateStudentRequest;
 import com.example.neolabs.entity.Application;
+import com.example.neolabs.entity.Student;
 import com.example.neolabs.enums.Status;
 import org.springframework.data.domain.PageRequest;
 
@@ -34,4 +34,6 @@ public interface StudentService {
     ResponseDto archiveStudentById(Long studentId, ArchiveRequest archiveRequest, Boolean isBlacklist);
 
     ResponseDto unarchiveStudentById(Long studentId);
+
+    List<Student> getBlacklist();
 }
