@@ -29,6 +29,4 @@ public class CreateCourseRequest {
     @JsonProperty(value = "numberOfLessons")
     Integer numberOfLessons;
 
-    @JsonProperty(value = "imageUrl")
-    String imageUrl;
 }
