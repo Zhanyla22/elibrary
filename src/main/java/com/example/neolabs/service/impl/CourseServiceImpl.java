@@ -87,4 +87,9 @@ public class CourseServiceImpl implements CourseService {
         });
     }
 
+    @Override
+    public CourseDto getCourseById(Long courseId) {
+        return courseMapper.entityToDto(getCourseEntityById(courseId));
+    }
+
 }

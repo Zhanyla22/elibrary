@@ -53,4 +53,9 @@ public class CourseController {
     public ResponseEntity<ResponseDto> unarchiveCourseById(@RequestParam("courseId") Long courseId){
         return ResponseEntity.ok(courseService.unarchiveCourseById(courseId));
     }
+
+    @GetMapping("/{courseId}")
+    public ResponseEntity<CourseDto> getCourseById(@PathVariable("courseId") Long courseId){
+        return ResponseEntity.ok(courseService.getCourseById(courseId));
+    }
 }

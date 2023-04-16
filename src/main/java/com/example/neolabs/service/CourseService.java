@@ -18,6 +18,8 @@ public interface CourseService {
 
     Course getCourseEntityById(Long courseId);
 
+    CourseDto getCourseById(Long courseId);
+
     CourseDto updateCourseById(Long courseId, CreateCourseRequest createCourseRequest);
 
     ResponseDto archiveCourseById(Long courseId, ArchiveRequest archiveRequest);
