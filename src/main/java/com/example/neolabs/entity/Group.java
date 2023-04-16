@@ -8,6 +8,8 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -49,11 +51,15 @@ public class Group extends BaseEntity {
     String imageUrl;
 
     @ManyToMany(mappedBy = "groups")
-    Set<Student> students;
+    List<Student> students;
 
     @Column(name = "reason_changed_status")
     String reason;
 
     @Column(name = "archive_date")
     LocalDateTime archiveDate;
+
+    public List<Student> getStudents(){
+        return students != null ? students : new ArrayList<>();
+    }
 }

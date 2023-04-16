@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -66,4 +67,12 @@ public class Student extends BaseEntity {
 
     @OneToMany(mappedBy = "student")
     List<StudentGroupBill> groupBills;
+
+    public List<Group> getGroups(){
+        return groups != null ? groups : new ArrayList<>();
+    }
+
+    public List<StudentGroupBill> getGroupBills(){
+        return groupBills != null ? groupBills : new ArrayList<>();
+    }
 }
