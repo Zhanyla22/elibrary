@@ -178,7 +178,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void updateProfilePageWithRole(Long id, UpdateUserRequest updateUserRequest) {
-        User user = userRepository.findById(id).orElseThrow(() -> new BaseException("User not found", HttpStatus.BAD_REQUEST));
+        User user = getUserEntityById(id);
         user.setEmail(updateUserRequest.getEmail());
         user.setRole(updateUserRequest.getRole());
         user.setFirstName(updateUserRequest.getFirstName());

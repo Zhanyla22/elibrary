@@ -39,16 +39,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseDto insertCourse(CreateCourseRequest createCourseRequest) {
-        if (!courseRepository.existsByName(createCourseRequest.getName())) {
-            courseRepository.saveAndFlush(courseMapper.createRequestToEntity(createCourseRequest));
-        } else{
-            throw new BaseException("course named " + createCourseRequest.getName() + " already exists", HttpStatus.BAD_REQUEST);}
-        Course course1 = courseRepository.findCourseByName(createCourseRequest.getName()).orElseThrow(
-                ()->new BaseException("course with name "+createCourseRequest.getName()+" not found", HttpStatus.BAD_REQUEST)
-        );
-        return ResponseUtil.buildSuccessResponse("Course has been successfully created.",
-                "course "+createCourseRequest.getName()+" id is "+course1.getId());
+    public CourseDto insertCourse(CreateCourseRequest createCourseRequest) {
+        if (courseRepository.existsByName(createCourseRequest.getName())) {
+            throw new BaseException("Course name is already in use.", HttpStatus.CONFLICT);
+        }
+        Course course = courseMapper.createRequestToEntity(createCourseRequest);
+        course.setStatus(Status.ACTIVE);
+        return courseMapper.entityToDto(courseRepository.save(course));
     }
 
     @Override
@@ -85,11 +82,10 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public String saveImageCourse(Long courseId, MultipartFile multipartFile) {
+    public CourseDto saveImageCourse(Long courseId, MultipartFile multipartFile) {
         Course course = getCourseEntityById(courseId);
         course.setImageUrl(imageUploadService.saveImage(multipartFile));
-        courseRepository.save(course);
-        return "image saved for course  "+course.getName();
+        return courseMapper.entityToDto(courseRepository.save(course));
     }
 
     @Override

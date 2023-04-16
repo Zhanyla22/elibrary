@@ -13,7 +13,7 @@ public interface CourseService {
 
     List<CourseDto> getAllCourses();
 
-    ResponseDto insertCourse(CreateCourseRequest createCourseRequest);
+    CourseDto insertCourse(CreateCourseRequest createCourseRequest);
 
     CourseDto deleteCourseById(Long courseId);
 
@@ -27,7 +27,7 @@ public interface CourseService {
 
     ResponseDto unarchiveCourseById(Long courseId);
 
-    String saveImageCourse(Long courseId, MultipartFile multipartFile);
+    CourseDto saveImageCourse(Long courseId, MultipartFile multipartFile);
 
 }
 

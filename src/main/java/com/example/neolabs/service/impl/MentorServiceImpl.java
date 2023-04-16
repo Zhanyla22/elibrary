@@ -54,22 +54,22 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public Long addNewMentor(CreateMentorRequest createMentorRequest) {
+    public MentorDto addNewMentor(CreateMentorRequest createMentorRequest) {
         if (!mentorRepository.existsByEmail(createMentorRequest.getEmail())) {
             mentorRepository.saveAndFlush(mentorMapper.createMentorDtoToMentorEntity(createMentorRequest));
-        } else{
-            throw new BaseException("mentor with email " + createMentorRequest.getEmail() + " already exists", HttpStatus.BAD_REQUEST);}
+        } else {
+            throw new BaseException("Mentor with email " + createMentorRequest.getEmail() + " already exists", HttpStatus.CONFLICT);
+        }
         Mentor mentor = mentorRepository.findByEmail(createMentorRequest.getEmail()).orElseThrow(()->
-                new BaseException("Not found mentor with email "+createMentorRequest.getEmail(),HttpStatus.BAD_REQUEST));
-        return mentor.getId();
+                new BaseException("Not found mentor with email " + createMentorRequest.getEmail(), HttpStatus.NOT_FOUND));
+        return MentorMapper.entityToMentorDto(mentor);
     }
 
     @Override
-    public String saveImageMentor(Long mentorId, MultipartFile multipartFile) {
+    public MentorDto saveImageMentor(Long mentorId, MultipartFile multipartFile) {
         Mentor mentor = getMentorEntityById(mentorId);
         mentor.setImageUrl(imageUploadService.saveImage(multipartFile));
-        mentorRepository.save(mentor);
-        return "saved image for mentor " + mentorId;
+        return MentorMapper.entityToMentorDto(mentorRepository.save(mentor));
     }
 
 
@@ -92,7 +92,7 @@ public class MentorServiceImpl implements MentorService {
         mentor.setSalary(updateMentorRequest.getSalary());
         mentor.setCourse(courseRepository.findById(updateMentorRequest.getCourseId())
                 .orElseThrow(
-                        () -> new BaseException("course with id  " + updateMentorRequest.getCourseId() + " not found", HttpStatus.BAD_REQUEST)));
+                        () -> new BaseException("Course with id  " + updateMentorRequest.getCourseId() + " not found", HttpStatus.NOT_FOUND)));
         mentorRepository.save(mentor);
     }
 

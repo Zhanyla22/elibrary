@@ -14,9 +14,9 @@ public interface MentorService {
 
     List<MentorCardDto> getAllMentorCards(Long courseId, Status status);
 
-    Long  addNewMentor(CreateMentorRequest createMentorRequest); // FIXME: 16.04.2023 need to return some info about operation
+    MentorDto addNewMentor(CreateMentorRequest createMentorRequest); // FIXME: 16.04.2023 need to return some info about operation
 
-    String saveImageMentor(Long mentorId,MultipartFile multipartFile);
+    MentorDto saveImageMentor(Long mentorId, MultipartFile multipartFile);
 
     void deleteMentorById(Long id); // FIXME: 16.04.2023 need to return some info about operation
 

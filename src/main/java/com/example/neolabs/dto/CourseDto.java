@@ -31,4 +31,6 @@ public class CourseDto {
     Integer numberOfMentors;
 
     Integer numberOfGroups;
+
+    String imageUrl;
 }

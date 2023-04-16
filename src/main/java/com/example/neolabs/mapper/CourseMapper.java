@@ -22,6 +22,7 @@ public class CourseMapper {
                 .cost(course.getCost())
                 .durationInMonth(course.getDurationInMonth())
                 .isArchived(course.getIsArchived())
+                .imageUrl(course.getImageUrl())
                 .numberOfLessons(course.getNumberOfLessons())
                 .numberOfGroups(course.getGroups().size())
                 .numberOfMentors(course.getMentors().size())

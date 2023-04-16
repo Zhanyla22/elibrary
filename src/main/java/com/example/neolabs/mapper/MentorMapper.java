@@ -1,6 +1,7 @@
 package com.example.neolabs.mapper;
 
 import com.example.neolabs.dto.MentorCardDto;
+import com.example.neolabs.dto.MentorDto;
 import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.Status;
@@ -18,6 +19,17 @@ import java.util.stream.Collectors;
 public class MentorMapper {
 
     final CourseRepository courseRepository;
+
+    public static MentorDto entityToMentorDto(Mentor mentor){
+        return MentorDto.builder()
+                .firstName(mentor.getFirstName())
+                .lastName(mentor.getLastName())
+                .email(mentor.getEmail())
+                .courseName(mentor.getCourse().getName())
+                .phoneNumber(mentor.getPhoneNumber())
+                .patentNumber(mentor.getPatentNumber())
+                .build();
+    }
 
     public static MentorCardDto mentorEntityToMentorCardDto(Mentor mentor) {
         MentorCardDto mentorCardDto = new MentorCardDto();
@@ -39,7 +51,7 @@ public class MentorMapper {
         mentor.setPhoneNumber(createMentorRequest.getPhoneNumber());
         mentor.setCourse(courseRepository.findById(createMentorRequest.getCourseId())
                 .orElseThrow(
-                        () -> new BaseException("course with id" + createMentorRequest.getCourseId() + " not found", HttpStatus.BAD_REQUEST)));
+                        () -> new BaseException("Course with id" + createMentorRequest.getCourseId() + " not found", HttpStatus.NOT_FOUND)));
         mentor.setStatus(Status.ACTIVE);
         return mentor;
     }

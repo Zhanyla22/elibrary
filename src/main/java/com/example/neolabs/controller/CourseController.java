@@ -34,15 +34,15 @@ public class CourseController extends BaseController {
 
     @Operation(summary = "Insert new course")
     @PostMapping(value = {""}, produces = "application/json")
-    public ResponseEntity<ResponseDto> insertCourse(@RequestBody CreateCourseRequest createCourseRequest){
+    public ResponseEntity<CourseDto> insertCourse(@RequestBody CreateCourseRequest createCourseRequest){
         return ResponseEntity.ok(courseService.insertCourse(createCourseRequest));
     }
 
-    @Operation(summary = "save image for course")
+    @Operation(summary = "Save image for course")
     @PostMapping("/save-image/{courseId}")
     public ResponseEntity<ResponseDto> saveImage(@PathVariable Long courseId,
                                                  @RequestPart MultipartFile multipartFile){
-        return constructSuccessResponse(courseService.saveImageCourse(courseId,multipartFile));
+        return constructSuccessResponse(courseService.saveImageCourse(courseId, multipartFile));
     }
 
     @PutMapping(value = {"/{courseId}"})
