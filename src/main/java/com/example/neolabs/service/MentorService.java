@@ -6,6 +6,7 @@ import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.dto.request.update.UpdateMentorRequest;
 import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.Status;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -13,7 +14,9 @@ public interface MentorService {
 
     List<MentorCardDto> getAllMentorCards(Long courseId, Status status);
 
-    void addNewMentor(CreateMentorRequest createMentorRequest); // FIXME: 16.04.2023 need to return some info about operation
+    Long  addNewMentor(CreateMentorRequest createMentorRequest); // FIXME: 16.04.2023 need to return some info about operation
+
+    String saveImageMentor(Long mentorId,MultipartFile multipartFile);
 
     void deleteMentorById(Long id); // FIXME: 16.04.2023 need to return some info about operation
 
@@ -26,4 +29,6 @@ public interface MentorService {
     MentorDto getMentorById(Long id);
 
     List<Mentor> getBlacklist();
+
+
 }

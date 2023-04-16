@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -41,9 +42,16 @@ public class MentorController extends BaseController {
     @Operation(summary = "Add new mentor")
     @PostMapping("")
     public ResponseEntity<ResponseDto> addNewMentor(@RequestBody CreateMentorRequest createMentorRequest) {
-        mentorService.addNewMentor(createMentorRequest);
-        return constructSuccessResponse("created");
+        return constructSuccessResponse( mentorService.addNewMentor(createMentorRequest));
     }
+
+    @Operation(summary = "save image for mentor")
+    @PostMapping("/save-image/{mentorId}")
+    public ResponseEntity<ResponseDto> saveImage(@PathVariable Long mentorId,
+                                                 @RequestPart MultipartFile multipartFile){
+       return constructSuccessResponse(mentorService.saveImageMentor(mentorId,multipartFile));
+    }
+
 
     @Hidden // FIXME: 16.04.2023 redundant
     @Operation(summary = "delete mentor by id")

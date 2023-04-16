@@ -5,18 +5,21 @@ import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
 import com.example.neolabs.entity.Course;
+import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.ContentNotFoundException;
 import com.example.neolabs.mapper.CourseMapper;
 import com.example.neolabs.repository.CourseRepository;
 import com.example.neolabs.service.CourseService;
+import com.example.neolabs.service.ImageUploadService;
 import com.example.neolabs.util.DateUtil;
 import com.example.neolabs.util.ResponseUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +31,7 @@ public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
     private final CourseMapper courseMapper;
+    private final ImageUploadService imageUploadService;
 
     @Override
     public List<CourseDto> getAllCourses() {
@@ -35,9 +39,16 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseDto insertCourse(CreateCourseRequest createCourseRequest) {
-        Course course = courseMapper.createRequestToEntity(createCourseRequest);
-        return courseMapper.entityToDto(courseRepository.save(course));
+    public ResponseDto insertCourse(CreateCourseRequest createCourseRequest) {
+        if (!courseRepository.existsByName(createCourseRequest.getName())) {
+            courseRepository.saveAndFlush(courseMapper.createRequestToEntity(createCourseRequest));
+        } else{
+            throw new BaseException("course named " + createCourseRequest.getName() + " already exists", HttpStatus.BAD_REQUEST);}
+        Course course1 = courseRepository.findCourseByName(createCourseRequest.getName()).orElseThrow(
+                ()->new BaseException("course with name "+createCourseRequest.getName()+" not found", HttpStatus.BAD_REQUEST)
+        );
+        return ResponseUtil.buildSuccessResponse("Course has been successfully created.",
+                "course "+createCourseRequest.getName()+" id is "+course1.getId());
     }
 
     @Override
@@ -71,6 +82,14 @@ public class CourseServiceImpl implements CourseService {
         course.setArchiveDate(null);
         courseRepository.save(course);
         return ResponseUtil.buildSuccessResponse("Course has been successfully unarchived.");
+    }
+
+    @Override
+    public String saveImageCourse(Long courseId, MultipartFile multipartFile) {
+        Course course = getCourseEntityById(courseId);
+        course.setImageUrl(imageUploadService.saveImage(multipartFile));
+        courseRepository.save(course);
+        return "image saved for course  "+course.getName();
     }
 
     @Override

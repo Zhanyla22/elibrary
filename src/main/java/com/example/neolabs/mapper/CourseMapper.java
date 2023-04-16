@@ -22,7 +22,6 @@ public class CourseMapper {
                 .cost(course.getCost())
                 .durationInMonth(course.getDurationInMonth())
                 .isArchived(course.getIsArchived())
-                .imageUrl(course.getImageUrl())
                 .numberOfLessons(course.getNumberOfLessons())
                 .numberOfGroups(course.getGroups().size())
                 .numberOfMentors(course.getMentors().size())
@@ -36,7 +35,6 @@ public class CourseMapper {
                 .cost(request.getCost())
                 .durationInMonth(request.getDurationInMonth())
                 .numberOfLessons(request.getNumberOfLessons())
-                .imageUrl(request.getImageUrl())
                 .build();
     }
 
