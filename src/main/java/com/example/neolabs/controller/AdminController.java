@@ -4,6 +4,7 @@ import com.example.neolabs.controller.base.BaseController;
 import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.UserDto;
+import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.RegistrationRequest;
 import com.example.neolabs.dto.request.update.UpdateUserRequest;
 import com.example.neolabs.enums.Role;
@@ -62,7 +63,7 @@ public class AdminController extends BaseController {
 
     @GetMapping("/users/filter")
     public ResponseEntity<List<UserDto>> filterUsers(@RequestParam("status") Optional<Status> status,
-                                                     @RequestParam("role") Optional<Role> role){
+                                                     @RequestParam("role") Optional<Role> role) {
         return ResponseEntity.ok(userService.filter(status.orElse(null), role.orElse(null)));
     }
 
@@ -71,7 +72,7 @@ public class AdminController extends BaseController {
                                                      @RequestParam("firstName") Optional<String> firstName,
                                                      @RequestParam("lastName") Optional<String> lastName,
                                                      @RequestParam("firstOrLastName") Optional<String> firstOrLastName,
-                                                     @RequestParam("phoneNumber") Optional<String> phoneNumber){
+                                                     @RequestParam("phoneNumber") Optional<String> phoneNumber) {
         return ResponseEntity.ok(userService.search(email.orElse(null), firstName.orElse(null),
                 lastName.orElse(null), firstOrLastName.orElse(null), phoneNumber.orElse(null)));
     }
@@ -94,15 +95,15 @@ public class AdminController extends BaseController {
         return constructSuccessResponse(userService.getUserById(id));
     }
 
-    @Operation(summary = "archive user by id")
-    @PutMapping("/archive/{id}")
-    public void archiveMentorById(@PathVariable Long id, @RequestBody ArchiveDto userArchiveDto) {
-        userService.archiveUserById(id, userArchiveDto);
+    @PutMapping("/archive")
+    public ResponseEntity<ResponseDto> archiveUserById(@RequestParam("userId") Long userId,
+                                                       @RequestParam(value = "blacklist", defaultValue = "1") Boolean isBlacklist,
+                                                       @RequestBody ArchiveRequest archiveRequest) {
+        return ResponseEntity.ok(userService.archiveUserById(userId, archiveRequest, isBlacklist));
     }
 
-    @Operation(summary = "blacklist user by id")
-    @PutMapping("/blacklist/{id}")
-    public void blackListUserById(@PathVariable Long id, @RequestBody ArchiveDto userBlacklistDto) {
-        userService.blacklistUserById(id, userBlacklistDto);
+    @PutMapping("/unarchive")
+    public ResponseEntity<ResponseDto> unarchiveUserById(@RequestParam("userId") Long userId){
+        return ResponseEntity.ok(userService.unarchiveUserById(userId));
     }
 }

@@ -3,6 +3,7 @@ package com.example.neolabs.service;
 import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.StudentDto;
+import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.dto.request.create.CreateStudentRequest;
 import com.example.neolabs.dto.request.update.UpdateStudentRequest;
@@ -30,7 +31,7 @@ public interface StudentService {
 
     ResponseDto enrollStudent(Long studentId, Long groupId);
 
-    void archiveStudentById(Long studentId, ArchiveDto archiveStudentDto);
+    ResponseDto archiveStudentById(Long studentId, ArchiveRequest archiveRequest, Boolean isBlacklist);
 
-    void blacklistStudentById(Long studentId, ArchiveDto blacklistStudentDto);
+    ResponseDto unarchiveStudentById(Long studentId);
 }

@@ -3,6 +3,7 @@ package com.example.neolabs.controller;
 import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.StudentDto;
+import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateStudentRequest;
 import com.example.neolabs.dto.request.update.UpdateStudentRequest;
 import com.example.neolabs.enums.Status;
@@ -74,14 +75,16 @@ public class StudentController {
     }
 
     @Operation(summary = "archive student by id")
-    @PutMapping("/archive/{id}")
-    public void archiveStudentById(@PathVariable Long id, @RequestBody ArchiveDto studentArchiveDto) {
-        studentService.archiveStudentById(id, studentArchiveDto);
+    @PutMapping("/archive")
+    public ResponseEntity<ResponseDto> archiveGroupById(@RequestParam("studentId") Long studentId,
+                                 @RequestParam(value = "blacklist", defaultValue = "0") Boolean isBlacklist,
+                                 @RequestBody ArchiveRequest archiveRequest) {
+        return ResponseEntity.ok(studentService.archiveStudentById(studentId, archiveRequest, isBlacklist));
     }
 
-    @Operation(summary = "blacklist student by id")
-    @PutMapping("/blacklist/{id}")
-    public void blackListStudentById(@PathVariable Long id, @RequestBody ArchiveDto studentBlacklistDto) {
-        studentService.blacklistStudentById(id, studentBlacklistDto);
+    @PutMapping
+    public ResponseEntity<ResponseDto> unarchiveStudentById(@RequestParam("studentId") Long studentId){
+        return ResponseEntity.ok(studentService.unarchiveStudentById(studentId));
     }
+
 }

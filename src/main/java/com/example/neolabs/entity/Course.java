@@ -37,4 +37,6 @@ public class Course extends BaseEntity {
 
     @Column(name = "image_url")
     String imageUrl;
+
+    String reason;
 }

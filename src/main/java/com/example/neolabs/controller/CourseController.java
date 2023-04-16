@@ -2,6 +2,8 @@ package com.example.neolabs.controller;
 
 
 import com.example.neolabs.dto.CourseDto;
+import com.example.neolabs.dto.ResponseDto;
+import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
 import com.example.neolabs.service.impl.CourseServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,16 +36,21 @@ public class CourseController {
         return ResponseEntity.ok(courseService.insertCourse(createCourseRequest));
     }
 
-    @Operation(summary = "Delete course by id")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<CourseDto> deleteCourseById(@PathVariable("id") Long id){
-        return ResponseEntity.ok(courseService.deleteCourseById(id));
-    }
-
-    @PutMapping(value = {"/{id}"})
+    @PutMapping(value = {"/{courseId}"})
     @Operation(summary = "Update course by id")
-    public ResponseEntity<CourseDto> updateCourseById(@PathVariable("id") Long id,
+    public ResponseEntity<CourseDto> updateCourseById(@PathVariable("courseId") Long id,
                                                       @Valid @RequestBody CreateCourseRequest createCourseRequest){
         return ResponseEntity.ok(courseService.updateCourseById(id, createCourseRequest));
+    }
+
+    @PutMapping("/archive")
+    public ResponseEntity<ResponseDto> archiveCourseById(@RequestParam("courseId") Long courseId,
+                                                         @RequestBody @Valid ArchiveRequest archiveRequest){
+        return ResponseEntity.ok(courseService.archiveCourseById(courseId, archiveRequest));
+    }
+
+    @PutMapping("/unarchive")
+    public ResponseEntity<ResponseDto> unarchiveCourseById(@RequestParam("courseId") Long courseId){
+        return ResponseEntity.ok(courseService.unarchiveCourse(courseId));
     }
 }

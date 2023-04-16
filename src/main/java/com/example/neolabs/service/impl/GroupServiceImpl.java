@@ -3,22 +3,25 @@ package com.example.neolabs.service.impl;
 import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.GroupDto;
 import com.example.neolabs.dto.ResponseDto;
+import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateGroupRequest;
 import com.example.neolabs.entity.Course;
 import com.example.neolabs.entity.Group;
 import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.enums.ResultCode;
 import com.example.neolabs.enums.Status;
+import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.GroupMapper;
 import com.example.neolabs.repository.GroupRepository;
 import com.example.neolabs.service.GroupService;
+import com.example.neolabs.util.ResponseUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -41,10 +44,7 @@ public class GroupServiceImpl implements GroupService {
         group.setEndDate(group.getStartDate().plusMonths(course.getDurationInMonth()));
 
         groupRepository.save(group);
-        return ResponseDto.builder()
-                .resultCode(ResultCode.SUCCESS)
-                .result("Group has been successfully created.")
-                .build();
+        return ResponseUtil.buildSuccessResponse("Group has been successfully created.");
     }
 
     @Override
@@ -66,24 +66,29 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void archiveGroupById(Long groupId, ArchiveDto groupArchiveDto) {
+    public ResponseDto archiveGroupById(Long groupId, ArchiveRequest archiveRequest) {
         Group group = getGroupEntityById(groupId);
-        group.setUpdatedDate(LocalDateTime.now());
-        group.setReason(groupArchiveDto.getReason());
+        if (group.getStatus() == Status.ARCHIVED) {
+            throw new BaseException("Group is already archived", HttpStatus.CONFLICT);
+        }
+        group.setReason(archiveRequest.getReason());
         group.setStatus(Status.ARCHIVED);
-
         groupRepository.save(group);
+        return ResponseUtil.buildSuccessResponse("Group has been successfully archived.");
     }
 
     @Override
-    public void blackListGroupById(Long groupId, ArchiveDto groupBlacklistDto) {
+    public ResponseDto unarchiveGroupById(Long groupId) {
         Group group = getGroupEntityById(groupId);
-        group.setUpdatedDate(LocalDateTime.now());
-        group.setReason(groupBlacklistDto.getReason());
-        group.setStatus(Status.BLACK_LIST);
-
+        if (group.getStatus() == Status.ACTIVE) {
+            throw new BaseException("Group is not archived.", HttpStatus.CONFLICT);
+        }
+        group.setStatus(Status.ACTIVE);
+        group.setReason(null);
         groupRepository.save(group);
+        return ResponseUtil.buildSuccessResponse("Group has been successfully unarchived.");
     }
+
 
     public Group getGroupEntityById(Long groupId) {
         return groupRepository.findById(groupId).orElseThrow(() -> {

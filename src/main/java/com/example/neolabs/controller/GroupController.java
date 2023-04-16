@@ -3,6 +3,7 @@ package com.example.neolabs.controller;
 import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.GroupDto;
 import com.example.neolabs.dto.ResponseDto;
+import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateGroupRequest;
 import com.example.neolabs.service.impl.GroupServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,15 +48,16 @@ public class GroupController {
         return ResponseEntity.ok(groupService.updateGroupById(groupId, createGroupRequest));
     }
 
-    @Operation(summary = "archive group by id")
-    @PutMapping("/archive/{id}")
-    public void archiveGroupById(@PathVariable Long id, @RequestBody ArchiveDto groupArchiveDto) {
-        groupService.archiveGroupById(id, groupArchiveDto);
+    @Operation(summary = "Archive group by id")
+    @PutMapping("/archive")
+    public ResponseEntity<ResponseDto> archiveGroupById(@RequestParam("groupId") Long groupId,
+                                 @RequestBody ArchiveRequest archiveRequest) {
+        return ResponseEntity.ok(groupService.archiveGroupById(groupId, archiveRequest));
     }
 
-    @Operation(summary = "blacklist groups by id")
-    @PutMapping("/blacklist/{id}")
-    public void blackListGroupById(@PathVariable Long id, @RequestBody ArchiveDto groupBlacklistDto) {
-        groupService.blackListGroupById(id, groupBlacklistDto);
+    @Operation(summary = "Archive group by id")
+    @PutMapping("/unarchive")
+    public ResponseEntity<ResponseDto> archiveGroupById(@RequestParam("groupId") Long groupId) {
+        return ResponseEntity.ok(groupService.unarchiveGroupById(groupId));
     }
 }

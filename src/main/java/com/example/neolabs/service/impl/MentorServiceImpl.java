@@ -1,9 +1,7 @@
 package com.example.neolabs.service.impl;
 
-import com.example.neolabs.dto.ArchiveDto;
-import com.example.neolabs.dto.MentorCardDto;
-import com.example.neolabs.dto.MentorResponse;
-import com.example.neolabs.dto.UpdateMentorDto;
+import com.example.neolabs.dto.*;
+import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.EntityEnum;
@@ -16,6 +14,7 @@ import com.example.neolabs.repository.CourseRepository;
 import com.example.neolabs.repository.GroupRepository;
 import com.example.neolabs.repository.MentorRepository;
 import com.example.neolabs.service.MentorService;
+import com.example.neolabs.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -79,23 +78,30 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public void archiveMentorById(Long mentorId, ArchiveDto mentorArchiveDto) {
+    public ResponseDto archiveMentorById(Long mentorId, ArchiveRequest archiveRequest, Boolean isBlacklist) {
         Mentor mentor = getMentorEntityById(mentorId);
-        mentor.setUpdatedDate(LocalDateTime.now());
-        mentor.setReason(mentorArchiveDto.getReason());
-        mentor.setStatus(Status.ARCHIVED);
-
+        if (mentor.getStatus() == Status.ARCHIVED && !isBlacklist) {
+            throw new BaseException("Mentor is already archived", HttpStatus.CONFLICT);
+        }
+        if (mentor.getStatus() == Status.BLACKLIST && isBlacklist) {
+            throw new BaseException("Mentor is already in blacklist", HttpStatus.CONFLICT);
+        }
+        mentor.setReason(archiveRequest.getReason());
+        mentor.setStatus(isBlacklist ? Status.BLACKLIST : Status.ARCHIVED);
         mentorRepository.save(mentor);
+        return ResponseUtil.buildSuccessResponse("Mentor has been successfully " + (isBlacklist ? "blacklisted." : "archived."));
     }
 
     @Override
-    public void blackListMentorById(Long mentorId, ArchiveDto mentorBlacklistDto) {
+    public ResponseDto unarchiveMentorById(Long mentorId) {
         Mentor mentor = getMentorEntityById(mentorId);
-        mentor.setUpdatedDate(LocalDateTime.now());
-        mentor.setReason(mentorBlacklistDto.getReason());
-        mentor.setStatus(Status.BLACK_LIST);
-
+        if (mentor.getStatus() == Status.ACTIVE) {
+            throw new BaseException("Mentor is already active.", HttpStatus.CONFLICT);
+        }
+        mentor.setStatus(Status.ACTIVE);
+        mentor.setReason(null);
         mentorRepository.save(mentor);
+        return ResponseUtil.buildSuccessResponse("Mentor has been successfully unarchived.");
     }
 
     @Override

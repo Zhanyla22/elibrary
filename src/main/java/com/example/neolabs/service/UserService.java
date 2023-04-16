@@ -1,5 +1,6 @@
 package com.example.neolabs.service;
 
+import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.update.UpdateUserClientRequest;
 import com.example.neolabs.dto.request.update.UpdateUserRequest;
 import com.example.neolabs.dto.*;
@@ -51,8 +52,8 @@ public interface UserService {
 
     UserDto getUserById(Long id);
 
-    void archiveUserById(Long userId, ArchiveDto archiveUserDto);
+    ResponseDto archiveUserById(Long userId, ArchiveRequest archiveRequest, Boolean isBlacklist);
 
-    void blacklistUserById(Long userId, ArchiveDto blacklistUserDto);
+    ResponseDto unarchiveUserById(Long userId);
 
 }

@@ -18,8 +18,7 @@ public interface GroupService {
 
     GroupDto updateGroupById(Long groupId, CreateGroupRequest createGroupRequest);
 
-    void archiveGroupById(Long groupId, ArchiveDto groupArchiveDto);
+    ResponseDto archiveGroupById(Long groupId, ArchiveRequest archiveRequest);
 
-    void blackListGroupById(Long groupId, ArchiveDto groupBlacklistDto);
-
+    ResponseDto unarchiveGroupById(Long groupId);
 }

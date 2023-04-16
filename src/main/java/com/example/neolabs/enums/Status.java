@@ -29,7 +29,7 @@ public enum Status {
             return "Архивирован";
         }
     },
-    BLACK_LIST("blacklist"){
+    BLACKLIST("blacklist"){
         @Override
         public String getRussian(){
             return "В черном списке";

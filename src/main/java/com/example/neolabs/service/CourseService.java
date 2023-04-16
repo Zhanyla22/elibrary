@@ -1,6 +1,8 @@
 package com.example.neolabs.service;
 
 import com.example.neolabs.dto.CourseDto;
+import com.example.neolabs.dto.ResponseDto;
+import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
 import com.example.neolabs.entity.Course;
 
@@ -12,10 +14,14 @@ public interface CourseService {
 
     CourseDto insertCourse(CreateCourseRequest createCourseRequest);
 
-    CourseDto deleteCourseById(Long id);
+    CourseDto deleteCourseById(Long courseId);
 
-    Course getCourseEntityById(Long id);
+    Course getCourseEntityById(Long courseId);
 
-    CourseDto updateCourseById(Long id, CreateCourseRequest createCourseRequest);
+    CourseDto updateCourseById(Long courseId, CreateCourseRequest createCourseRequest);
+
+    ResponseDto archiveCourseById(Long courseId, ArchiveRequest archiveRequest);
+
+    ResponseDto unarchiveCourseById(Long courseId);
 }
 

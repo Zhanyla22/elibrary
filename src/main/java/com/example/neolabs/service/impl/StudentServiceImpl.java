@@ -3,6 +3,7 @@ package com.example.neolabs.service.impl;
 import com.example.neolabs.dto.ArchiveDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.StudentDto;
+import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.dto.request.create.CreateStudentRequest;
 import com.example.neolabs.dto.request.update.UpdateStudentRequest;
@@ -16,6 +17,7 @@ import com.example.neolabs.mapper.ApplicationMapper;
 import com.example.neolabs.mapper.StudentMapper;
 import com.example.neolabs.repository.StudentRepository;
 import com.example.neolabs.service.StudentService;
+import com.example.neolabs.util.ResponseUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -134,24 +136,32 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void archiveStudentById(Long studentId, ArchiveDto archiveStudentDto) {
+    public ResponseDto archiveStudentById(Long studentId, ArchiveRequest archiveRequest, Boolean isBlacklist) {
         Student student = getStudentEntityById(studentId);
-        student.setUpdatedDate(LocalDateTime.now());
-        student.setReason(archiveStudentDto.getReason());
-        student.setStatus(Status.ARCHIVED);
-
+        if (student.getStatus() == Status.ARCHIVED && !isBlacklist) {
+            throw new BaseException("Student is already archived", HttpStatus.CONFLICT);
+        }
+        if (student.getStatus() == Status.BLACKLIST && isBlacklist) {
+            throw new BaseException("Student is already in blacklist", HttpStatus.CONFLICT);
+        }
+        student.setReason(archiveRequest.getReason());
+        student.setStatus(isBlacklist ? Status.BLACKLIST : Status.ARCHIVED);
         studentRepository.save(student);
+        return ResponseUtil.buildSuccessResponse("Student has been successfully " + (isBlacklist ? "blacklisted." : "archived."));
     }
 
     @Override
-    public void blacklistStudentById(Long studentId, ArchiveDto blacklistStudentDto) {
+    public ResponseDto unarchiveStudentById(Long studentId) {
         Student student = getStudentEntityById(studentId);
-        student.setUpdatedDate(LocalDateTime.now());
-        student.setReason(blacklistStudentDto.getReason());
-        student.setStatus(Status.BLACK_LIST);
-
+        if (student.getStatus() == Status.ACTIVE) {
+            throw new BaseException("Student is already active.", HttpStatus.CONFLICT);
+        }
+        student.setStatus(Status.ACTIVE);
+        student.setReason(null);
         studentRepository.save(student);
+        return ResponseUtil.buildSuccessResponse("Student has been successfully unarchived.");
     }
+
 
     public Student getStudentEntityById(Long studentId) {
         return studentRepository.findById(studentId).orElseThrow(() -> {

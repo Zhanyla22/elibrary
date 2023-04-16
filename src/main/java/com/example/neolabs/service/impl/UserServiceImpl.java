@@ -1,6 +1,7 @@
 package com.example.neolabs.service.impl;
 
 import com.example.neolabs.dto.*;
+import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.AuthenticationRequest;
 import com.example.neolabs.dto.request.RegistrationRequest;
 import com.example.neolabs.dto.request.update.UpdateUserClientRequest;
@@ -22,6 +23,7 @@ import com.example.neolabs.security.jwt.JWTService;
 import com.example.neolabs.service.UserService;
 import com.example.neolabs.util.DateUtil;
 import com.example.neolabs.util.EmailUtil;
+import com.example.neolabs.util.ResponseUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -241,33 +243,35 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDto getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new BaseException("User with id " + id + " not found", HttpStatus.BAD_REQUEST));
-        return UserMapper.entityToDto(user);
+    public UserDto getUserById(Long userId) {
+        return UserMapper.entityToDto(getUserEntityById(userId));
     }
 
     @Override
-    public void archiveUserById(Long userId, ArchiveDto archiveUserDto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(
-                        () -> new BaseException("group with id " + userId + " not found", HttpStatus.BAD_REQUEST));
-        user.setUpdatedDate(LocalDateTime.now());
-        user.setReason(archiveUserDto.getReason());
-        user.setStatus(Status.ARCHIVED);
-
+    public ResponseDto archiveUserById(Long userId, ArchiveRequest archiveRequest, Boolean isBlacklist) {
+        User user = getUserEntityById(userId);
+        if (user.getStatus() == Status.ARCHIVED && !isBlacklist) {
+            throw new BaseException("User is already archived", HttpStatus.CONFLICT);
+        }
+        if (user.getStatus() == Status.BLACKLIST && isBlacklist) {
+            throw new BaseException("User is already in blacklist", HttpStatus.CONFLICT);
+        }
+        user.setReason(archiveRequest.getReason());
+        user.setStatus(isBlacklist ? Status.BLACKLIST : Status.ARCHIVED);
         userRepository.save(user);
+        return ResponseUtil.buildSuccessResponse("User has been successfully " + (isBlacklist ? "blacklisted." : "archived."));
     }
 
     @Override
-    public void blacklistUserById(Long userId, ArchiveDto blacklistUserDto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(
-                        () -> new BaseException("user with id " + userId + " not found", HttpStatus.BAD_REQUEST));
-        user.setUpdatedDate(LocalDateTime.now());
-        user.setReason(blacklistUserDto.getReason());
-        user.setStatus(Status.BLACK_LIST);
-
+    public ResponseDto unarchiveUserById(Long userId) {
+        User user = getUserEntityById(userId);
+        if (user.getStatus() == Status.ACTIVE) {
+            throw new BaseException("User is already active.", HttpStatus.CONFLICT);
+        }
+        user.setStatus(Status.ACTIVE);
+        user.setReason(null);
         userRepository.save(user);
+        return ResponseUtil.buildSuccessResponse("User has been successfully unarchived.");
     }
 
 

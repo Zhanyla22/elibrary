@@ -94,7 +94,7 @@ public class ApplicationController extends BaseController {
     @Operation(summary = "Archive Application by ID")
     @PutMapping("/archive")
     public ResponseEntity<ResponseDto> archiveApplicationById(@RequestParam("id") Long applicationId,
-                                                          @RequestBody ArchiveRequest request){
+                                                              @RequestBody ArchiveRequest request){
         return ResponseEntity.ok(applicationService.archiveApplicationById(applicationId, request));
     }
 
