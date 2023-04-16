@@ -24,6 +24,7 @@ public class ImageUploadServiceImpl implements ImageUploadService {
 
         final String urlKey = "cloudinary://532431178934438:dziz4lD4M6_iip6t1tuF0an_N8Q@db5aw8xbo";
 
+
         Cloudinary cloudinary = new Cloudinary((urlKey));
 
         File saveFile = Files.createTempFile(

@@ -1,6 +1,7 @@
 package com.example.neolabs.controller;
 
 
+import com.example.neolabs.controller.base.BaseController;
 import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
@@ -12,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/courses")
 @Tag(name = "Course Resource", description = "The Course API ")
-public class CourseController {
+public class CourseController extends BaseController {
 
     private final CourseServiceImpl courseService;
 
@@ -32,8 +34,15 @@ public class CourseController {
 
     @Operation(summary = "Insert new course")
     @PostMapping(value = {""}, produces = "application/json")
-    public ResponseEntity<CourseDto> insertCourse(@RequestBody CreateCourseRequest createCourseRequest){
+    public ResponseEntity<ResponseDto> insertCourse(@RequestBody CreateCourseRequest createCourseRequest){
         return ResponseEntity.ok(courseService.insertCourse(createCourseRequest));
+    }
+
+    @Operation(summary = "save image for course")
+    @PostMapping("/save-image/{courseId}")
+    public ResponseEntity<ResponseDto> saveImage(@PathVariable Long courseId,
+                                                 @RequestPart MultipartFile multipartFile){
+        return constructSuccessResponse(courseService.saveImageCourse(courseId,multipartFile));
     }
 
     @PutMapping(value = {"/{courseId}"})

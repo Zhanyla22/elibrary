@@ -1,6 +1,8 @@
 package com.example.neolabs.service.impl;
 
-import com.example.neolabs.dto.*;
+import com.example.neolabs.dto.MentorCardDto;
+import com.example.neolabs.dto.MentorDto;
+import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.dto.request.update.UpdateMentorRequest;
@@ -14,6 +16,7 @@ import com.example.neolabs.mapper.MentorMapper;
 import com.example.neolabs.repository.CourseRepository;
 import com.example.neolabs.repository.GroupRepository;
 import com.example.neolabs.repository.MentorRepository;
+import com.example.neolabs.service.ImageUploadService;
 import com.example.neolabs.service.MentorService;
 import com.example.neolabs.util.DateUtil;
 import com.example.neolabs.util.ResponseUtil;
@@ -22,6 +25,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,6 +41,7 @@ public class MentorServiceImpl implements MentorService {
     final GroupRepository groupRepository;
     final CourseServiceImpl courseService;
     final GroupMapper groupMapper;
+    final ImageUploadService imageUploadService;
 
     @Override
     public List<MentorCardDto> getAllMentorCards(Long courseId, Status status) {
@@ -49,12 +54,24 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public void addNewMentor(CreateMentorRequest createMentorRequest) {
+    public Long addNewMentor(CreateMentorRequest createMentorRequest) {
         if (!mentorRepository.existsByEmail(createMentorRequest.getEmail())) {
-            mentorRepository.save(mentorMapper.createMentorDtoToMentorEntity(createMentorRequest));
-        } else
-            throw new BaseException("mentor with email " + createMentorRequest.getEmail() + " already exists", HttpStatus.BAD_REQUEST);
+            mentorRepository.saveAndFlush(mentorMapper.createMentorDtoToMentorEntity(createMentorRequest));
+        } else{
+            throw new BaseException("mentor with email " + createMentorRequest.getEmail() + " already exists", HttpStatus.BAD_REQUEST);}
+        Mentor mentor = mentorRepository.findByEmail(createMentorRequest.getEmail()).orElseThrow(()->
+                new BaseException("Not found mentor with email "+createMentorRequest.getEmail(),HttpStatus.BAD_REQUEST));
+        return mentor.getId();
     }
+
+    @Override
+    public String saveImageMentor(Long mentorId, MultipartFile multipartFile) {
+        Mentor mentor = getMentorEntityById(mentorId);
+        mentor.setImageUrl(imageUploadService.saveImage(multipartFile));
+        mentorRepository.save(mentor);
+        return "saved image for mentor " + mentorId;
+    }
+
 
     @Override
     public void deleteMentorById(Long id) {
@@ -125,7 +142,7 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public List<Mentor> getBlacklist(){
+    public List<Mentor> getBlacklist() {
         return mentorRepository.findAllByStatus(Status.BLACKLIST);
     }
 
