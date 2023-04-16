@@ -1,4 +1,4 @@
 package com.example.neolabs.dto;
 
-public class ScheduleResponse {
+public class ScheduleDto {
 }

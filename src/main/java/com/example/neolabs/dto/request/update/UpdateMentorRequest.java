@@ -1,4 +1,4 @@
-package com.example.neolabs.dto;
+package com.example.neolabs.dto.request.update;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateMentorDto {
+public class UpdateMentorRequest {
 
     String email;
 

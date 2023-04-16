@@ -3,6 +3,7 @@ package com.example.neolabs.service.impl;
 import com.example.neolabs.dto.*;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateMentorRequest;
+import com.example.neolabs.dto.request.update.UpdateMentorRequest;
 import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.enums.Status;
@@ -64,17 +65,17 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public void updateMentorById(UpdateMentorDto updateMentorDto, Long id) {
+    public void updateMentorById(UpdateMentorRequest updateMentorRequest, Long id) {
         Mentor mentor = getMentorEntityById(id);
-        mentor.setEmail(updateMentorDto.getEmail());
-        mentor.setFirstName(updateMentorDto.getFirstName());
-        mentor.setLastName(updateMentorDto.getLastName());
-        mentor.setPhoneNumber(updateMentorDto.getPhoneNumber());
-        mentor.setPatentNumber(updateMentorDto.getPatentNumber());
-        mentor.setSalary(updateMentorDto.getSalary());
-        mentor.setCourse(courseRepository.findById(updateMentorDto.getCourseId())
+        mentor.setEmail(updateMentorRequest.getEmail());
+        mentor.setFirstName(updateMentorRequest.getFirstName());
+        mentor.setLastName(updateMentorRequest.getLastName());
+        mentor.setPhoneNumber(updateMentorRequest.getPhoneNumber());
+        mentor.setPatentNumber(updateMentorRequest.getPatentNumber());
+        mentor.setSalary(updateMentorRequest.getSalary());
+        mentor.setCourse(courseRepository.findById(updateMentorRequest.getCourseId())
                 .orElseThrow(
-                        () -> new BaseException("course with id  " + updateMentorDto.getCourseId() + " not found", HttpStatus.BAD_REQUEST)));
+                        () -> new BaseException("course with id  " + updateMentorRequest.getCourseId() + " not found", HttpStatus.BAD_REQUEST)));
         mentorRepository.save(mentor);
     }
 
@@ -108,18 +109,18 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public MentorResponse getMentorById(Long id) {
+    public MentorDto getMentorById(Long id) {
         Mentor mentor = getMentorEntityById(id);
-        MentorResponse mentorResponse = new MentorResponse();
-        mentorResponse.setFirstName(mentor.getFirstName());
-        mentorResponse.setLastName(mentor.getLastName());
-        mentorResponse.setPhoneNumber(mentor.getPhoneNumber());
-        mentorResponse.setPatentNumber(mentor.getPatentNumber());
-        mentorResponse.setEmail(mentor.getEmail());
-        mentorResponse.setCourseName(mentor.getCourse().getName());
-        mentorResponse.setGroupName(groupRepository.findGroupsNameByMentorId(id));
+        MentorDto mentorDto = new MentorDto();
+        mentorDto.setFirstName(mentor.getFirstName());
+        mentorDto.setLastName(mentor.getLastName());
+        mentorDto.setPhoneNumber(mentor.getPhoneNumber());
+        mentorDto.setPatentNumber(mentor.getPatentNumber());
+        mentorDto.setEmail(mentor.getEmail());
+        mentorDto.setCourseName(mentor.getCourse().getName());
+        mentorDto.setGroupName(groupRepository.findGroupsNameByMentorId(id));
 
-        return mentorResponse;
+        return mentorDto;
 
     }
 

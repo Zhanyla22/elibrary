@@ -14,25 +14,23 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CourseDto {
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long id;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String name;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Integer cost;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Boolean isArchived;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Integer durationInMonth;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Integer numberOfLessons;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    Integer numberOfStudents;
+
+    Integer numberOfMentors;
+
+    Integer numberOfGroups;
+
     String imageUrl;
 }

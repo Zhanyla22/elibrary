@@ -1,8 +1,7 @@
 package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
-import com.example.neolabs.dto.CreateStudentGroupBillDto;
-import com.example.neolabs.dto.PaymentDto;
+import com.example.neolabs.dto.request.create.CreateStudentGroupBillRequest;
 import com.example.neolabs.dto.StudentGroupBillDto;
 import com.example.neolabs.service.StudentGroupBillService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,8 +19,8 @@ public class StudentGroupBillController extends BaseController {
 
     @Operation(summary = "Create a student's group bill")
     @PostMapping("/create")
-    public ResponseEntity<StudentGroupBillDto> makeSinglePayment(@RequestBody CreateStudentGroupBillDto createStudentGroupBillDto){
-        return ResponseEntity.ok(studentGroupBillService.createStudentGroupBill(createStudentGroupBillDto));
+    public ResponseEntity<StudentGroupBillDto> makeSinglePayment(@RequestBody CreateStudentGroupBillRequest createStudentGroupBillRequest){
+        return ResponseEntity.ok(studentGroupBillService.createStudentGroupBill(createStudentGroupBillRequest));
     }
 
     @Operation(summary = "Get a payment by Id")

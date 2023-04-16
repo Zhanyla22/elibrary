@@ -2,7 +2,7 @@ package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
 import com.example.neolabs.dto.ResponseDto;
-import com.example.neolabs.dto.UpdateMentorDto;
+import com.example.neolabs.dto.request.update.UpdateMentorRequest;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.enums.Status;
@@ -56,8 +56,8 @@ public class MentorController extends BaseController {
     @Operation(summary = "update mentor by id")
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseDto> updateMentor(@PathVariable Long mentorId,
-                                                    @RequestBody @Valid UpdateMentorDto updateMentorDto) {
-        mentorService.updateMentorById(updateMentorDto, mentorId);
+                                                    @RequestBody @Valid UpdateMentorRequest updateMentorRequest) {
+        mentorService.updateMentorById(updateMentorRequest, mentorId);
         return constructSuccessResponse("updated");
     }
 

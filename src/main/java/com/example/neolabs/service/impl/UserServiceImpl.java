@@ -1,9 +1,12 @@
 package com.example.neolabs.service.impl;
 
 import com.example.neolabs.dto.*;
-import com.example.neolabs.dto.request.ArchiveRequest;
-import com.example.neolabs.dto.request.AuthenticationRequest;
-import com.example.neolabs.dto.request.RegistrationRequest;
+import com.example.neolabs.dto.request.*;
+import com.example.neolabs.dto.request.auth.AuthenticationRequest;
+import com.example.neolabs.dto.request.auth.ForgotPasswordCodeRequestDto;
+import com.example.neolabs.dto.request.auth.ForgotPasswordRequestDto;
+import com.example.neolabs.dto.request.auth.RegistrationRequest;
+import com.example.neolabs.dto.request.update.UpdatePasswordRequest;
 import com.example.neolabs.dto.request.update.UpdateUserClientRequest;
 import com.example.neolabs.dto.request.update.UpdateUserRequest;
 import com.example.neolabs.dto.response.AuthResponse2Role;
@@ -122,10 +125,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void updatePassword(UpdatePasswordDto updatePasswordDTO) {
+    public void updatePassword(UpdatePasswordRequest updatePasswordRequest) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (passwordEncoder.matches(updatePasswordDTO.getOldPassword(), user.getPassword())) {
-            user.setPassword(passwordEncoder.encode(updatePasswordDTO.getNewPassword()));
+        if (passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(updatePasswordRequest.getNewPassword()));
             userRepository.save(user);
         }
     }

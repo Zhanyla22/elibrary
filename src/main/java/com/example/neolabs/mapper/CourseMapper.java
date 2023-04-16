@@ -3,6 +3,7 @@ package com.example.neolabs.mapper;
 import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
 import com.example.neolabs.entity.Course;
+import com.example.neolabs.entity.Group;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,9 @@ public class CourseMapper {
                 .isArchived(course.getIsArchived())
                 .imageUrl(course.getImageUrl())
                 .numberOfLessons(course.getNumberOfLessons())
+                .numberOfGroups(course.getGroups().size())
+                .numberOfMentors(course.getMentors().size())
+                .numberOfStudents(course.getGroups().stream().mapToInt(group -> group.getStudents().size()).sum())
                 .build();
     }
 

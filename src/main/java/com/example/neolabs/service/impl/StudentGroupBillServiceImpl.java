@@ -1,6 +1,6 @@
 package com.example.neolabs.service.impl;
 
-import com.example.neolabs.dto.CreateStudentGroupBillDto;
+import com.example.neolabs.dto.request.create.CreateStudentGroupBillRequest;
 import com.example.neolabs.dto.StudentGroupBillDto;
 import com.example.neolabs.entity.StudentGroupBill;
 import com.example.neolabs.enums.EntityEnum;
@@ -41,11 +41,11 @@ public class StudentGroupBillServiceImpl implements StudentGroupBillService {
     }
 
     @Override
-    public StudentGroupBillDto createStudentGroupBill(CreateStudentGroupBillDto createStudentGroupBillDto){
+    public StudentGroupBillDto createStudentGroupBill(CreateStudentGroupBillRequest createStudentGroupBillRequest){
         StudentGroupBill studentGroupBill = new StudentGroupBill();
-        studentGroupBill.setStudentGroupDebt(groupService.getGroupEntityById(createStudentGroupBillDto.getGroupId()).getCourse().getCost() * 1.0);
-        studentGroupBill.setGroup(groupService.getGroupEntityById(createStudentGroupBillDto.getGroupId()));
-        studentGroupBill.setStudent(studentService.getStudentEntityById(createStudentGroupBillDto.getStudentId()));
+        studentGroupBill.setStudentGroupDebt(groupService.getGroupEntityById(createStudentGroupBillRequest.getGroupId()).getCourse().getCost() * 1.0);
+        studentGroupBill.setGroup(groupService.getGroupEntityById(createStudentGroupBillRequest.getGroupId()));
+        studentGroupBill.setStudent(studentService.getStudentEntityById(createStudentGroupBillRequest.getStudentId()));
         studentGroupBill.setCreatedDate(LocalDateTime.now());
 
         return studentGroupBillMapper.entityToDto(studentGroupBillRepository.save(studentGroupBill));

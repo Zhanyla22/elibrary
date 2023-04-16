@@ -1,5 +1,6 @@
 package com.example.neolabs.dto.request;
 
+import com.example.neolabs.enums.Status;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,10 +10,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationRequest {
+public class MentorCardRequest {
 
-    String email;
+    String course;
 
-    String password;
-
+    Status status;
 }

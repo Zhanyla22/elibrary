@@ -1,13 +1,16 @@
 package com.example.neolabs.service;
 
-import com.example.neolabs.dto.request.ArchiveRequest;
+import com.example.neolabs.dto.request.*;
+import com.example.neolabs.dto.request.auth.AuthenticationRequest;
+import com.example.neolabs.dto.request.auth.ForgotPasswordCodeRequestDto;
+import com.example.neolabs.dto.request.auth.ForgotPasswordRequestDto;
+import com.example.neolabs.dto.request.auth.RegistrationRequest;
+import com.example.neolabs.dto.request.update.UpdatePasswordRequest;
 import com.example.neolabs.dto.request.update.UpdateUserClientRequest;
 import com.example.neolabs.dto.request.update.UpdateUserRequest;
 import com.example.neolabs.dto.*;
 import com.example.neolabs.dto.response.AuthResponse2Role;
 import com.example.neolabs.entity.User;
-import com.example.neolabs.dto.request.AuthenticationRequest;
-import com.example.neolabs.dto.request.RegistrationRequest;
 import com.example.neolabs.dto.response.AuthenticationResponse;
 import com.example.neolabs.enums.Role;
 import com.example.neolabs.enums.Status;
@@ -26,7 +29,7 @@ public interface UserService {
 
     AuthenticationResponse refreshToken(User user);
 
-    void updatePassword(UpdatePasswordDto updatePasswordDTO);
+    void updatePassword(UpdatePasswordRequest updatePasswordRequest);
 
     void forgotPassword(ForgotPasswordRequestDto forgotPasswordRequestDto) throws MessagingException;
 

@@ -47,7 +47,7 @@ public class StudentMapper {
                 .firstName(student.getFirstName())
                 .lastName(student.getLastName())
                 .phoneNumber(student.getPhoneNumber())
-                .gender(student.getGender())
+                .gender(student.getGender().getRussian())
                 .groups(groupMapper.entityListToDtoList(student.getGroups()))
                 .status(student.getStatus().getRussian())
                 .totalDebt(null) // FIXME: 16.03.2023

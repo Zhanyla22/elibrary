@@ -7,6 +7,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -44,4 +46,10 @@ public class Course extends BaseEntity {
     String imageUrl;
 
     String reason;
+
+    @OneToMany(mappedBy = "course")
+    List<Group> groups;
+
+    @OneToMany(mappedBy = "course")
+    List<Mentor> mentors;
 }

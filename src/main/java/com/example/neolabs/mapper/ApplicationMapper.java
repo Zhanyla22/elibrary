@@ -30,7 +30,7 @@ public class ApplicationMapper {
                 .firstName(application.getFirstName())
                 .lastName(application.getLastName())
                 .email(application.getEmail())
-                .gender(application.getGender())
+                .gender(application.getGender().getRussian())
                 .applicationStatus(application.getApplicationStatus())
                 .applicationStatusNum(application.getApplicationStatus().getOrder())
                 .applicationStatusUpdateDate(DateUtil.datetimeToDateFormatter.format(application.getApplicationStatusUpdateDate()))

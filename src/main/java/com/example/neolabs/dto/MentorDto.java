@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MentorResponse {
+public class MentorDto {
 
     String firstName;
 
@@ -27,6 +27,6 @@ public class MentorResponse {
 
     List<String> groupName;
 
-    List<ScheduleResponse> scheduleResponse;
+    List<ScheduleDto> scheduleDto;
 
 }

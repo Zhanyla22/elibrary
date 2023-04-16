@@ -2,7 +2,10 @@ package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
 import com.example.neolabs.dto.*;
-import com.example.neolabs.dto.request.AuthenticationRequest;
+import com.example.neolabs.dto.request.auth.AuthenticationRequest;
+import com.example.neolabs.dto.request.auth.ForgotPasswordCodeRequestDto;
+import com.example.neolabs.dto.request.auth.ForgotPasswordRequestDto;
+import com.example.neolabs.dto.request.update.UpdatePasswordRequest;
 import com.example.neolabs.dto.request.update.UpdateUserClientRequest;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.service.UserService;
@@ -42,8 +45,8 @@ public class UserController extends BaseController {
 
     @Operation(summary = "обновление пароля в профиле - старый пароль и новый пароль вместе")
     @PostMapping("/update-password")
-    public ResponseEntity<ResponseDto> updatePassword(@RequestBody UpdatePasswordDto updatePasswordDTO) {
-        userService.updatePassword(updatePasswordDTO);
+    public ResponseEntity<ResponseDto> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest) {
+        userService.updatePassword(updatePasswordRequest);
         return constructSuccessResponse("Password successfully updated");
     }
 

@@ -17,36 +17,25 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentDto {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long id;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String email;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String firstName;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String lastName;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String phoneNumber;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    Gender gender;
+    String gender;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String status;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Integer totalDebt;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Integer totalPaymentPercentage;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     List<GroupDto> groups;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long enrollmentGroupId;
 }
