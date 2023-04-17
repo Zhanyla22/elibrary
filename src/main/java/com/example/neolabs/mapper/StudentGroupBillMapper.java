@@ -16,15 +16,11 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentGroupBillMapper {
 
-    final GroupMapper groupMapper;
-
-    final StudentMapper studentMapper;
-
     public StudentGroupBillDto entityToDto(StudentGroupBill studentGroupBill){
         return StudentGroupBillDto.builder()
                 .id(studentGroupBill.getId())
-                .groupId(groupMapper.entityToDto(studentGroupBill.getGroup()).getId())
-                .studentId(studentMapper.entityToDto(studentGroupBill.getStudent()).getId())
+                .groupId(GroupMapper.entityToDto(studentGroupBill.getGroup()).getId())
+                .studentId(StudentMapper.entityToDto(studentGroupBill.getStudent()).getId())
                 .studentGroupDebt(studentGroupBill.getStudentGroupDebt())
                 .build();
     }

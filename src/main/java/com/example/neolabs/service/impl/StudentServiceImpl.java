@@ -30,7 +30,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -41,12 +40,11 @@ public class StudentServiceImpl implements StudentService {
     final OperationServiceImpl operationService;
     final GroupServiceImpl groupService;
     final StudentRepository studentRepository;
-    final StudentMapper studentMapper;
     final ApplicationMapper applicationMapper;
 
     @Override
     public ResponseDto insertStudent(CreateStudentRequest createStudentRequest) {
-        Student student = studentMapper.createRequestToEntity(createStudentRequest);
+        Student student = StudentMapper.createRequestToEntity(createStudentRequest);
         if (student.getGroups() == null){
             student.setGroups(new ArrayList<>());
         }
@@ -73,7 +71,7 @@ public class StudentServiceImpl implements StudentService {
         } else {
             students = studentRepository.findAll(pageRequest);
         }
-        return studentMapper.entityListToDtoList(students.stream().toList());
+        return StudentMapper.entityListToDtoList(students.stream().toList());
     }
 
     @Override
@@ -83,7 +81,7 @@ public class StudentServiceImpl implements StudentService {
                 .status(status)
                 .groups(groupId != null ? List.of(groupService.getGroupEntityById(groupId)) : null)
                 .build();
-        return studentMapper.entityListToDtoList(studentRepository.findAll(Example.of(probe, exampleMatcher)));
+        return StudentMapper.entityListToDtoList(studentRepository.findAll(Example.of(probe, exampleMatcher)));
     }
 
     @Override
@@ -122,17 +120,17 @@ public class StudentServiceImpl implements StudentService {
                 }
             }
         }
-        return studentMapper.entityListToDtoList(students);
+        return StudentMapper.entityListToDtoList(students);
     }
 
     @Override
     public StudentDto getStudentById(Long studentId) {
-        return studentMapper.entityToDto(getStudentEntityById(studentId));
+        return StudentMapper.entityToDto(getStudentEntityById(studentId));
     }
 
     @Override
     public ResponseDto updateStudentById(Long studentId, UpdateStudentRequest request) {
-        Student student = studentMapper.updateRequestToEntity(request);
+        Student student = StudentMapper.updateRequestToEntity(request);
         student.setId(studentId);
         operationService.recordStudentOperation(studentRepository.save(student), OperationType.UPDATE);
         return ResponseDto.builder()

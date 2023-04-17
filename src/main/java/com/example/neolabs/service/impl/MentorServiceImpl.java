@@ -36,11 +36,9 @@ public class MentorServiceImpl implements MentorService {
 
     final MentorRepository mentorRepository;
     final MentorMapper mentorMapper;
-    // TODO: 14.04.2023 if possible its better to NOT use other repos in service class
     final CourseRepository courseRepository;
     final GroupRepository groupRepository;
     final CourseServiceImpl courseService;
-    final GroupMapper groupMapper;
     final ImageUploadService imageUploadService;
 
     @Override

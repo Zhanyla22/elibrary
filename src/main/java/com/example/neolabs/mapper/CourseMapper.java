@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-@Service
-@RequiredArgsConstructor
 public class CourseMapper {
 
     public static CourseCardDto entityToCardDto(Course course) {

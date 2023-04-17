@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentMapper {
 
     public static Student createRequestToEntity(CreateStudentRequest request) {
