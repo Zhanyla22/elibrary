@@ -32,11 +32,10 @@ public class StudentController {
 
     @Operation(summary = "Find all Students")
     @GetMapping("")
-    public ResponseEntity<List<StudentDto>> getALlStudents(@RequestParam(name = "status") Optional<Status> status,
-                                                           @RequestParam(name = "sortBy") Optional<String> sortBy,
-                                                           @RequestParam(name = "size") Optional<Integer> size,
-                                                           @RequestParam(name = "page") Optional<Integer> page){
-        return ResponseEntity.ok(studentService.getAllStudents(status.orElse(Status.ACTIVE),
+    public ResponseEntity<List<StudentDto>> getALlStudents(@RequestParam("sortBy") Optional<String> sortBy,
+                                                           @RequestParam("size") Optional<Integer> size,
+                                                           @RequestParam("page") Optional<Integer> page){
+        return ResponseEntity.ok(studentService.getAllStudents(
                 PageRequest.of(page.orElse(0), size.orElse(20), Sort.by(sortBy.orElse("id")))));
     }
 
@@ -46,22 +45,26 @@ public class StudentController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<StudentDto>> filterStudents(@RequestParam(name = "groupId") Optional<Long> groupId,
-                                                           @RequestParam(name = "status") Optional<Status> status){
-        return ResponseEntity.ok(studentService.filter(groupId.orElse(null), status.orElse(null)));
+    public ResponseEntity<List<StudentDto>> filterStudents(@RequestParam("groupId") Optional<Long> groupId,
+                                                           @RequestParam("status") Optional<Status> status,
+                                                           @RequestParam("sortBy") Optional<String> sortBy,
+                                                           @RequestParam("size") Optional<Integer> size,
+                                                           @RequestParam("page") Optional<Integer> page){
+        return ResponseEntity.ok(studentService.filter(groupId.orElse(null), status.orElse(null),
+                PageRequest.of(page.orElse(0), size.orElse(20), Sort.by(sortBy.orElse("id")))));
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<StudentDto>> searchStudents(@RequestParam(name = "email") Optional<String> email,
-                                                           @RequestParam(name = "firstName") Optional<String> firstName,
-                                                           @RequestParam(name = "lastName") Optional<String> lastName,
-                                                           @RequestParam(name = "firstOrLastName") Optional<String> firstOrLastName,
-                                                           @RequestParam(name = "phoneNumber") Optional<String> phoneNumber,
-                                                           @RequestParam(name = "groupId") Optional<Long> groupId,
-                                                           @RequestParam(name = "status") Optional<Status> status){
-        return ResponseEntity.ok(studentService.search(email.orElse(null), firstName.orElse(null),
-                lastName.orElse(null), firstOrLastName.orElse(null), phoneNumber.orElse(null),
-                groupId.orElse(null), status.orElse(null)));
+    @GetMapping("/find")
+    public ResponseEntity<List<StudentDto>> searchStudents(@RequestParam("string") Optional<String> searchString,
+                                                           @RequestParam("status") Optional<Status> status,
+                                                           @RequestParam("groupId") Optional<Long> groupId,
+                                                           @RequestParam("isArchived") Optional<Boolean> isArchived,
+                                                           @RequestParam("sortBy") Optional<String> sortBy,
+                                                           @RequestParam("size") Optional<Integer> size,
+                                                           @RequestParam("page") Optional<Integer> page){
+        return ResponseEntity.ok(studentService.find(searchString.orElse(null),
+                status.orElse(null), groupId.orElse(null), isArchived.orElse(false),
+                PageRequest.of(page.orElse(0), size.orElse(20), Sort.by(sortBy.orElse("id")))));
     }
 
     @PutMapping("/enroll")
@@ -83,6 +86,19 @@ public class StudentController {
                                  @RequestParam(value = "blacklist", defaultValue = "0") Boolean isBlacklist,
                                  @RequestBody ArchiveRequest archiveRequest) {
         return ResponseEntity.ok(studentService.archiveStudentById(studentId, archiveRequest, isBlacklist));
+    }
+
+    @Operation(summary = "Заморозить студента")
+    @PutMapping("/freeze")
+    public ResponseEntity<ResponseDto> freezeStudentById(@RequestParam("studentId") Long studentId,
+                                                         @RequestBody ArchiveRequest archiveRequest){
+        return ResponseEntity.ok(studentService.freezeStudentById(studentId, archiveRequest));
+    }
+
+    @Operation(summary = "Разморозить студента")
+    @PutMapping("/unfreeze")
+    public ResponseEntity<ResponseDto> freezeStudentById(@RequestParam("studentId") Long studentId){
+        return ResponseEntity.ok(studentService.unfreezeStudentById(studentId));
     }
 
     @PutMapping

@@ -19,14 +19,17 @@ public interface StudentService {
 
     void insertStudentFromApplication(Application application, ConversionRequest conversionRequest);
 
-    List<StudentDto> getAllStudents(Status status, PageRequest pageRequest);
+    List<StudentDto> getAllStudents(PageRequest pageRequest);
 
-    List<StudentDto> filter(Long groupId, Status status);
+    List<StudentDto> filter(Long groupId, Status status, PageRequest pageRequest);
 
-    List<StudentDto> search(String email, String firstName, String lastName, String firstOrLastName, String phoneNumber,
-                            Long groupId, Status status);
+    List<StudentDto> find(String searchString, Status status, Long groupId, boolean isArchived, PageRequest pageRequest);
 
     StudentDto getStudentById(Long studentId);
+
+    ResponseDto freezeStudentById(Long studentId, ArchiveRequest archiveRequest);
+
+    ResponseDto unfreezeStudentById(Long studentId);
 
     ResponseDto updateStudentById(Long studentId, UpdateStudentRequest updateStudentRequest);
 

@@ -42,6 +42,9 @@ public class Student extends BaseEntity {
     @Enumerated(EnumType.STRING)
     Status status;
 
+    @Column(nullable = false)
+    Boolean isArchived; // NOTE: 17.04.2023 needed for search optimization
+
     @ManyToOne
     @JoinColumn(columnDefinition = "application_id",
             referencedColumnName = "id")

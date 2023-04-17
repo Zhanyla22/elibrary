@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @ControllerAdvice()
 @Slf4j
@@ -36,6 +37,11 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseDto> handleMANVException(final MethodArgumentNotValidException e) {
+        return buildBaseResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ResponseDto> handleMATMEException(final MethodArgumentTypeMismatchException e) {
         return buildBaseResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

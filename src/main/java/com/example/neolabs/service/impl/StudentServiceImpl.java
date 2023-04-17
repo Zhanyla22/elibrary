@@ -21,10 +21,7 @@ import com.example.neolabs.util.ResponseUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +47,7 @@ public class StudentServiceImpl implements StudentService {
         }
         student.getGroups().add(groupService.getGroupEntityById(createStudentRequest.getEnrollmentGroupId()));
         student.setStatus(Status.ACTIVE);
+        student.setIsArchived(false);
         operationService.recordStudentOperation(studentRepository.save(student), OperationType.CREATE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
@@ -64,61 +62,49 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDto> getAllStudents(Status status, PageRequest pageRequest) {
+    public List<StudentDto> getAllStudents(PageRequest pageRequest) {
         Page<Student> students;
-        if (status != null) {
+
+        students = studentRepository.findAll(pageRequest);
+
+        return StudentMapper.entityListToDtoList(students.stream().toList());
+    }
+
+    @Override
+    public List<StudentDto> filter(Long groupId, Status status, PageRequest pageRequest) {
+        Page<Student> students;
+        if (groupId == null && status == null) {
+            return getAllStudents(pageRequest);
+        } else if (groupId == null) {
             students = studentRepository.findAllByStatus(status, pageRequest);
+        } else if (status == null){
+            Group group = groupService.getGroupEntityById(groupId);
+            students = studentRepository.findAllByGroupsContains(List.of(group), pageRequest);
         } else {
-            students = studentRepository.findAll(pageRequest);
+            Group group = groupService.getGroupEntityById(groupId);
+            students = studentRepository.findAllByStatusAndGroupsContains(status, List.of(group), pageRequest);
         }
         return StudentMapper.entityListToDtoList(students.stream().toList());
     }
 
     @Override
-    public List<StudentDto> filter(Long groupId, Status status) {
-        ExampleMatcher exampleMatcher = getFilterExampleMatcher();
-        Student probe = Student.builder()
-                .status(status)
-                .groups(groupId != null ? List.of(groupService.getGroupEntityById(groupId)) : null)
-                .build();
-        return StudentMapper.entityListToDtoList(studentRepository.findAll(Example.of(probe, exampleMatcher)));
-    }
+    public List<StudentDto> find(String searchString, Status status, Long groupId, boolean isArchived, PageRequest pageRequest) {
+        if (searchString == null) {
+            return filter(groupId, status, pageRequest);
+        }
 
-    @Override
-    public List<StudentDto> search(String email, String firstName, String lastName, String firstOrLastName,
-                                   String phoneNumber, Long groupId, Status status) {
-        ExampleMatcher exampleMatcher = getSearchExampleMatcher();
-        if (firstOrLastName != null) {
-            firstName = firstOrLastName;
-            lastName = firstOrLastName;
-        }
-        Student probe = Student.builder()
-                .email(email)
-                .firstName(firstName)
-                .lastName(lastName)
-                .phoneNumber(phoneNumber)
-                .build();
-        List<Student> students = studentRepository.findAll(Example.of(probe, exampleMatcher));
-        if (groupId != null) {
-            Group group = groupService.getGroupEntityById(groupId);
-            int deleted = 0;
-            for (int i = 0; i < students.size() + deleted; i++) {
-                Student s = students.get(i - deleted);
-                if (!s.getGroups().contains(group)) {
-                    students.remove(s);
-                    deleted++;
-                }
-            }
-        }
-        if (status != null) {
-            int deleted = 0;
-            for (int i = 0; i < students.size() + deleted; i++) {
-                Student s = students.get(i - deleted);
-                if (s.getStatus() != status) {
-                    students.remove(s);
-                    deleted++;
-                }
-            }
+        List<Student> students;
+
+        if (groupId == null && status == null) {
+            students = studentRepository.searchWithoutFilters(searchString, isArchived, pageRequest);
+        } else if (groupId == null) {
+            students = studentRepository.searchWithoutGroupId(searchString, status.toString(), isArchived, pageRequest);
+        } else if (status == null) {
+            groupService.getGroupEntityById(groupId);
+            students = studentRepository.searchWithoutStatus(searchString, groupId, isArchived, pageRequest);
+        } else {
+            groupService.getGroupEntityById(groupId);
+            students = studentRepository.search(searchString, status.toString(), groupId, isArchived, pageRequest);
         }
         return StudentMapper.entityListToDtoList(students);
     }
@@ -126,6 +112,25 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDto getStudentById(Long studentId) {
         return StudentMapper.entityToDto(getStudentEntityById(studentId));
+    }
+
+    @Override
+    public ResponseDto freezeStudentById(Long studentId, ArchiveRequest archiveRequest) {
+        Student student = getStudentEntityById(studentId);
+        if (student.getStatus() == Status.FROZEN) {
+            throw new BaseException("Student is already frozen.", HttpStatus.CONFLICT);
+        }
+        student.setStatus(Status.FROZEN);
+        student.setIsArchived(false);
+        student.setReason(archiveRequest.getReason());
+        studentRepository.save(student);
+        return ResponseUtil.buildSuccessResponse("Student has been successfully frozen.");
+    }
+
+    @Override
+    public ResponseDto unfreezeStudentById(Long studentId) {
+        // TODO: 17.04.2023  
+        return null;
     }
 
     @Override
@@ -169,6 +174,7 @@ public class StudentServiceImpl implements StudentService {
         student.setReason(archiveRequest.getReason());
         student.setStatus(isBlacklist ? Status.BLACKLIST : Status.ARCHIVED);
         student.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
+        student.setIsArchived(true);
         studentRepository.save(student);
         return ResponseUtil.buildSuccessResponse("Student has been successfully " + (isBlacklist ? "blacklisted." : "archived."));
     }
@@ -182,6 +188,7 @@ public class StudentServiceImpl implements StudentService {
         student.setStatus(Status.ACTIVE);
         student.setReason(null);
         student.setArchiveDate(null);
+        student.setIsArchived(false);
         studentRepository.save(student);
         return ResponseUtil.buildSuccessResponse("Student has been successfully unarchived.");
     }
@@ -196,13 +203,6 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findById(studentId).orElseThrow(() -> {
             throw new EntityNotFoundException(EntityEnum.STUDENT, "id", studentId);
         });
-    }
-
-    private ExampleMatcher getFilterExampleMatcher(){
-        return ExampleMatcher.matchingAll()
-                .withMatcher("status", ExampleMatcher.GenericPropertyMatchers.exact())
-                .withMatcher("group", ExampleMatcher.GenericPropertyMatchers.contains())
-                .withIgnorePaths("id");
     }
 
     private ExampleMatcher getSearchExampleMatcher(){
