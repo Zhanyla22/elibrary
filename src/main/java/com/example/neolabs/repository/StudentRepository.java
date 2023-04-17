@@ -16,8 +16,22 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findAllByStatus(Status status);// TODO: 17.04.2023 need to change its usages to the above one
     Page<Student> findAllByIsArchived(Boolean isArchived, Pageable pageable);
 
-    Page<Student> findAllByGroupsContains(List<Group> groups, Pageable pageable);
-    Page<Student> findAllByStatusAndGroupsContains(Status status, List<Group> groups, Pageable pageable);
+    @Query(nativeQuery = true,
+          value = "SELECT * FROM students s WHERE " +
+                  "s.id IN (SELECT sg.student_id FROM students_groups sg WHERE sg.group_id = :groupId)",
+          countQuery = "SELECT * FROM students s WHERE " +
+                  "s.id IN (SELECT sg.student_id FROM students_groups sg WHERE sg.group_id = :groupId)")
+    Page<Student> findAllByGroupId(@Param("groupId") Long groupId, Pageable pageable);
+
+    @Query(nativeQuery = true,
+          value = "SELECT * FROM students s WHERE " +
+                  "s.status = :status AND " +
+                  "s.id IN (SELECT sg.student_id FROM students_groups sg WHERE sg.group_id = :groupId)",
+          countQuery = "SELECT * FROM students s WHERE " +
+                  "s.status = :status AND " +
+                  "s.id IN (SELECT sg.student_id FROM students_groups sg WHERE sg.group_id = :groupId)")
+    Page<Student> findAllByStatusAndGroupId(@Param("status") String status, @Param("groupId") Long groupId,
+                                            Pageable pageable);
 
     @Query(nativeQuery = true,
     value = "SELECT * FROM students s WHERE " +

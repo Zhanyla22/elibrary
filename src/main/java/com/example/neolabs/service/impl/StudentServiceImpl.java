@@ -78,11 +78,11 @@ public class StudentServiceImpl implements StudentService {
         } else if (groupId == null) {
             students = studentRepository.findAllByStatus(status, pageRequest);
         } else if (status == null){
-            Group group = groupService.getGroupEntityById(groupId);
-            students = studentRepository.findAllByGroupsContains(List.of(group), pageRequest);
+            groupService.getGroupEntityById(groupId); //checking for group's existence
+            students = studentRepository.findAllByGroupId(groupId, pageRequest);
         } else {
-            Group group = groupService.getGroupEntityById(groupId);
-            students = studentRepository.findAllByStatusAndGroupsContains(status, List.of(group), pageRequest);
+            groupService.getGroupEntityById(groupId);
+            students = studentRepository.findAllByStatusAndGroupId(status.toString(), groupId, pageRequest);
         }
         return StudentMapper.entityListToDtoList(students.stream().toList());
     }

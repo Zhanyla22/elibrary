@@ -7,9 +7,11 @@ import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
 import com.example.neolabs.dto.request.create.UpdateCourseRequest;
 import com.example.neolabs.entity.Course;
+import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.ContentNotFoundException;
+import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.CourseMapper;
 import com.example.neolabs.repository.CourseRepository;
 import com.example.neolabs.service.CourseService;
@@ -98,7 +100,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course getCourseEntityById(Long id) {
         return courseRepository.findById(id).orElseThrow(() -> {
-            throw new ContentNotFoundException();
+            throw new EntityNotFoundException(EntityEnum.COURSE, "id", id);
         });
     }
 
