@@ -15,7 +15,7 @@ public class GroupMapper {
     public static GroupDto entityToDto(Group group){
         return GroupDto.builder()
                 .id(group.getId())
-                .course(CourseMapper.entityToDto(group.getCourse()))
+                .course(CourseMapper.entityToCardDto(group.getCourse()))
                 .maxCapacity(group.getMaxCapacity())
                 .mentor(MentorMapper.entityToMentorCardDto(group.getMentor()))
                 .imageUrl(group.getImageUrl())

@@ -25,7 +25,7 @@ public class GroupDto {
     String name;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    CourseDto course;
+    CourseCardDto course;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Integer maxCapacity;
