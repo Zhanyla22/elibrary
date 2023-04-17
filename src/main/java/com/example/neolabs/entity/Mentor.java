@@ -30,9 +30,6 @@ public class Mentor extends BaseEntity{
     @Column(name = "phone_number")
     String phoneNumber;
 
-    @Column(name = "patent_number")
-    String patentNumber;
-
     @Column(name = "salary")
     Double salary;
 

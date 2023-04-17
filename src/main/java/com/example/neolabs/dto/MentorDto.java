@@ -25,6 +25,8 @@ public class MentorDto {
 
     String email;
 
+    String imageUrl;
+
     String courseName;
 
     List<String> groupName;
