@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OperationMapper {
 
-    public OperationDto applicationOperationToDto(ApplicationOperation operation){
+    public static OperationDto applicationOperationToDto(ApplicationOperation operation){
         return OperationDto.builder()
                 .target(operation.getApplication())
                 .targetId(operation.getApplication().getId())
@@ -30,11 +30,11 @@ public class OperationMapper {
                 .build();
     }
 
-    public List<OperationDto> applicationOperationListToDtoList(List<ApplicationOperation> operations){
-        return operations.stream().map(this::applicationOperationToDto).collect(Collectors.toList());
+    public static List<OperationDto> applicationOperationListToDtoList(List<ApplicationOperation> operations){
+        return operations.stream().map(OperationMapper::applicationOperationToDto).collect(Collectors.toList());
     }
 
-    public OperationDto userOperationToDto(UserOperation operation){
+    public static OperationDto userOperationToDto(UserOperation operation){
         return OperationDto.builder()
                 .target(operation.getTargetUser())
                 .targetId(operation.getTargetUser().getId())
@@ -48,11 +48,11 @@ public class OperationMapper {
                 .build();
     }
 
-    public List<OperationDto> userOperationListToDtoList(List<UserOperation> operations){
-        return operations.stream().map(this::userOperationToDto).collect(Collectors.toList());
+    public static List<OperationDto> userOperationListToDtoList(List<UserOperation> operations){
+        return operations.stream().map(OperationMapper::userOperationToDto).collect(Collectors.toList());
     }
 
-    public OperationDto studentOperationToDto(StudentOperation operation){
+    public static OperationDto studentOperationToDto(StudentOperation operation){
         return OperationDto.builder()
                 .target(operation.getStudent())
                 .targetId(operation.getStudent().getId())
@@ -66,11 +66,11 @@ public class OperationMapper {
                 .build();
     }
 
-    public List<OperationDto> studentOperationListToDtoList(List<StudentOperation> operations){
-        return operations.stream().map(this::studentOperationToDto).collect(Collectors.toList());
+    public static List<OperationDto> studentOperationListToDtoList(List<StudentOperation> operations){
+        return operations.stream().map(OperationMapper::studentOperationToDto).collect(Collectors.toList());
     }
 
-    public OperationDto groupOperationToDto(GroupOperation operation){
+    public static OperationDto groupOperationToDto(GroupOperation operation){
         return OperationDto.builder()
                 .target(operation.getGroup())
                 .targetId(operation.getGroup().getId())
@@ -84,11 +84,11 @@ public class OperationMapper {
                 .build();
     }
 
-    public List<OperationDto> groupOperationListToDtoList(List<GroupOperation> operations){
-        return operations.stream().map(this::groupOperationToDto).collect(Collectors.toList());
+    public static List<OperationDto> groupOperationListToDtoList(List<GroupOperation> operations){
+        return operations.stream().map(OperationMapper::groupOperationToDto).collect(Collectors.toList());
     }
 
-    public OperationDto courseOperationToDto(CourseOperation operation){
+    public static OperationDto courseOperationToDto(CourseOperation operation){
         return OperationDto.builder()
                 .target(operation.getCourse())
                 .targetId(operation.getCourse().getId())
@@ -102,11 +102,11 @@ public class OperationMapper {
                 .build();
     }
 
-    public List<OperationDto> courseOperationListToDtoList(List<CourseOperation> operations){
-        return operations.stream().map(this::courseOperationToDto).collect(Collectors.toList());
+    public static List<OperationDto> courseOperationListToDtoList(List<CourseOperation> operations){
+        return operations.stream().map(OperationMapper::courseOperationToDto).collect(Collectors.toList());
     }
 
-    public OperationDto mentorOperationToDto(MentorOperation operation){
+    public static OperationDto mentorOperationToDto(MentorOperation operation){
         return OperationDto.builder()
                 .target(operation.getMentor())
                 .targetId(operation.getMentor().getId())
@@ -120,11 +120,11 @@ public class OperationMapper {
                 .build();
     }
 
-    public List<OperationDto> mentorOperationListToDtoList(List<MentorOperation> operations){
-        return operations.stream().map(this::mentorOperationToDto).collect(Collectors.toList());
+    public static List<OperationDto> mentorOperationListToDtoList(List<MentorOperation> operations){
+        return operations.stream().map(OperationMapper::mentorOperationToDto).collect(Collectors.toList());
     }
 
-    public OperationDto paymentOperationToDto(PaymentOperation operation){
+    public static OperationDto paymentOperationToDto(PaymentOperation operation){
         return OperationDto.builder()
                 .target(operation.getPayment())
                 .targetId(operation.getPayment().getId())
@@ -138,11 +138,11 @@ public class OperationMapper {
                 .build();
     }
 
-    public List<OperationDto> paymentOperationListToDtoList(List<PaymentOperation> operations){
-        return operations.stream().map(this::paymentOperationToDto).collect(Collectors.toList());
+    public static List<OperationDto> paymentOperationListToDtoList(List<PaymentOperation> operations){
+        return operations.stream().map(OperationMapper::paymentOperationToDto).collect(Collectors.toList());
     }
 
-    public List<OperationDto> allOperationListToDtoList(List<ApplicationOperation> applicationOperations,
+    public static List<OperationDto> allOperationListToDtoList(List<ApplicationOperation> applicationOperations,
                                                         List<UserOperation> userOperations,
                                                         List<GroupOperation> groupOperations,
                                                         List<StudentOperation> studentOperations,

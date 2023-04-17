@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class StudentDto {
+public class StudentCardDto {
 
     Long id;
 
@@ -23,18 +23,12 @@ public class StudentDto {
 
     String firstName;
 
+    String status;
+
+    String hasLaptop;
+
     String lastName;
 
     String phoneNumber;
-
-    String gender;
-
-    String status;
-
-    Integer totalDebt;
-
-    Integer totalPaymentPercentage;
-
-    List<GroupDto> groups;
 
 }

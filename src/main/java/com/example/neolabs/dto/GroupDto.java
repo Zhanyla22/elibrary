@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -43,4 +44,7 @@ public class GroupDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Status status;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    List<StudentDto> students;
 }

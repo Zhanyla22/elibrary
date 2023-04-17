@@ -30,7 +30,6 @@ import java.util.List;
 public class GroupServiceImpl implements GroupService {
 
     final GroupRepository groupRepository;
-    final GroupMapper groupMapper;
     final CourseServiceImpl courseService;
     final MentorServiceImpl mentorService;
 
@@ -38,7 +37,7 @@ public class GroupServiceImpl implements GroupService {
     public ResponseDto insertGroup(CreateGroupRequest createGroupRequest) {
         Course course = courseService.getCourseEntityById(createGroupRequest.getCourseId());
 
-        Group group = groupMapper.createGroupRequestToEntity(createGroupRequest);
+        Group group = GroupMapper.createGroupRequestToEntity(createGroupRequest);
         group.setCourse(course);
         group.setMentor(mentorService.getMentorEntityById(createGroupRequest.getMentorId()));
         group.setEndDate(group.getStartDate().plusMonths(course.getDurationInMonth()));
@@ -49,20 +48,20 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupDto> getAllGroups() {
-        return groupMapper.entityListToDtoList(groupRepository.findAll());
+        return GroupMapper.entityListToDtoList(groupRepository.findAll());
     }
 
     @Override
     public GroupDto getGroupById(Long groupId) {
 
-        return groupMapper.entityToDto(getGroupEntityById(groupId));
+        return GroupMapper.entityToDto(getGroupEntityById(groupId));
     }
 
     @Override
     public GroupDto updateGroupById(Long groupId, CreateGroupRequest createGroupRequest) {
-        Group group = groupMapper.createGroupRequestToEntity(createGroupRequest);
+        Group group = GroupMapper.createGroupRequestToEntity(createGroupRequest);
         group.setId(groupId);
-        return groupMapper.entityToDto(groupRepository.save(group));
+        return GroupMapper.entityToDto(groupRepository.save(group));
     }
 
     @Override

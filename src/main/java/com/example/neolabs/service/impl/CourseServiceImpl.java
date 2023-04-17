@@ -1,12 +1,12 @@
 package com.example.neolabs.service.impl;
 
+import com.example.neolabs.dto.CourseCardDto;
 import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
 import com.example.neolabs.dto.request.create.UpdateCourseRequest;
 import com.example.neolabs.entity.Course;
-import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.ContentNotFoundException;
@@ -31,12 +31,11 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
-    private final CourseMapper courseMapper;
     private final ImageUploadService imageUploadService;
 
     @Override
-    public List<CourseDto> getAllCourses() {
-        return courseMapper.entityListToDtoList(courseRepository.findAll());
+    public List<CourseCardDto> getAllCourses() {
+        return CourseMapper.entityListToCardDtoList(courseRepository.findAll());
     }
 
     @Override
@@ -44,16 +43,16 @@ public class CourseServiceImpl implements CourseService {
         if (courseRepository.existsByName(createCourseRequest.getName())) {
             throw new BaseException("Course name is already in use.", HttpStatus.CONFLICT);
         }
-        Course course = courseMapper.createRequestToEntity(createCourseRequest);
+        Course course = CourseMapper.createRequestToEntity(createCourseRequest);
         course.setStatus(Status.ACTIVE);
-        return courseMapper.entityToDto(courseRepository.save(course));
+        return CourseMapper.entityToDto(courseRepository.save(course));
     }
 
     @Override
-    public CourseDto updateCourseById(Long courseId, UpdateCourseRequest updateCourseRequest) {
+    public CourseCardDto updateCourseById(Long courseId, UpdateCourseRequest updateCourseRequest) {
         Course course = getCourseEntityById(courseId);
-        course = courseMapper.updateEntity(course, updateCourseRequest);
-        return courseMapper.entityToDto(courseRepository.save(course));
+        course = CourseMapper.updateEntity(course, updateCourseRequest);
+        return CourseMapper.entityToCardDto(courseRepository.save(course));
     }
 
     @Override
@@ -83,17 +82,17 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseDto saveImageCourse(Long courseId, MultipartFile multipartFile) {
+    public CourseCardDto saveImageCourse(Long courseId, MultipartFile multipartFile) {
         Course course = getCourseEntityById(courseId);
         course.setImageUrl(imageUploadService.saveImage(multipartFile));
-        return courseMapper.entityToDto(courseRepository.save(course));
+        return CourseMapper.entityToCardDto(courseRepository.save(course));
     }
 
     @Override
     public CourseDto deleteCourseById(Long id) {
         Course course = getCourseEntityById(id);
         courseRepository.delete(course);
-        return courseMapper.entityToDto(course);
+        return CourseMapper.entityToDto(course);
     }
 
     @Override
@@ -105,7 +104,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseDto getCourseById(Long courseId) {
-        return courseMapper.entityToDto(getCourseEntityById(courseId));
+        return CourseMapper.entityToDto(getCourseEntityById(courseId));
     }
 
 }

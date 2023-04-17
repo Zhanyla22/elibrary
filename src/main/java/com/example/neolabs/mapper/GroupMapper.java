@@ -1,5 +1,6 @@
 package com.example.neolabs.mapper;
 
+import com.example.neolabs.dto.GroupStudentsDto;
 import com.example.neolabs.dto.GroupDto;
 import com.example.neolabs.dto.request.create.CreateGroupRequest;
 import com.example.neolabs.entity.Group;
@@ -12,17 +13,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
-@Service
-@RequiredArgsConstructor
 public class GroupMapper {
 
-    private final CourseMapper courseMapper;
-
-    public GroupDto entityToDto(Group group){
+    public static GroupDto entityToDto(Group group){
         return GroupDto.builder()
                 .id(group.getId())
-                .course(courseMapper.entityToDto(group.getCourse()))
+                .course(CourseMapper.entityToDto(group.getCourse()))
                 .maxCapacity(group.getMaxCapacity())
                 .mentor(MentorMapper.mentorEntityToMentorCardDto(group.getMentor()))
                 .imageUrl(group.getImageUrl())
@@ -32,7 +28,7 @@ public class GroupMapper {
                 .build();
     }
 
-    public Group dtoToEntity(GroupDto groupDto){
+    public static Group dtoToEntity(GroupDto groupDto){
         return Group.builder()
                 .maxCapacity(groupDto.getMaxCapacity())
                 .startDate(groupDto.getStartDate())
@@ -41,7 +37,7 @@ public class GroupMapper {
                 .build();
     }
 
-    public Group createGroupRequestToEntity(CreateGroupRequest groupDto){
+    public static Group createGroupRequestToEntity(CreateGroupRequest groupDto){
         return Group.builder()
                 .maxCapacity(groupDto.getMaxCapacity())
                 .startDate(LocalDate.parse(groupDto.getStartDate(), DateUtil.datetimeToDateFormatter))
@@ -49,7 +45,15 @@ public class GroupMapper {
                 .build();
     }
 
-    public List<GroupDto> entityListToDtoList(List<Group> entities){
-        return entities.stream().map(this::entityToDto).collect(Collectors.toList());
+    public static GroupStudentsDto entityToCardDto(Group group) {
+        return GroupStudentsDto.builder()
+                .groupId(group.getId())
+                .groupName(group.getName())
+                .students(StudentMapper.entityListToCardDtoList(group.getStudents()))
+                .build();
+    }
+
+    public static List<GroupDto> entityListToDtoList(List<Group> entities){
+        return entities.stream().map(GroupMapper::entityToDto).collect(Collectors.toList());
     }
 }

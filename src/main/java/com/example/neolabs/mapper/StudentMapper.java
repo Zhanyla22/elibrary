@@ -1,5 +1,6 @@
 package com.example.neolabs.mapper;
 
+import com.example.neolabs.dto.StudentCardDto;
 import com.example.neolabs.dto.StudentDto;
 import com.example.neolabs.dto.request.create.CreateStudentRequest;
 import com.example.neolabs.dto.request.update.UpdateStudentRequest;
@@ -13,14 +14,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentMapper {
 
-    final GroupMapper groupMapper;
-
-    public Student createRequestToEntity(CreateStudentRequest request) {
+    public static Student createRequestToEntity(CreateStudentRequest request) {
         return Student.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -30,7 +28,7 @@ public class StudentMapper {
                 .build();
     }
 
-    public Student updateRequestToEntity(UpdateStudentRequest request) {
+    public static Student updateRequestToEntity(UpdateStudentRequest request) {
         return Student.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -39,7 +37,7 @@ public class StudentMapper {
                 .build();
     }
 
-    public StudentDto entityToDto(Student student) {
+    public static StudentDto entityToDto(Student student) {
         return StudentDto.builder()
                 .id(student.getId())
                 .email(student.getEmail())
@@ -47,14 +45,30 @@ public class StudentMapper {
                 .lastName(student.getLastName())
                 .phoneNumber(student.getPhoneNumber())
                 .gender(student.getGender().getRussian())
-                .groups(groupMapper.entityListToDtoList(student.getGroups()))
+                .groups(GroupMapper.entityListToDtoList(student.getGroups()))
                 .status(student.getStatus().getRussian())
                 .totalDebt(null) // FIXME: 16.03.2023
                 .totalPaymentPercentage(null)
                 .build();
     }
 
-    public List<StudentDto> entityListToDtoList(List<Student> students) {
-        return students.stream().map(this::entityToDto).collect(Collectors.toList());
+    public static StudentCardDto entityToCardDto(Student student){
+        return StudentCardDto.builder()
+                .id(student.getId())
+                .firstName(student.getFirstName())
+                .lastName(student.getLastName())
+                .status(student.getStatus().getRussian())
+                .email(student.getEmail())
+                .phoneNumber(student.getPhoneNumber())
+                .hasLaptop((student.getApplication() != null ? student.getApplication().getHasLaptop() : true) ? "есть" : "нет")// FIXME: 17.04.2023
+                .build();
+    }
+
+    public static List<StudentCardDto> entityListToCardDtoList(List<Student> students){
+        return students.stream().map(StudentMapper::entityToCardDto).collect(Collectors.toList());
+    }
+
+    public static List<StudentDto> entityListToDtoList(List<Student> students) {
+        return students.stream().map(StudentMapper::entityToDto).collect(Collectors.toList());
     }
 }

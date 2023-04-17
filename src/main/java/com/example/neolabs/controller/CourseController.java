@@ -2,6 +2,7 @@ package com.example.neolabs.controller;
 
 
 import com.example.neolabs.controller.base.BaseController;
+import com.example.neolabs.dto.CourseCardDto;
 import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
@@ -28,7 +29,7 @@ public class CourseController extends BaseController {
 
     @Operation(summary = "Get all courses")
     @GetMapping(value = {""}, produces = "application/json")
-    public ResponseEntity<List<CourseDto>> getAllCourses(){
+    public ResponseEntity<List<CourseCardDto>> getAllCourses(){
         return ResponseEntity.ok(courseService.getAllCourses());
     }
 
@@ -48,7 +49,7 @@ public class CourseController extends BaseController {
 
     @PutMapping(value = {"/{courseId}"})
     @Operation(summary = "Update course by id")// TODO: 17.04.2023
-    public ResponseEntity<CourseDto> updateCourseById(@PathVariable("courseId") Long id,
+    public ResponseEntity<CourseCardDto> updateCourseById(@PathVariable("courseId") Long id,
                                                       @Valid @RequestBody UpdateCourseRequest updateCourseRequest){
         return ResponseEntity.ok(courseService.updateCourseById(id, updateCourseRequest));
     }

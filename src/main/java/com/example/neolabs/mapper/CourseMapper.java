@@ -1,10 +1,10 @@
 package com.example.neolabs.mapper;
 
+import com.example.neolabs.dto.CourseCardDto;
 import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
 import com.example.neolabs.dto.request.create.UpdateCourseRequest;
 import com.example.neolabs.entity.Course;
-import com.example.neolabs.entity.Group;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CourseMapper {
 
-    public CourseDto entityToDto(Course course) {
+    public static CourseCardDto entityToCardDto(Course course) {
+        return CourseCardDto.builder()
+                .id(course.getId())
+                .name(course.getName())
+                .cost(course.getCost())
+                .durationInMonth(course.getDurationInMonth())
+                .imageUrl(course.getImageUrl())
+                .numberOfLessons(course.getNumberOfLessons())
+                .numberOfGroups(course.getGroups().size())
+                .build();
+    }
+
+    public static CourseDto entityToDto(Course course) {
         return CourseDto.builder()
                 .id(course.getId())
                 .name(course.getName())
@@ -28,10 +40,11 @@ public class CourseMapper {
                 .numberOfGroups(course.getGroups().size())
                 .numberOfMentors(course.getMentors().size())
                 .numberOfStudents(course.getGroups().stream().mapToInt(group -> group.getStudents().size()).sum())
+                .groups(course.getGroups().stream().map(GroupMapper::entityToCardDto).collect(Collectors.toList()))
                 .build();
     }
 
-    public Course createRequestToEntity(CreateCourseRequest request) {
+    public static Course createRequestToEntity(CreateCourseRequest request) {
         return Course.builder()
                 .name(request.getName())
                 .cost(request.getCost())
@@ -40,7 +53,7 @@ public class CourseMapper {
                 .build();
     }
 
-    public Course updateEntity(Course course, UpdateCourseRequest request){
+    public static Course updateEntity(Course course, UpdateCourseRequest request){
         Course result = Course.builder()
                 .name(request.getName() != null ? request.getName() : course.getName())
                 .cost(request.getCost() != null ? request.getCost() : course.getCost())
@@ -53,7 +66,7 @@ public class CourseMapper {
         return result;
     }
 
-    public List<CourseDto> entityListToDtoList(List<Course> entities) {
-        return entities.stream().map(this::entityToDto).collect(Collectors.toList());
+    public static List<CourseCardDto> entityListToCardDtoList(List<Course> entities) {
+        return entities.stream().map(CourseMapper::entityToCardDto).collect(Collectors.toList());
     }
 }

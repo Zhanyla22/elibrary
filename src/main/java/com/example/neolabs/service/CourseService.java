@@ -1,5 +1,6 @@
 package com.example.neolabs.service;
 
+import com.example.neolabs.dto.CourseCardDto;
 import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public interface CourseService {
 
-    List<CourseDto> getAllCourses();
+    List<CourseCardDto> getAllCourses();
 
     CourseDto insertCourse(CreateCourseRequest createCourseRequest);
 
@@ -22,13 +23,13 @@ public interface CourseService {
 
     CourseDto getCourseById(Long courseId);
 
-    CourseDto updateCourseById(Long courseId, UpdateCourseRequest updateCourseRequest);
+    CourseCardDto updateCourseById(Long courseId, UpdateCourseRequest updateCourseRequest);
 
     ResponseDto archiveCourseById(Long courseId, ArchiveRequest archiveRequest);
 
     ResponseDto unarchiveCourseById(Long courseId);
 
-    CourseDto saveImageCourse(Long courseId, MultipartFile multipartFile);
+    CourseCardDto saveImageCourse(Long courseId, MultipartFile multipartFile);
 
 }
 
