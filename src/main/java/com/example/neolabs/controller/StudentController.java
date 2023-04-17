@@ -68,8 +68,8 @@ public class StudentController {
     }
 
     @PutMapping("/enroll")
-    public ResponseEntity<ResponseDto> enrollStudentToGroup(@RequestParam("student_id") Long studentId,
-                                                            @RequestParam("group_id") Long groupId){
+    public ResponseEntity<ResponseDto> enrollStudentToGroup(@RequestParam("studentId") Long studentId,
+                                                            @RequestParam("groupId") Long groupId){
         return ResponseEntity.ok(studentService.enrollStudent(studentId, groupId));
     }
 
