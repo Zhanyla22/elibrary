@@ -4,6 +4,7 @@ import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
+import com.example.neolabs.dto.request.create.UpdateCourseRequest;
 import com.example.neolabs.entity.Course;
 import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.Status;
@@ -49,9 +50,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseDto updateCourseById(Long id, CreateCourseRequest createCourseRequest) {
-        Course course = courseMapper.createRequestToEntity(createCourseRequest);
-        course.setId(id);
+    public CourseDto updateCourseById(Long courseId, UpdateCourseRequest updateCourseRequest) {
+        Course course = getCourseEntityById(courseId);
+        course = courseMapper.updateEntity(course, updateCourseRequest);
         return courseMapper.entityToDto(courseRepository.save(course));
     }
 

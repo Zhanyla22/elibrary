@@ -40,7 +40,7 @@ public class GroupController {
         return ResponseEntity.ok(groupService.getGroupById(groupId));
     }
 
-    @Operation(summary = "Update group by id")
+    @Operation(summary = "Update group by id (не работает)")// TODO: 17.04.2023
     @PutMapping(value = {"/{groupId}"})
     public ResponseEntity<GroupDto> updateGroupById(@PathVariable("groupId") Long groupId,
                                                     @Valid @RequestBody CreateGroupRequest createGroupRequest){

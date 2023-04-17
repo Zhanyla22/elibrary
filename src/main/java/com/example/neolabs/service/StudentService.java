@@ -23,7 +23,8 @@ public interface StudentService {
 
     List<StudentDto> filter(Long groupId, Status status);
 
-    List<StudentDto> search(String email, String firstName, String lastName, String firstOrLastName, String phoneNumber);
+    List<StudentDto> search(String email, String firstName, String lastName, String firstOrLastName, String phoneNumber,
+                            Long groupId, Status status);
 
     StudentDto getStudentById(Long studentId);
 

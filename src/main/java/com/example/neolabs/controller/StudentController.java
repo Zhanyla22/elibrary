@@ -56,9 +56,12 @@ public class StudentController {
                                                            @RequestParam(name = "firstName") Optional<String> firstName,
                                                            @RequestParam(name = "lastName") Optional<String> lastName,
                                                            @RequestParam(name = "firstOrLastName") Optional<String> firstOrLastName,
-                                                           @RequestParam(name = "phoneNumber") Optional<String> phoneNumber){
+                                                           @RequestParam(name = "phoneNumber") Optional<String> phoneNumber,
+                                                           @RequestParam(name = "groupId") Optional<Long> groupId,
+                                                           @RequestParam(name = "status") Optional<Status> status){
         return ResponseEntity.ok(studentService.search(email.orElse(null), firstName.orElse(null),
-                lastName.orElse(null), firstOrLastName.orElse(null), phoneNumber.orElse(null)));
+                lastName.orElse(null), firstOrLastName.orElse(null), phoneNumber.orElse(null),
+                groupId.orElse(null), status.orElse(null)));
     }
 
     @PutMapping("/enroll")
@@ -67,6 +70,7 @@ public class StudentController {
         return ResponseEntity.ok(studentService.enrollStudent(studentId, groupId));
     }
 
+    @Operation(summary = "Обновить данные студента по ID (не работает)")
     @PutMapping("/{studentId}")
     public ResponseEntity<ResponseDto> updateStudentById(@PathVariable("studentId") Long studentId,
                                                          @RequestBody UpdateStudentRequest updateStudentRequest){

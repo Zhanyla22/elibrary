@@ -1,6 +1,5 @@
 package com.example.neolabs.dto.request.create;
 
-import com.example.neolabs.enums.Gender;
 import com.example.neolabs.enums.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -14,31 +13,24 @@ import jakarta.validation.constraints.*;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CreateStudentRequest {
+public class UpdateGroupRequest {
 
-    @NotBlank
-    @Email
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String email;
+    String name;
 
-    @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String firstName;
+    Long mentorId;
 
-    @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String lastName;
+    Long courseId;
 
-    @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String phoneNumber;
+    Integer maxCapacity;
 
-    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    Gender gender;
+    String startDate;
 
-    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    Long enrollmentGroupId;
+    Status status;
 
 }

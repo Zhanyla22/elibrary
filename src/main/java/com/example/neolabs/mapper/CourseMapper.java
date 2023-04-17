@@ -2,6 +2,7 @@ package com.example.neolabs.mapper;
 
 import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
+import com.example.neolabs.dto.request.create.UpdateCourseRequest;
 import com.example.neolabs.entity.Course;
 import com.example.neolabs.entity.Group;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,19 @@ public class CourseMapper {
                 .durationInMonth(request.getDurationInMonth())
                 .numberOfLessons(request.getNumberOfLessons())
                 .build();
+    }
+
+    public Course updateEntity(Course course, UpdateCourseRequest request){
+        Course result = Course.builder()
+                .name(request.getName() != null ? request.getName() : course.getName())
+                .cost(request.getCost() != null ? request.getCost() : course.getCost())
+                .numberOfLessons(request.getNumberOfLessons() != null ?
+                        request.getNumberOfLessons() : course.getNumberOfLessons())
+                .durationInMonth(request.getDurationInMonth() != null ?
+                        request.getDurationInMonth() : course.getDurationInMonth())
+                .build();
+        result.setId(course.getId());
+        return result;
     }
 
     public List<CourseDto> entityListToDtoList(List<Course> entities) {

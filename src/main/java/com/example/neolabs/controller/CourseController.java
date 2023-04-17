@@ -6,6 +6,7 @@ import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
+import com.example.neolabs.dto.request.create.UpdateCourseRequest;
 import com.example.neolabs.service.impl.CourseServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,10 +47,10 @@ public class CourseController extends BaseController {
     }
 
     @PutMapping(value = {"/{courseId}"})
-    @Operation(summary = "Update course by id")
+    @Operation(summary = "Update course by id")// TODO: 17.04.2023
     public ResponseEntity<CourseDto> updateCourseById(@PathVariable("courseId") Long id,
-                                                      @Valid @RequestBody CreateCourseRequest createCourseRequest){
-        return ResponseEntity.ok(courseService.updateCourseById(id, createCourseRequest));
+                                                      @Valid @RequestBody UpdateCourseRequest updateCourseRequest){
+        return ResponseEntity.ok(courseService.updateCourseById(id, updateCourseRequest));
     }
 
     @PutMapping("/archive")

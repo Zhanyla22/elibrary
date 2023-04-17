@@ -44,7 +44,7 @@ public class GroupMapper {
     public Group createGroupRequestToEntity(CreateGroupRequest groupDto){
         return Group.builder()
                 .maxCapacity(groupDto.getMaxCapacity())
-                .startDate((LocalDate) DateUtil.datetimeToDateFormatter.parse(groupDto.getStartDate()))
+                .startDate(LocalDate.parse(groupDto.getStartDate(), DateUtil.datetimeToDateFormatter))
                 .status(groupDto.getStatus())
                 .build();
     }

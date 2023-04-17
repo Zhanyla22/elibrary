@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -50,6 +51,7 @@ public class StudentServiceImpl implements StudentService {
             student.setGroups(new ArrayList<>());
         }
         student.getGroups().add(groupService.getGroupEntityById(createStudentRequest.getEnrollmentGroupId()));
+        student.setStatus(Status.ACTIVE);
         operationService.recordStudentOperation(studentRepository.save(student), OperationType.CREATE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
@@ -86,7 +88,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentDto> search(String email, String firstName, String lastName, String firstOrLastName,
-                                   String phoneNumber) {
+                                   String phoneNumber, Long groupId, Status status) {
         ExampleMatcher exampleMatcher = getSearchExampleMatcher();
         if (firstOrLastName != null) {
             firstName = firstOrLastName;
@@ -98,7 +100,29 @@ public class StudentServiceImpl implements StudentService {
                 .lastName(lastName)
                 .phoneNumber(phoneNumber)
                 .build();
-        return studentMapper.entityListToDtoList(studentRepository.findAll(Example.of(probe, exampleMatcher)));
+        List<Student> students = studentRepository.findAll(Example.of(probe, exampleMatcher));
+        if (groupId != null) {
+            Group group = groupService.getGroupEntityById(groupId);
+            int deleted = 0;
+            for (int i = 0; i < students.size() + deleted; i++) {
+                Student s = students.get(i - deleted);
+                if (!s.getGroups().contains(group)) {
+                    students.remove(s);
+                    deleted++;
+                }
+            }
+        }
+        if (status != null) {
+            int deleted = 0;
+            for (int i = 0; i < students.size() + deleted; i++) {
+                Student s = students.get(i - deleted);
+                if (s.getStatus() != status) {
+                    students.remove(s);
+                    deleted++;
+                }
+            }
+        }
+        return studentMapper.entityListToDtoList(students);
     }
 
     @Override

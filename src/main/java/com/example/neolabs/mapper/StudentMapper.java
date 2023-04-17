@@ -27,7 +27,6 @@ public class StudentMapper {
                 .gender(request.getGender())
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
-                .status(request.getStatus() != null ? request.getStatus() : Status.ACTIVE)
                 .build();
     }
 
