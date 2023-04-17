@@ -45,7 +45,9 @@ public class StudentServiceImpl implements StudentService {
         if (student.getGroups() == null){
             student.setGroups(new ArrayList<>());
         }
-        student.getGroups().add(groupService.getGroupEntityById(createStudentRequest.getEnrollmentGroupId()));
+        List<Group> groups = student.getGroups();
+        groups.add(groupService.getGroupEntityById(createStudentRequest.getEnrollmentGroupId()));
+        student.setGroups(groups);
         student.setStatus(Status.ACTIVE);
         student.setIsArchived(false);
         operationService.recordStudentOperation(studentRepository.save(student), OperationType.CREATE);
@@ -148,13 +150,12 @@ public class StudentServiceImpl implements StudentService {
     public ResponseDto enrollStudent(Long studentId, Long groupId) {
         Student student = getStudentEntityById(studentId);
         Group group = groupService.getGroupEntityById(groupId);
-        if (student.getGroups().contains(group)) {
+        List<Group> groups = student.getGroups();
+        if (groups.contains(group)) {
             throw new BaseException("Student is already enrolled to the group.", HttpStatus.CONFLICT);
         }
-        if (student.getGroups() == null){
-            student.setGroups(new ArrayList<>());
-        }
-        student.getGroups().add(group);
+        groups.add(group);
+        student.setGroups(groups);
         operationService.recordEnrollmentOperation(studentRepository.save(student), groupId);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)

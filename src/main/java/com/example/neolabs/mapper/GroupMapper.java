@@ -20,6 +20,7 @@ public class GroupMapper {
                 .mentor(MentorMapper.entityToMentorCardDto(group.getMentor()))
                 .imageUrl(group.getImageUrl())
                 .startDate(group.getStartDate())
+                .name(group.getName())
                 .endDate(group.getEndDate())
                 .status(group.getStatus())
                 .build();
@@ -36,6 +37,7 @@ public class GroupMapper {
 
     public static Group createGroupRequestToEntity(CreateGroupRequest groupDto){
         return Group.builder()
+                .name(groupDto.getName())
                 .maxCapacity(groupDto.getMaxCapacity())
                 .startDate(LocalDate.parse(groupDto.getStartDate(), DateUtil.datetimeToDateFormatter))
                 .status(groupDto.getStatus())
