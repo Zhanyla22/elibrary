@@ -86,7 +86,6 @@ public class MentorServiceImpl implements MentorService {
         mentor.setFirstName(updateMentorRequest.getFirstName());
         mentor.setLastName(updateMentorRequest.getLastName());
         mentor.setPhoneNumber(updateMentorRequest.getPhoneNumber());
-        mentor.setPatentNumber(updateMentorRequest.getPatentNumber());
         mentor.setSalary(updateMentorRequest.getSalary());
         mentor.setCourse(courseRepository.findById(updateMentorRequest.getCourseId())
                 .orElseThrow(
@@ -130,8 +129,8 @@ public class MentorServiceImpl implements MentorService {
         mentorDto.setFirstName(mentor.getFirstName());
         mentorDto.setLastName(mentor.getLastName());
         mentorDto.setPhoneNumber(mentor.getPhoneNumber());
-        mentorDto.setPatentNumber(mentor.getPatentNumber());
         mentorDto.setEmail(mentor.getEmail());
+        mentorDto.setImageUrl(mentor.getImageUrl());
         mentorDto.setCourseName(mentor.getCourse().getName());
         mentorDto.setGroupName(groupRepository.findGroupsNameByMentorId(id));
 
