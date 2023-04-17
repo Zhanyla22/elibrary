@@ -22,6 +22,7 @@ public class MentorMapper {
 
     public static MentorDto entityToMentorDto(Mentor mentor){
         return MentorDto.builder()
+                .id(mentor.getId())
                 .firstName(mentor.getFirstName())
                 .lastName(mentor.getLastName())
                 .email(mentor.getEmail())
@@ -31,8 +32,9 @@ public class MentorMapper {
                 .build();
     }
 
-    public static MentorCardDto mentorEntityToMentorCardDto(Mentor mentor) {
+    public static MentorCardDto entityToMentorCardDto(Mentor mentor) {
         MentorCardDto mentorCardDto = new MentorCardDto();
+        mentorCardDto.setId(mentor.getId());
         mentorCardDto.setEmail(mentor.getEmail());
         mentorCardDto.setFirstName(mentor.getFirstName());
         mentorCardDto.setLastName(mentor.getLastName());
@@ -41,6 +43,10 @@ public class MentorMapper {
         mentorCardDto.setDateArchive(mentor.getUpdatedDate());
         mentorCardDto.setReasonArchive(mentor.getReason());
         return mentorCardDto;
+    }
+
+    public static List<MentorCardDto> entityListToMentorCardDtoList(List<Mentor> mentors){
+        return mentors.stream().map(MentorMapper::entityToMentorCardDto).collect(Collectors.toList());
     }
 
     public Mentor createMentorDtoToMentorEntity(CreateMentorRequest createMentorRequest) {
@@ -57,6 +63,6 @@ public class MentorMapper {
     }
 
     public List<MentorCardDto> entityListToCardList(List<Mentor> mentors) {
-        return mentors.stream().map(MentorMapper::mentorEntityToMentorCardDto).collect(Collectors.toList());
+        return mentors.stream().map(MentorMapper::entityToMentorCardDto).collect(Collectors.toList());
     }
 }

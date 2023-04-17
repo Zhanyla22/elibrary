@@ -13,6 +13,8 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MentorDto {
 
+    Long id;
+
     String firstName;
 
     String lastName;

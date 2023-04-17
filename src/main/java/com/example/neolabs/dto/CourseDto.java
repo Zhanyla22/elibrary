@@ -35,4 +35,6 @@ public class CourseDto {
     String imageUrl;
 
     List<GroupStudentsDto> groups;
+
+    List<MentorCardDto> mentors;
 }

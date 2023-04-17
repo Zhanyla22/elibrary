@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MentorCardDto {
 
+    Long id;
+
     String imageUrl;
 
     String firstName;

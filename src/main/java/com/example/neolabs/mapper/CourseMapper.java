@@ -37,6 +37,7 @@ public class CourseMapper {
                 .numberOfGroups(course.getGroups().size())
                 .numberOfMentors(course.getMentors().size())
                 .numberOfStudents(course.getGroups().stream().mapToInt(group -> group.getStudents().size()).sum())
+                .mentors(MentorMapper.entityListToMentorCardDtoList(course.getMentors()))
                 .groups(course.getGroups().stream().map(GroupMapper::entityToCardDto).collect(Collectors.toList()))
                 .build();
     }

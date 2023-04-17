@@ -5,9 +5,6 @@ import com.example.neolabs.dto.GroupDto;
 import com.example.neolabs.dto.request.create.CreateGroupRequest;
 import com.example.neolabs.entity.Group;
 import com.example.neolabs.util.DateUtil;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,7 +17,7 @@ public class GroupMapper {
                 .id(group.getId())
                 .course(CourseMapper.entityToDto(group.getCourse()))
                 .maxCapacity(group.getMaxCapacity())
-                .mentor(MentorMapper.mentorEntityToMentorCardDto(group.getMentor()))
+                .mentor(MentorMapper.entityToMentorCardDto(group.getMentor()))
                 .imageUrl(group.getImageUrl())
                 .startDate(group.getStartDate())
                 .endDate(group.getEndDate())
