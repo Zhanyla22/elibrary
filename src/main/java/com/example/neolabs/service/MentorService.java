@@ -6,6 +6,7 @@ import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.dto.request.update.UpdateMentorRequest;
 import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.Status;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -30,5 +31,6 @@ public interface MentorService {
 
     List<Mentor> getBlacklist();
 
+    List<MentorCardDto> search(String keyword, Status status, Long courseId, PageRequest pageRequest);
 
 }

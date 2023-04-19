@@ -11,7 +11,6 @@ import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.EntityNotFoundException;
-import com.example.neolabs.mapper.GroupMapper;
 import com.example.neolabs.mapper.MentorMapper;
 import com.example.neolabs.repository.CourseRepository;
 import com.example.neolabs.repository.GroupRepository;
@@ -23,6 +22,7 @@ import com.example.neolabs.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,7 +58,7 @@ public class MentorServiceImpl implements MentorService {
         } else {
             throw new BaseException("Mentor with email " + createMentorRequest.getEmail() + " already exists", HttpStatus.CONFLICT);
         }
-        Mentor mentor = mentorRepository.findByEmail(createMentorRequest.getEmail()).orElseThrow(()->
+        Mentor mentor = mentorRepository.findByEmail(createMentorRequest.getEmail()).orElseThrow(() ->
                 new BaseException("Not found mentor with email " + createMentorRequest.getEmail(), HttpStatus.NOT_FOUND));
         return MentorMapper.entityToMentorDto(mentor);
     }
@@ -141,6 +141,17 @@ public class MentorServiceImpl implements MentorService {
     @Override
     public List<Mentor> getBlacklist() {
         return mentorRepository.findAllByStatus(Status.BLACKLIST);
+    }
+
+    @Override
+    public List<MentorCardDto> search(String keyword, Status status, Long courseId, PageRequest pageRequest) {
+        List<Mentor> mentors;
+        if(courseId ==  null){
+            mentors = mentorRepository.searchWithoutFilters(keyword,status.toString(),pageRequest);
+        }
+        else
+        mentors = mentorRepository.search(keyword, status.toString(), courseId, pageRequest);
+        return MentorMapper.entityListToMentorCardDtoList(mentors);
     }
 
     public Mentor getMentorEntityById(Long mentorId) {
