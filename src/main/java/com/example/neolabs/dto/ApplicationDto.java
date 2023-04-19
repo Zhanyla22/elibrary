@@ -53,4 +53,6 @@ public class ApplicationDto {
     Education education;
 
     Boolean isUrgent;
+
+    CourseCardDto courseCardDto;
 }

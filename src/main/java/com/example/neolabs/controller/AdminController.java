@@ -53,10 +53,10 @@ public class AdminController extends BaseController {
         return constructSuccessResponse("User with id " + id + "successfully deleted");
     }
 
-    @Operation(summary = "обновление данных пользователя - для админов - есть и роль")
+    @Operation(summary = "обновление данных пользователя")
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseDto> updateProfilePageUser(@PathVariable Long id, @RequestBody UpdateUserRequest updateUserRequest) {
-        userService.updateProfilePageWithRole(id, updateUserRequest);
+        userService.updateProfilePage(id, updateUserRequest);
         return constructSuccessResponse("profile info successfully updated");
     }
 

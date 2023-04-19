@@ -6,7 +6,7 @@ import com.example.neolabs.dto.request.auth.AuthenticationRequest;
 import com.example.neolabs.dto.request.auth.ForgotPasswordCodeRequestDto;
 import com.example.neolabs.dto.request.auth.ForgotPasswordRequestDto;
 import com.example.neolabs.dto.request.update.UpdatePasswordRequest;
-import com.example.neolabs.dto.request.update.UpdateUserClientRequest;
+import com.example.neolabs.dto.request.update.UpdateUserRequest;
 import com.example.neolabs.entity.User;
 import com.example.neolabs.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -73,8 +73,8 @@ public class UserController extends BaseController {
 
     @Operation(summary = "обновление данных пользователя - для менеджеров")
     @PutMapping("/update-client")
-    public ResponseEntity<ResponseDto> updateProfilePage(@RequestBody UpdateUserClientRequest updateUserClientRequest) {
-        userService.updateProfilePage(updateUserClientRequest);
+    public ResponseEntity<ResponseDto> updateProfilePage(@RequestBody UpdateUserRequest updateUserRequest) {
+        userService.updateProfilePage(null, updateUserRequest);
         return constructSuccessResponse("profile info successfully updated");
     }
 

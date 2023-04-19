@@ -6,7 +6,6 @@ import com.example.neolabs.dto.request.auth.ForgotPasswordCodeRequestDto;
 import com.example.neolabs.dto.request.auth.ForgotPasswordRequestDto;
 import com.example.neolabs.dto.request.auth.RegistrationRequest;
 import com.example.neolabs.dto.request.update.UpdatePasswordRequest;
-import com.example.neolabs.dto.request.update.UpdateUserClientRequest;
 import com.example.neolabs.dto.request.update.UpdateUserRequest;
 import com.example.neolabs.dto.*;
 import com.example.neolabs.dto.response.AuthResponse2Role;
@@ -39,9 +38,7 @@ public interface UserService {
 
     void confirmCodeFirst(CodeRequest code);
 
-    void updateProfilePageWithRole(Long id,UpdateUserRequest updateUserRequest);
-
-    void updateProfilePage(UpdateUserClientRequest updateUserClientRequest);
+    void updateProfilePage(Long id, UpdateUserRequest updateUserRequest);
 
     void updateProfileImage(MultipartFile multipartFile, User user);
 

@@ -7,7 +7,6 @@ import com.example.neolabs.dto.request.auth.ForgotPasswordCodeRequestDto;
 import com.example.neolabs.dto.request.auth.ForgotPasswordRequestDto;
 import com.example.neolabs.dto.request.auth.RegistrationRequest;
 import com.example.neolabs.dto.request.update.UpdatePasswordRequest;
-import com.example.neolabs.dto.request.update.UpdateUserClientRequest;
 import com.example.neolabs.dto.request.update.UpdateUserRequest;
 import com.example.neolabs.dto.response.AuthResponse2Role;
 import com.example.neolabs.dto.response.AuthenticationResponse;
@@ -177,24 +176,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void updateProfilePageWithRole(Long id, UpdateUserRequest updateUserRequest) {
-        User user = getUserEntityById(id);
-        user.setEmail(updateUserRequest.getEmail());
-        user.setRole(updateUserRequest.getRole());
-        user.setFirstName(updateUserRequest.getFirstName());
-        user.setPhoneNumber(updateUserRequest.getPhoneNumber());
-        user.setLastName(updateUserRequest.getLastName());
-        userRepository.save(user);
-    }
-
-    //TODO: подумать над email
-    @Override
-    public void updateProfilePage(UpdateUserClientRequest updateUserClientRequest) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        user.setEmail(updateUserClientRequest.getEmail());
-        user.setFirstName(updateUserClientRequest.getFirstName());
-        user.setPhoneNumber(updateUserClientRequest.getPhoneNumber());
-        user.setLastName(updateUserClientRequest.getLastName());
+    public void updateProfilePage(Long id, UpdateUserRequest updateUserRequest) {
+        User user = id != null ? getUserEntityById(id) :
+                (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user.setEmail(updateUserRequest.getEmail() != null ? updateUserRequest.getEmail() : user.getEmail());
+        user.setFirstName(updateUserRequest.getFirstName() != null ? updateUserRequest.getFirstName() : user.getFirstName());
+        user.setPhoneNumber(updateUserRequest.getPhoneNumber() != null ? updateUserRequest.getPhoneNumber() : user.getPhoneNumber());
+        user.setLastName(updateUserRequest.getLastName() != null ? updateUserRequest.getLastName() : user.getLastName());
         userRepository.save(user);
     }
 

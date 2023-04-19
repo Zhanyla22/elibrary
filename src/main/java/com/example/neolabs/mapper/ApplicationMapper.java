@@ -46,6 +46,7 @@ public class ApplicationMapper {
                 .phoneNumber(application.getPhoneNumber())
                 .hasLaptop(application.getHasLaptop())
                 .marketingStrategyEnum(application.getMarketingStrategyEnum())
+                .courseCardDto(CourseMapper.entityToCardDto(application.getCourse()))
                 .build();
     }
 

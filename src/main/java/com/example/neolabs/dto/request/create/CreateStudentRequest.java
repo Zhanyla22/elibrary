@@ -41,4 +41,6 @@ public class CreateStudentRequest {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Long enrollmentGroupId;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    Integer initialPayment;
 }
