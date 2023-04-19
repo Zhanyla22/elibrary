@@ -1,7 +1,6 @@
 package com.example.neolabs.entity.base;
 
 import com.example.neolabs.util.DateUtil;
-import jakarta.annotation.PreDestroy;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -32,18 +31,12 @@ public class BaseEntity {
     LocalDateTime deletedDate;
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         this.createdDate = LocalDateTime.now(DateUtil.getZoneId());
     }
 
     @PreUpdate
-    public void preUpdate(){
+    public void preUpdate() {
         this.updatedDate = LocalDateTime.now(DateUtil.getZoneId());
     }
-
-    @PreDestroy
-    public void preDelete(){
-        this.deletedDate = LocalDateTime.now(DateUtil.getZoneId());
-    }
-
 }
