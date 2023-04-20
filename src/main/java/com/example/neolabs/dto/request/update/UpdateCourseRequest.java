@@ -1,4 +1,4 @@
-package com.example.neolabs.dto.request.create;
+package com.example.neolabs.dto.request.update;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;

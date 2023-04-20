@@ -3,10 +3,8 @@ package com.example.neolabs.mapper;
 import com.example.neolabs.dto.CourseCardDto;
 import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
-import com.example.neolabs.dto.request.create.UpdateCourseRequest;
+import com.example.neolabs.dto.request.update.UpdateCourseRequest;
 import com.example.neolabs.entity.Course;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;

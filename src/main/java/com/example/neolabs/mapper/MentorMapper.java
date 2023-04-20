@@ -43,7 +43,8 @@ public class MentorMapper {
                 .lastName(mentor.getLastName())
                 .imageUrl(mentor.getImageUrl())
                 .course(mentor.getCourse().getName())
-                .dateArchive(mentor.getUpdatedDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")))
+                .dateArchive(mentor.getArchiveDate() != null ?
+                        mentor.getArchiveDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null)
                 .reasonArchive(mentor.getReason())
                 .build();
     }

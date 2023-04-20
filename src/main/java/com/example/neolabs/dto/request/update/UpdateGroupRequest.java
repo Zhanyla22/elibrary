@@ -1,4 +1,4 @@
-package com.example.neolabs.dto.request.create;
+package com.example.neolabs.dto.request.update;
 
 import com.example.neolabs.enums.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,9 +20,6 @@ public class UpdateGroupRequest {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Long mentorId;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    Long courseId;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Integer maxCapacity;

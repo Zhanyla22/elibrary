@@ -5,7 +5,7 @@ import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
-import com.example.neolabs.dto.request.create.UpdateCourseRequest;
+import com.example.neolabs.dto.request.update.UpdateCourseRequest;
 import com.example.neolabs.entity.Course;
 import org.springframework.web.multipart.MultipartFile;
 

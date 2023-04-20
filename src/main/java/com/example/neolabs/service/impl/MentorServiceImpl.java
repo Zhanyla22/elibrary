@@ -8,6 +8,7 @@ import com.example.neolabs.dto.request.create.CreateMentorRequest;
 import com.example.neolabs.dto.request.update.UpdateMentorRequest;
 import com.example.neolabs.entity.Mentor;
 import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.enums.OperationType;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.EntityNotFoundException;
@@ -39,7 +40,8 @@ public class MentorServiceImpl implements MentorService {
     final CourseRepository courseRepository;
     final GroupRepository groupRepository;
     final CourseServiceImpl courseService;
-    final ImageUploadService imageUploadService;
+    final ImageUploadServiceImpl imageUploadService;
+    final OperationServiceImpl operationService;
 
     @Override
     public List<MentorCardDto> getAllMentorCards(Long courseId, Status status) {
@@ -60,6 +62,7 @@ public class MentorServiceImpl implements MentorService {
         }
         Mentor mentor = mentorRepository.findByEmail(createMentorRequest.getEmail()).orElseThrow(() ->
                 new BaseException("Not found mentor with email " + createMentorRequest.getEmail(), HttpStatus.NOT_FOUND));
+        operationService.recordMentorOperation(mentor, OperationType.CREATE);
         return MentorMapper.entityToMentorDto(mentor);
     }
 
@@ -79,7 +82,7 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public void updateMentorById(UpdateMentorRequest updateMentorRequest, Long id) {
+    public ResponseDto updateMentorById(UpdateMentorRequest updateMentorRequest, Long id) {
         Mentor mentor = getMentorEntityById(id);
         mentor.setEmail(updateMentorRequest.getEmail());
         mentor.setFirstName(updateMentorRequest.getFirstName());
@@ -89,7 +92,8 @@ public class MentorServiceImpl implements MentorService {
         mentor.setCourse(courseRepository.findById(updateMentorRequest.getCourseId())
                 .orElseThrow(
                         () -> new BaseException("Course with id  " + updateMentorRequest.getCourseId() + " not found", HttpStatus.NOT_FOUND)));
-        mentorRepository.save(mentor);
+        operationService.recordMentorOperation(mentorRepository.save(mentor), OperationType.UPDATE);
+        return ResponseUtil.buildSuccessResponse("Mentor has been successfully updated.");
     }
 
     @Override
@@ -104,7 +108,7 @@ public class MentorServiceImpl implements MentorService {
         mentor.setReason(archiveRequest.getReason());
         mentor.setStatus(isBlacklist ? Status.BLACKLIST : Status.ARCHIVED);
         mentor.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
-        mentorRepository.save(mentor);
+        operationService.recordMentorOperation(mentorRepository.save(mentor), OperationType.ARCHIVE);
         return ResponseUtil.buildSuccessResponse("Mentor has been successfully " + (isBlacklist ? "blacklisted." : "archived."));
     }
 
@@ -117,24 +121,16 @@ public class MentorServiceImpl implements MentorService {
         mentor.setStatus(Status.ACTIVE);
         mentor.setReason(null);
         mentor.setArchiveDate(null);
-        mentorRepository.save(mentor);
+        operationService.recordMentorOperation(mentorRepository.save(mentor), OperationType.UNARCHIVE);
         return ResponseUtil.buildSuccessResponse("Mentor has been successfully unarchived.");
     }
 
     @Override
     public MentorDto getMentorById(Long id) {
         Mentor mentor = getMentorEntityById(id);
-        MentorDto mentorDto = new MentorDto();
-        mentorDto.setFirstName(mentor.getFirstName());
-        mentorDto.setLastName(mentor.getLastName());
-        mentorDto.setPhoneNumber(mentor.getPhoneNumber());
-        mentorDto.setEmail(mentor.getEmail());
-        mentorDto.setImageUrl(mentor.getImageUrl());
-        mentorDto.setCourseName(mentor.getCourse().getName());
+        MentorDto mentorDto = MentorMapper.entityToMentorDto(mentor);
         mentorDto.setGroupName(groupRepository.findGroupsNameByMentorId(id));
-
         return mentorDto;
-
     }
 
     @Override

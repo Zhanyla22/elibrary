@@ -1,4 +1,4 @@
-package com.example.neolabs.dto.request.create;
+package com.example.neolabs.dto.request.update;
 
 import com.example.neolabs.enums.Education;
 import com.example.neolabs.enums.Gender;

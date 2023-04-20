@@ -21,7 +21,7 @@ public interface MentorService {
 
     void deleteMentorById(Long id); // FIXME: 16.04.2023 need to return some info about operation
 
-    void updateMentorById(UpdateMentorRequest updateMentorRequest, Long id); // FIXME: 16.04.2023 need to return some info about operation
+    ResponseDto updateMentorById(UpdateMentorRequest updateMentorRequest, Long id); // FIXME: 16.04.2023 need to return some info about operation
 
     ResponseDto archiveMentorById(Long mentorId, ArchiveRequest archiveRequest, Boolean isBlacklist);
 

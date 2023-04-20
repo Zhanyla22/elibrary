@@ -189,7 +189,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void updateProfileImage(MultipartFile multipartFile, User user) {
         user.setUrlImage(imageUploadService.saveImage(multipartFile));
-
         userRepository.save(user);
     }
 

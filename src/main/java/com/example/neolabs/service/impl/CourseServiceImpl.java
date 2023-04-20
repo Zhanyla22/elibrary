@@ -5,12 +5,12 @@ import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
-import com.example.neolabs.dto.request.create.UpdateCourseRequest;
+import com.example.neolabs.dto.request.update.UpdateCourseRequest;
 import com.example.neolabs.entity.Course;
 import com.example.neolabs.enums.EntityEnum;
+import com.example.neolabs.enums.OperationType;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
-import com.example.neolabs.exception.ContentNotFoundException;
 import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.CourseMapper;
 import com.example.neolabs.repository.CourseRepository;
@@ -29,11 +29,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
-    private final ImageUploadService imageUploadService;
+    private final ImageUploadServiceImpl imageUploadService;
+    private final OperationServiceImpl operationService;
 
     @Override
     public List<CourseCardDto> getAllCourses() {
@@ -47,6 +47,8 @@ public class CourseServiceImpl implements CourseService {
         }
         Course course = CourseMapper.createRequestToEntity(createCourseRequest);
         course.setStatus(Status.ACTIVE);
+        course.setIsArchived(false);
+        operationService.recordCourseOperation(course, OperationType.CREATE);
         return CourseMapper.entityToDto(courseRepository.save(course));
     }
 
@@ -54,6 +56,7 @@ public class CourseServiceImpl implements CourseService {
     public CourseCardDto updateCourseById(Long courseId, UpdateCourseRequest updateCourseRequest) {
         Course course = getCourseEntityById(courseId);
         course = CourseMapper.updateEntity(course, updateCourseRequest);
+        operationService.recordCourseOperation(course, OperationType.UPDATE);
         return CourseMapper.entityToCardDto(courseRepository.save(course));
     }
 
@@ -65,8 +68,8 @@ public class CourseServiceImpl implements CourseService {
         }
         course.setReason(archiveRequest.getReason());
         course.setStatus(Status.ARCHIVED);
-        courseRepository.save(course);
         course.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
+        operationService.recordCourseOperation(courseRepository.save(course), OperationType.ARCHIVE);
         return ResponseUtil.buildSuccessResponse("Course has been successfully archived.");
     }
 
@@ -79,7 +82,7 @@ public class CourseServiceImpl implements CourseService {
         course.setStatus(Status.ACTIVE);
         course.setReason(null);
         course.setArchiveDate(null);
-        courseRepository.save(course);
+        operationService.recordCourseOperation(courseRepository.save(course), OperationType.UNARCHIVE);
         return ResponseUtil.buildSuccessResponse("Course has been successfully unarchived.");
     }
 
@@ -93,7 +96,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseDto deleteCourseById(Long id) {
         Course course = getCourseEntityById(id);
-        courseRepository.delete(course);
+//        courseRepository.delete(course);
         return CourseMapper.entityToDto(course);
     }
 

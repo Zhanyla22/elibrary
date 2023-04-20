@@ -4,6 +4,7 @@ import com.example.neolabs.dto.GroupDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateGroupRequest;
+import com.example.neolabs.dto.request.update.UpdateGroupRequest;
 import com.example.neolabs.service.impl.GroupServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,7 +31,7 @@ public class GroupController {
 
     @Operation(summary = "Insert new group")
     @PostMapping(value = {""}, produces = "application/json")
-    public ResponseEntity<ResponseDto> insertGroup(@RequestBody CreateGroupRequest createGroupRequest){
+    public ResponseEntity<GroupDto> insertGroup(@RequestBody CreateGroupRequest createGroupRequest){
         return ResponseEntity.ok(groupService.insertGroup(createGroupRequest));
     }
 
@@ -43,8 +44,8 @@ public class GroupController {
     @Operation(summary = "Update group by id (не работает)")// TODO: 17.04.2023
     @PutMapping(value = {"/{groupId}"})
     public ResponseEntity<GroupDto> updateGroupById(@PathVariable("groupId") Long groupId,
-                                                    @Valid @RequestBody CreateGroupRequest createGroupRequest){
-        return ResponseEntity.ok(groupService.updateGroupById(groupId, createGroupRequest));
+                                                    @Valid @RequestBody UpdateGroupRequest updateGroupRequest){
+        return ResponseEntity.ok(groupService.updateGroupById(groupId, updateGroupRequest));
     }
 
     @Operation(summary = "Archive group by id")

@@ -180,7 +180,7 @@ public class StudentServiceImpl implements StudentService {
         student.setStatus(isBlacklist ? Status.BLACKLIST : Status.ARCHIVED);
         student.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
         student.setIsArchived(true);
-        studentRepository.save(student);
+        operationService.recordStudentOperation(studentRepository.save(student), OperationType.ARCHIVE);
         return ResponseUtil.buildSuccessResponse("Student has been successfully " + (isBlacklist ? "blacklisted." : "archived."));
     }
 
@@ -194,7 +194,7 @@ public class StudentServiceImpl implements StudentService {
         student.setReason(null);
         student.setArchiveDate(null);
         student.setIsArchived(false);
-        studentRepository.save(student);
+        operationService.recordStudentOperation(studentRepository.save(student), OperationType.UNARCHIVE);
         return ResponseUtil.buildSuccessResponse("Student has been successfully unarchived.");
     }
 

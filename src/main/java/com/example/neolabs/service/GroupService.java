@@ -4,18 +4,19 @@ import com.example.neolabs.dto.GroupDto;
 import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.create.CreateGroupRequest;
+import com.example.neolabs.dto.request.update.UpdateGroupRequest;
 
 import java.util.List;
 
 public interface GroupService {
 
-    ResponseDto insertGroup(CreateGroupRequest createGroupRequest);
+    GroupDto insertGroup(CreateGroupRequest createGroupRequest);
 
     List<GroupDto> getAllGroups();
 
     GroupDto getGroupById(Long groupId);
 
-    GroupDto updateGroupById(Long groupId, CreateGroupRequest createGroupRequest);
+    GroupDto updateGroupById(Long groupId, UpdateGroupRequest updateGroupRequest);
 
     ResponseDto archiveGroupById(Long groupId, ArchiveRequest archiveRequest);
 

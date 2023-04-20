@@ -73,7 +73,7 @@ public class StudentController {
         return ResponseEntity.ok(studentService.enrollStudent(studentId, groupId));
     }
 
-    @Operation(summary = "Обновить данные студента по ID (не работает)")
+    @Operation(summary = "Обновить данные студента по ID")
     @PutMapping("/{studentId}")
     public ResponseEntity<ResponseDto> updateStudentById(@PathVariable("studentId") Long studentId,
                                                          @RequestBody UpdateStudentRequest updateStudentRequest){
