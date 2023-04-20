@@ -36,7 +36,7 @@ public class StudentController {
                                                            @RequestParam("size") Optional<Integer> size,
                                                            @RequestParam("page") Optional<Integer> page){
         return ResponseEntity.ok(studentService.getAllStudents(
-                PageRequest.of(page.orElse(0), size.orElse(20), Sort.by(sortBy.orElse("id")))));
+                PageRequest.of(page.orElse(0), size.orElse(1000), Sort.by(sortBy.orElse("id")))));
     }
 
     @PostMapping("")
@@ -64,7 +64,7 @@ public class StudentController {
                                                            @RequestParam("page") Optional<Integer> page){
         return ResponseEntity.ok(studentService.find(searchString.orElse(null),
                 status.orElse(null), groupId.orElse(null), isArchived.orElse(false),
-                PageRequest.of(page.orElse(0), size.orElse(20), Sort.by(sortBy.orElse("id")))));
+                PageRequest.of(page.orElse(0), size.orElse(1000), Sort.by(sortBy.orElse("id")))));
     }
 
     @PutMapping("/enroll")

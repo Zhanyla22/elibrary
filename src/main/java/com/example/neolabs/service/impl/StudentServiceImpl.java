@@ -137,8 +137,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResponseDto updateStudentById(Long studentId, UpdateStudentRequest request) {
-        Student student = StudentMapper.updateRequestToEntity(request);
-        student.setId(studentId);
+        if (request.getEmail() != null) {
+            if (studentRepository.existsByEmail(request.getEmail())){
+                throw new BaseException("Given email is already used.", HttpStatus.CONFLICT);
+            }
+        }
+        Student student = StudentMapper.updateEntityWithUpdateRequest(getStudentEntityById(studentId), request);
         operationService.recordStudentOperation(studentRepository.save(student), OperationType.UPDATE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)

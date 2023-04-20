@@ -83,7 +83,7 @@ public class AdminController extends BaseController {
                                                      @RequestParam("page") Optional<Integer> page) {
 
         return ResponseEntity.ok(userService.getAllUsers(
-                PageRequest.of(page.orElse(0), size.orElse(20), Sort.by(sortBy.orElse("id")))
+                PageRequest.of(page.orElse(0), size.orElse(1000), Sort.by(sortBy.orElse("id")))
         ));
     }
 

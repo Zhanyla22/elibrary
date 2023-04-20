@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
+    boolean existsByEmail(String email);
     Page<Student> findAllByStatus(Status status, Pageable pageable);
     List<Student> findAllByStatus(Status status);// TODO: 17.04.2023 need to change its usages to the above one
     Page<Student> findAllByIsArchived(Boolean isArchived, Pageable pageable);

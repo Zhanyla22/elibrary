@@ -62,6 +62,14 @@ public class StudentMapper {
                 .build();
     }
 
+    public static Student updateEntityWithUpdateRequest(Student student, UpdateStudentRequest request){
+        student.setEmail(request.getEmail() != null ? request.getEmail() : student.getEmail());
+        student.setFirstName(request.getFirstName() != null ? request.getFirstName() : student.getFirstName());
+        student.setLastName(request.getLastName() != null ? request.getLastName() : student.getLastName());
+        student.setPhoneNumber(request.getPhoneNumber() != null ? request.getPhoneNumber() : student.getPhoneNumber());
+        return student;
+    }
+
     public static List<StudentCardDto> entityListToCardDtoList(List<Student> students){
         return students.stream().map(StudentMapper::entityToCardDto).collect(Collectors.toList());
     }
