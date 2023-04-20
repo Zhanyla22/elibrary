@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,16 +36,16 @@ public class MentorMapper {
     }
 
     public static MentorCardDto entityToMentorCardDto(Mentor mentor) {
-        MentorCardDto mentorCardDto = new MentorCardDto();
-        mentorCardDto.setId(mentor.getId());
-        mentorCardDto.setEmail(mentor.getEmail());
-        mentorCardDto.setFirstName(mentor.getFirstName());
-        mentorCardDto.setLastName(mentor.getLastName());
-        mentorCardDto.setImageUrl(mentor.getImageUrl());
-        mentorCardDto.setCourse(mentor.getCourse().getName());
-        mentorCardDto.setDateArchive(mentor.getUpdatedDate());
-        mentorCardDto.setReasonArchive(mentor.getReason());
-        return mentorCardDto;
+        return MentorCardDto.builder()
+                .id(mentor.getId())
+                .email(mentor.getEmail())
+                .firstName(mentor.getFirstName())
+                .lastName(mentor.getLastName())
+                .imageUrl(mentor.getImageUrl())
+                .course(mentor.getCourse().getName())
+                .dateArchive(mentor.getUpdatedDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")))
+                .reasonArchive(mentor.getReason())
+                .build();
     }
 
     public static List<MentorCardDto> entityListToMentorCardDtoList(List<Mentor> mentors){
@@ -50,16 +53,16 @@ public class MentorMapper {
     }
 
     public Mentor createMentorDtoToMentorEntity(CreateMentorRequest createMentorRequest) {
-        Mentor mentor = new Mentor();
-        mentor.setEmail(createMentorRequest.getEmail());
-        mentor.setFirstName(createMentorRequest.getFirstName());
-        mentor.setLastName(createMentorRequest.getLastName());
-        mentor.setPhoneNumber(createMentorRequest.getPhoneNumber());
-        mentor.setCourse(courseRepository.findById(createMentorRequest.getCourseId())
-                .orElseThrow(
-                        () -> new BaseException("Course with id" + createMentorRequest.getCourseId() + " not found", HttpStatus.NOT_FOUND)));
-        mentor.setStatus(Status.ACTIVE);
-        return mentor;
+        return Mentor.builder()
+                .email(createMentorRequest.getEmail())
+                .firstName(createMentorRequest.getFirstName())
+                .lastName(createMentorRequest.getLastName())
+                .phoneNumber(createMentorRequest.getPhoneNumber())
+                .course(courseRepository.findById(createMentorRequest.getCourseId())
+                        .orElseThrow(
+                                () -> new BaseException("Course with id" + createMentorRequest.getCourseId() + " not found", HttpStatus.NOT_FOUND)))
+                .status(Status.ACTIVE)
+                .build();
     }
 
     public List<MentorCardDto> entityListToCardList(List<Mentor> mentors) {
