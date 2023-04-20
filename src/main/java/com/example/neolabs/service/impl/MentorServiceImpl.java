@@ -70,7 +70,6 @@ public class MentorServiceImpl implements MentorService {
         return MentorMapper.entityToMentorDto(mentorRepository.save(mentor));
     }
 
-
     @Override
     public void deleteMentorById(Long id) {
         Mentor mentor = getMentorEntityById(id);
