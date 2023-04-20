@@ -43,9 +43,10 @@ public class MentorMapper {
                 .lastName(mentor.getLastName())
                 .imageUrl(mentor.getImageUrl())
                 .course(mentor.getCourse().getName())
-                .dateArchive(mentor.getArchiveDate() != null ?
+                .isArchived(mentor.getIsArchived())
+                .archiveDate(mentor.getArchiveDate() != null ?
                         mentor.getArchiveDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null)
-                .reasonArchive(mentor.getReason())
+                .archiveReason(mentor.getReason())
                 .build();
     }
 
@@ -59,6 +60,7 @@ public class MentorMapper {
                 .firstName(createMentorRequest.getFirstName())
                 .lastName(createMentorRequest.getLastName())
                 .phoneNumber(createMentorRequest.getPhoneNumber())
+                .isArchived(false)
                 .course(courseRepository.findById(createMentorRequest.getCourseId())
                         .orElseThrow(
                                 () -> new BaseException("Course with id" + createMentorRequest.getCourseId() + " not found", HttpStatus.NOT_FOUND)))

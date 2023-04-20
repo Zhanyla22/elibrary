@@ -35,6 +35,12 @@ public class StudentDto {
 
     Integer totalPaymentPercentage;
 
+    String archiveDate;
+
+    String archiveReason;
+
+    Boolean isArchived;
+
     List<GroupDto> groups;
 
 }

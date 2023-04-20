@@ -30,4 +30,10 @@ public class UserDto {
     String lastVisitDate;
 
     String lastVisitTime;
+
+    String archiveDate;
+
+    String archiveReason;
+
+    Boolean isArchived;
 }

@@ -56,6 +56,9 @@ public class Group extends BaseEntity {
     @Column(name = "reason_changed_status")
     String reason;
 
+    @Column(name = "is_archive")
+    Boolean isArchived;
+
     @Column(name = "archive_date")
     LocalDateTime archiveDate;
 

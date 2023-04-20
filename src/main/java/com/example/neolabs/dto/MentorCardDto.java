@@ -26,7 +26,9 @@ public class MentorCardDto {
 
     String course;
 
-    String dateArchive;
+    String archiveDate;
 
-    String reasonArchive;
+    String archiveReason;
+
+    Boolean isArchived;
 }

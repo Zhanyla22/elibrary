@@ -35,6 +35,10 @@ public class GroupMapper {
                 .mentor(MentorMapper.entityToMentorCardDto(group.getMentor()))
                 .imageUrl(group.getImageUrl())
                 .startDate(group.getStartDate())
+                .isArchived(group.getIsArchived())
+                .archiveReason(group.getReason())
+                .archiveDate(group.getArchiveDate() != null ?
+                        group.getArchiveDate().format(DateUtil.datetimeToDateFormatter) : null)
                 .name(group.getName())
                 .endDate(group.getEndDate())
                 .status(group.getStatus())

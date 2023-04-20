@@ -48,8 +48,9 @@ public class CourseServiceImpl implements CourseService {
         Course course = CourseMapper.createRequestToEntity(createCourseRequest);
         course.setStatus(Status.ACTIVE);
         course.setIsArchived(false);
+        course = courseRepository.save(course);
         operationService.recordCourseOperation(course, OperationType.CREATE);
-        return CourseMapper.entityToDto(courseRepository.save(course));
+        return CourseMapper.entityToDto(course);
     }
 
     @Override
@@ -69,6 +70,7 @@ public class CourseServiceImpl implements CourseService {
         course.setReason(archiveRequest.getReason());
         course.setStatus(Status.ARCHIVED);
         course.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
+        course.setIsArchived(true);
         operationService.recordCourseOperation(courseRepository.save(course), OperationType.ARCHIVE);
         return ResponseUtil.buildSuccessResponse("Course has been successfully archived.");
     }

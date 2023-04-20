@@ -6,6 +6,7 @@ import com.example.neolabs.dto.request.create.CreateStudentRequest;
 import com.example.neolabs.dto.request.update.UpdateStudentRequest;
 import com.example.neolabs.entity.Student;
 import com.example.neolabs.enums.Status;
+import com.example.neolabs.util.DateUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -45,6 +46,10 @@ public class StudentMapper {
                 .gender(student.getGender().getRussian())
                 .groups(GroupMapper.entityListToDtoList(student.getGroups()))
                 .status(student.getStatus().getRussian())
+                .isArchived(student.getIsArchived())
+                .archiveReason(student.getReason())
+                .archiveDate(student.getArchiveDate() != null ?
+                        student.getArchiveDate().format(DateUtil.datetimeToDateFormatter) : null)
                 .totalDebt(null) // FIXME: 16.03.2023
                 .totalPaymentPercentage(null)
                 .build();

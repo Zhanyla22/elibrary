@@ -43,6 +43,7 @@ public class GroupServiceImpl implements GroupService {
 
         Group group = GroupMapper.createGroupRequestToEntity(createGroupRequest);
         group.setCourse(course);
+        group.setIsArchived(false);
         group.setMentor(mentorService.getMentorEntityById(createGroupRequest.getMentorId()));
         group.setEndDate(group.getStartDate().plusMonths(course.getDurationInMonth()));
         group = groupRepository.save(group);
@@ -75,6 +76,7 @@ public class GroupServiceImpl implements GroupService {
         group.setReason(archiveRequest.getReason());
         group.setStatus(Status.ARCHIVED);
         group.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
+        group.setIsArchived(true);
         operationService.recordGroupOperation(groupRepository.save(group), OperationType.ARCHIVE);
         return ResponseUtil.buildSuccessResponse("Group has been successfully archived.");
     }
@@ -88,6 +90,7 @@ public class GroupServiceImpl implements GroupService {
         group.setStatus(Status.ACTIVE);
         group.setReason(null);
         group.setArchiveDate(null);
+        group.setIsArchived(false);
         operationService.recordGroupOperation(groupRepository.save(group), OperationType.UNARCHIVE);
         return ResponseUtil.buildSuccessResponse("Group has been successfully unarchived.");
     }

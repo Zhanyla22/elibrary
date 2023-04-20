@@ -18,6 +18,10 @@ public class UserMapper {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .phoneNumber(user.getPhoneNumber())
+                .isArchived(user.getIsArchived())
+                .archiveReason(user.getReason())
+                .archiveDate(user.getArchiveDate() != null ?
+                        user.getArchiveDate().format(DateUtil.datetimeToDateFormatter) : null)
                 .lastVisitDate(DateUtil.datetimeToDateFormatter.format(user.getLastVisitDate()))
                 .lastVisitTime(DateUtil.datetimeFormatter.format(user.getLastVisitDate()))
                 .build();

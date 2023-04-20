@@ -18,33 +18,29 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GroupDto {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long id;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String name;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     CourseCardDto course;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Integer maxCapacity;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     MentorCardDto mentor;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     LocalDate startDate;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String imageUrl;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     LocalDate endDate;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    String archiveDate;
+
+    String archiveReason;
+
+    Boolean isArchived;
+
     Status status;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     List<StudentDto> students;
 }

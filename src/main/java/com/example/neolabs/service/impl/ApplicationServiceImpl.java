@@ -107,10 +107,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setCourse(courseService.getCourseEntityById(request.getCourseId()));
         application.setIsArchived(false);
         application.setApplicationStatusUpdateDate(LocalDateTime.now(DateUtil.getZoneId()));
-        ApplicationDto newDto = applicationMapper.entityToDto(applicationRepository.save(application));
+        application = applicationRepository.save(application);
         operationService.recordApplicationOperation(application, OperationType.CREATE);
         return ResponseDto.builder()
-                .result(newDto)
+                .result(applicationMapper.entityToDto(application))
                 .resultCode(ResultCode.SUCCESS)
                 .build();
     }

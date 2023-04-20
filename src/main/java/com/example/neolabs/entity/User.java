@@ -58,6 +58,9 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "reason_changed_status")
     String reason;
 
+    @Column(name = "is_archived")
+    Boolean isArchived;
+
     @Column(name = "archive_date")
     LocalDateTime archiveDate;
 

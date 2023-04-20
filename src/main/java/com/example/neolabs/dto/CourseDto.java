@@ -22,6 +22,10 @@ public class CourseDto {
 
     Boolean isArchived;
 
+    String archiveDate;
+
+    String archiveReason;
+
     Integer durationInMonth;
 
     Integer numberOfLessons;

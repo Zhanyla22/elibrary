@@ -49,6 +49,9 @@ public class Mentor extends BaseEntity{
 
     @Column(name = "archive_date")
     LocalDateTime archiveDate;
+
+    @Column(name = "is_archived")
+    Boolean isArchived;
 }
 
 

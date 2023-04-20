@@ -101,7 +101,7 @@ public class StudentController {
         return ResponseEntity.ok(studentService.unfreezeStudentById(studentId));
     }
 
-    @PutMapping
+    @PutMapping("/unarchive")
     public ResponseEntity<ResponseDto> unarchiveStudentById(@RequestParam("studentId") Long studentId){
         return ResponseEntity.ok(studentService.unarchiveStudentById(studentId));
     }

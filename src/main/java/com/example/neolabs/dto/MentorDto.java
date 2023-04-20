@@ -29,6 +29,10 @@ public class MentorDto {
 
     String courseName;
 
+    String archiveDate;
+
+    String archiveReason;
+
     List<String> groupName;
 
     List<ScheduleDto> scheduleDto;

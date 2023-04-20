@@ -5,6 +5,7 @@ import com.example.neolabs.dto.CourseDto;
 import com.example.neolabs.dto.request.create.CreateCourseRequest;
 import com.example.neolabs.dto.request.update.UpdateCourseRequest;
 import com.example.neolabs.entity.Course;
+import com.example.neolabs.util.DateUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +31,9 @@ public class CourseMapper {
                 .cost(course.getCost())
                 .durationInMonth(course.getDurationInMonth())
                 .isArchived(course.getIsArchived())
+                .archiveReason(course.getReason())
+                .archiveDate(course.getArchiveDate() != null ?
+                        course.getArchiveDate().format(DateUtil.datetimeToDateFormatter) : null)
                 .imageUrl(course.getImageUrl())
                 .numberOfLessons(course.getNumberOfLessons())
                 .numberOfGroups(course.getGroups().size())

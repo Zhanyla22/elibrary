@@ -55,13 +55,10 @@ public class MentorServiceImpl implements MentorService {
 
     @Override
     public MentorDto addNewMentor(CreateMentorRequest createMentorRequest) {
-        if (!mentorRepository.existsByEmail(createMentorRequest.getEmail())) {
-            mentorRepository.saveAndFlush(mentorMapper.createMentorDtoToMentorEntity(createMentorRequest));
-        } else {
+        if (mentorRepository.existsByEmail(createMentorRequest.getEmail())) {
             throw new BaseException("Mentor with email " + createMentorRequest.getEmail() + " already exists", HttpStatus.CONFLICT);
         }
-        Mentor mentor = mentorRepository.findByEmail(createMentorRequest.getEmail()).orElseThrow(() ->
-                new BaseException("Not found mentor with email " + createMentorRequest.getEmail(), HttpStatus.NOT_FOUND));
+        Mentor mentor = mentorRepository.save(mentorMapper.createMentorDtoToMentorEntity(createMentorRequest));
         operationService.recordMentorOperation(mentor, OperationType.CREATE);
         return MentorMapper.entityToMentorDto(mentor);
     }
