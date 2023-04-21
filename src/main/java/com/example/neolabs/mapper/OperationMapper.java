@@ -12,8 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
-@RequiredArgsConstructor
 public class OperationMapper {
 
     public static OperationDto applicationOperationToDto(ApplicationOperation operation){
@@ -143,12 +141,12 @@ public class OperationMapper {
     }
 
     public static List<OperationDto> allOperationListToDtoList(List<ApplicationOperation> applicationOperations,
-                                                        List<UserOperation> userOperations,
-                                                        List<GroupOperation> groupOperations,
-                                                        List<StudentOperation> studentOperations,
-                                                        List<CourseOperation> courseOperations,
-                                                        List<MentorOperation> mentorOperations,
-                                                        List<PaymentOperation> paymentOperations){
+                                                               List<CourseOperation> courseOperations,
+                                                               List<GroupOperation> groupOperations,
+                                                               List<MentorOperation> mentorOperations,
+                                                               List<PaymentOperation> paymentOperations,
+                                                               List<StudentOperation> studentOperations,
+                                                               List<UserOperation> userOperations){
         List<OperationDto> operations = new ArrayList<>();
         if (applicationOperations != null){
             operations.addAll(applicationOperationListToDtoList(applicationOperations));

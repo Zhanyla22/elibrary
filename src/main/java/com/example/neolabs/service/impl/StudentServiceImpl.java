@@ -162,7 +162,7 @@ public class StudentServiceImpl implements StudentService {
         }
         groups.add(group);
         student.setGroups(groups);
-        operationService.recordEnrollmentOperation(studentRepository.save(student), groupId);
+        operationService.recordEnrollmentOperation(group, studentRepository.save(student).getId());
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
                 .result("Student has been successfully enrolled to the group.")

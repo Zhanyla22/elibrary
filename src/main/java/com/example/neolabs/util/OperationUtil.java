@@ -44,7 +44,7 @@ public class OperationUtil {
         return String.format(updateDescriptionFormat, entityEnum, entityId);
     }
 
-    public String buildEnrollDescription(Long studentId, Long groupId){
+    public String buildEnrollDescription(Long groupId, Long studentId){
         return String.format(enrollDescriptionFormat, studentId, groupId);
     }
 }

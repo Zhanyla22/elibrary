@@ -6,6 +6,7 @@ import com.example.neolabs.dto.ResponseDto;
 import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.dto.request.create.CreateApplicationRequest;
+import com.example.neolabs.dto.request.update.UpdateApplicationRequest;
 import com.example.neolabs.dto.response.SortedApplicationResponse;
 import com.example.neolabs.service.impl.ApplicationServiceImpl;
 import com.example.neolabs.service.impl.CsvExportServiceImpl;
@@ -82,6 +83,12 @@ public class ApplicationController extends BaseController {
     @GetMapping("/{applicationId}")
     public ResponseEntity<ApplicationDto> getApplicationById(@PathVariable("applicationId") Long applicationId){
         return ResponseEntity.ok(applicationService.getApplicationById(applicationId));
+    }
+
+    @PutMapping("/{applicationId}")
+    public ResponseEntity<ResponseDto> updateApplicationById(@PathVariable("applicationId") Long applicationId,
+                                                                @RequestBody UpdateApplicationRequest updateApplicationRequest){
+        return ResponseEntity.ok(applicationService.updateApplicationById(applicationId, updateApplicationRequest));
     }
 
     @Operation(summary = "Insert new Application")

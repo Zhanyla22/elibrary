@@ -3,6 +3,7 @@ package com.example.neolabs.mapper;
 import com.example.neolabs.dto.ApplicationDto;
 import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.dto.request.create.CreateApplicationRequest;
+import com.example.neolabs.dto.request.update.UpdateApplicationRequest;
 import com.example.neolabs.entity.Application;
 import com.example.neolabs.entity.Group;
 import com.example.neolabs.entity.Student;
@@ -82,5 +83,15 @@ public class ApplicationMapper {
                 .phoneNumber(request.getPhoneNumber())
                 .reason(request.getReason())
                 .build();
+    }
+
+    public Application updateEntityWithUpdateRequest(Application application, UpdateApplicationRequest request){
+        application.setEducation(request.getEducation() != null ? request.getEducation() : application.getEducation());
+        application.setFirstName(request.getFirstName() != null ? request.getFirstName() : application.getFirstName());
+        application.setLastName(request.getLastName() != null ? request.getLastName() : application.getLastName());
+        application.setPhoneNumber(request.getPhoneNumber() != null ? request.getPhoneNumber() : application.getPhoneNumber());
+        application.setEmail(request.getEmail() != null ? request.getEmail() : application.getEmail());
+        application.setHasLaptop(request.getHasLaptop() != null ? request.getHasLaptop() : application.getHasLaptop());
+        return application;
     }
 }

@@ -30,22 +30,13 @@ public class UpdateApplicationRequest {
     String phoneNumber;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    Gender gender;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Boolean hasLaptop;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    MarketingStrategyEnum marketingStrategyEnum;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Long courseId;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String reason;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    Integer applicationStatusInitialNum;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Education education;
