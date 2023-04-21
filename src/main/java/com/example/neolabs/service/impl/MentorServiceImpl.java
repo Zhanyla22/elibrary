@@ -105,6 +105,7 @@ public class MentorServiceImpl implements MentorService {
         mentor.setReason(archiveRequest.getReason());
         mentor.setStatus(isBlacklist ? Status.BLACKLIST : Status.ARCHIVED);
         mentor.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
+        mentor.setIsArchived(true);
         operationService.recordMentorOperation(mentorRepository.save(mentor), OperationType.ARCHIVE);
         return ResponseUtil.buildSuccessResponse("Mentor has been successfully " + (isBlacklist ? "blacklisted." : "archived."));
     }
@@ -118,6 +119,7 @@ public class MentorServiceImpl implements MentorService {
         mentor.setStatus(Status.ACTIVE);
         mentor.setReason(null);
         mentor.setArchiveDate(null);
+        mentor.setIsArchived(false);
         operationService.recordMentorOperation(mentorRepository.save(mentor), OperationType.UNARCHIVE);
         return ResponseUtil.buildSuccessResponse("Mentor has been successfully unarchived.");
     }
