@@ -81,6 +81,12 @@ public class MentorController extends BaseController {
         return ResponseEntity.ok(mentorService.archiveMentorById(mentorId, archiveRequest, isBlacklist));
     }
 
+    @Operation(summary = "unarchive mentors by id")
+    @PutMapping("/un-archive/{mentorId}")
+    public ResponseEntity<ResponseDto> unarchiveMentorById(@PathVariable Long mentorId){
+        return ResponseEntity.ok(mentorService.unarchiveMentorById(mentorId));
+    }
+
     @Operation(summary = "find mentor")
     @GetMapping("/find")
     public ResponseEntity<List<MentorCardDto>> search(@RequestParam("keyword") Optional<String> keyword,
