@@ -81,7 +81,7 @@ public class MentorServiceImpl implements MentorService {
     @Override
     public ResponseDto updateMentorById(UpdateMentorRequest updateMentorRequest, Long id) {
         Mentor mentor = getMentorEntityById(id);
-        if (updateMentorRequest.getEmail() != null && updateMentorRequest.getEmail().equals(mentor.getEmail())) {
+        if (updateMentorRequest.getEmail() != null && !updateMentorRequest.getEmail().equals(mentor.getEmail())) {
             if (mentorRepository.existsByEmail(updateMentorRequest.getEmail())) {
                 throw new BaseException("Email is already in use", HttpStatus.CONFLICT);
             }

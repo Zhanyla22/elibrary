@@ -32,7 +32,7 @@ public class StudentController {
 
     @Operation(summary = "Find all Students")
     @GetMapping("")
-    public ResponseEntity<List<StudentDto>> getALlStudents(@RequestParam("sortBy") Optional<String> sortBy,
+    public ResponseEntity<List<StudentDto>> getAllStudents(@RequestParam("sortBy") Optional<String> sortBy,
                                                            @RequestParam("size") Optional<Integer> size,
                                                            @RequestParam("page") Optional<Integer> page){
         return ResponseEntity.ok(studentService.getAllStudents(

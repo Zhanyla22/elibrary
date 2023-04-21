@@ -91,6 +91,7 @@ public class ApplicationMapper {
         application.setLastName(request.getLastName() != null ? request.getLastName() : application.getLastName());
         application.setPhoneNumber(request.getPhoneNumber() != null ? request.getPhoneNumber() : application.getPhoneNumber());
         application.setEmail(request.getEmail() != null ? request.getEmail() : application.getEmail());
+        application.setReason(request.getReason() != null ? request.getReason() : application.getReason());
         application.setHasLaptop(request.getHasLaptop() != null ? request.getHasLaptop() : application.getHasLaptop());
         return application;
     }

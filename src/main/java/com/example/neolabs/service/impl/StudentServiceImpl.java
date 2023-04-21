@@ -139,7 +139,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public ResponseDto updateStudentById(Long studentId, UpdateStudentRequest request) {
         Student student = getStudentEntityById(studentId);
-        if (request.getEmail() != null && student.getEmail().equals(request.getEmail())) {
+        if (request.getEmail() != null && !student.getEmail().equals(request.getEmail())) {
             if (studentRepository.existsByEmail(request.getEmail())){
                 throw new BaseException("Given email is already used.", HttpStatus.CONFLICT);
             }
