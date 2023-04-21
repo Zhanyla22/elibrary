@@ -58,12 +58,11 @@ public class StudentController {
     public ResponseEntity<List<StudentDto>> searchStudents(@RequestParam("string") Optional<String> searchString,
                                                            @RequestParam("status") Optional<Status> status,
                                                            @RequestParam("groupId") Optional<Long> groupId,
-                                                           @RequestParam("isArchived") Optional<Boolean> isArchived,
                                                            @RequestParam("sortBy") Optional<String> sortBy,
                                                            @RequestParam("size") Optional<Integer> size,
                                                            @RequestParam("page") Optional<Integer> page){
         return ResponseEntity.ok(studentService.find(searchString.orElse(null),
-                status.orElse(null), groupId.orElse(null), isArchived.orElse(false),
+                status.orElse(null), groupId.orElse(null),
                 PageRequest.of(page.orElse(0), size.orElse(1000), Sort.by(sortBy.orElse("id")))));
     }
 

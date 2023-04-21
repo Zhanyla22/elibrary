@@ -90,7 +90,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDto> find(String searchString, Status status, Long groupId, boolean isArchived, PageRequest pageRequest) {
+    public List<StudentDto> find(String searchString, Status status, Long groupId, PageRequest pageRequest) {
+        boolean isArchived = status == Status.ARCHIVED;
         if (searchString == null) {
             return filter(groupId, status, pageRequest);
         }
@@ -137,12 +138,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResponseDto updateStudentById(Long studentId, UpdateStudentRequest request) {
-        if (request.getEmail() != null) {
+        Student student = getStudentEntityById(studentId);
+        if (request.getEmail() != null && student.getEmail().equals(request.getEmail())) {
             if (studentRepository.existsByEmail(request.getEmail())){
                 throw new BaseException("Given email is already used.", HttpStatus.CONFLICT);
             }
         }
-        Student student = StudentMapper.updateEntityWithUpdateRequest(getStudentEntityById(studentId), request);
+        student = StudentMapper.updateEntityWithUpdateRequest(student, request);
         operationService.recordStudentOperation(studentRepository.save(student), OperationType.UPDATE);
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)

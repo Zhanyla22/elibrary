@@ -19,9 +19,11 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Query(nativeQuery = true,
           value = "SELECT * FROM students s WHERE " +
-                  "s.id IN (SELECT sg.student_id FROM students_groups sg WHERE sg.group_id = :groupId)",
+                  "s.id IN (SELECT sg.student_id FROM students_groups sg WHERE sg.group_id = :groupId) " +
+                  "AND s.is_archived = false",
           countQuery = "SELECT * FROM students s WHERE " +
-                  "s.id IN (SELECT sg.student_id FROM students_groups sg WHERE sg.group_id = :groupId)")
+                  "s.id IN (SELECT sg.student_id FROM students_groups sg WHERE sg.group_id = :groupId) " +
+                  "AND s.is_archived = false")
     Page<Student> findAllByGroupId(@Param("groupId") Long groupId, Pageable pageable);
 
     @Query(nativeQuery = true,

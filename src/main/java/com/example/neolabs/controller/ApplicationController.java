@@ -67,7 +67,7 @@ public class ApplicationController extends BaseController {
             @RequestParam(name = "size") Optional<Integer> size){
         Sort.Direction direction = sortDirection.orElse("asc").equalsIgnoreCase("asc") ?
                 Sort.Direction.ASC : Sort.Direction.DESC;
-        PageRequest pageRequest = PageRequest.of(page.orElse(0), size.orElse(20),
+        PageRequest pageRequest = PageRequest.of(page.orElse(0), size.orElse(200),
                 Sort.by(direction, sortBy.orElse("id")));
         return ResponseEntity.ok(applicationService.getAllApplications(isArchived, pageRequest));
     }
@@ -75,7 +75,6 @@ public class ApplicationController extends BaseController {
     @Operation(summary = "Получить отсортированные заявки (без архивированных)")
     @GetMapping("/sort-by-status")
     public ResponseEntity<SortedApplicationResponse> getSortedApplications(){
-        //Archived applications will not be included!
         return ResponseEntity.ok(applicationService.getSortedApplications());
     }
 

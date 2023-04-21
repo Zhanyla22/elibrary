@@ -23,7 +23,7 @@ public interface StudentService {
 
     List<StudentDto> filter(Long groupId, Status status, PageRequest pageRequest);
 
-    List<StudentDto> find(String searchString, Status status, Long groupId, boolean isArchived, PageRequest pageRequest);
+    List<StudentDto> find(String searchString, Status status, Long groupId, PageRequest pageRequest);
 
     StudentDto getStudentById(Long studentId);
 

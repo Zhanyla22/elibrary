@@ -81,6 +81,11 @@ public class MentorServiceImpl implements MentorService {
     @Override
     public ResponseDto updateMentorById(UpdateMentorRequest updateMentorRequest, Long id) {
         Mentor mentor = getMentorEntityById(id);
+        if (updateMentorRequest.getEmail() != null && updateMentorRequest.getEmail().equals(mentor.getEmail())) {
+            if (mentorRepository.existsByEmail(updateMentorRequest.getEmail())) {
+                throw new BaseException("Email is already in use", HttpStatus.CONFLICT);
+            }
+        }
         mentor.setEmail(updateMentorRequest.getEmail());
         mentor.setFirstName(updateMentorRequest.getFirstName());
         mentor.setLastName(updateMentorRequest.getLastName());
@@ -105,6 +110,7 @@ public class MentorServiceImpl implements MentorService {
         mentor.setReason(archiveRequest.getReason());
         mentor.setStatus(isBlacklist ? Status.BLACKLIST : Status.ARCHIVED);
         mentor.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
+        mentor.setIsArchived(true);
         operationService.recordMentorOperation(mentorRepository.save(mentor), OperationType.ARCHIVE);
         return ResponseUtil.buildSuccessResponse("Mentor has been successfully " + (isBlacklist ? "blacklisted." : "archived."));
     }
@@ -118,6 +124,7 @@ public class MentorServiceImpl implements MentorService {
         mentor.setStatus(Status.ACTIVE);
         mentor.setReason(null);
         mentor.setArchiveDate(null);
+        mentor.setIsArchived(false);
         operationService.recordMentorOperation(mentorRepository.save(mentor), OperationType.UNARCHIVE);
         return ResponseUtil.buildSuccessResponse("Mentor has been successfully unarchived.");
     }
@@ -138,7 +145,7 @@ public class MentorServiceImpl implements MentorService {
     @Override
     public List<MentorCardDto> search(String keyword, Status status, Long courseId, PageRequest pageRequest) {
         List<Mentor> mentors;
-        if(courseId ==  null){
+        if(courseId == null){
             mentors = mentorRepository.searchWithoutFilters(keyword,status.toString(),pageRequest);
         }
         else

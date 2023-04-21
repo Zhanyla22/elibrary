@@ -151,13 +151,17 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ResponseDto convertApplication(ConversionRequest conversionRequest) {
-        studentService.insertStudentFromApplication(getApplicationEntityById(conversionRequest.getApplicationId()),
-                conversionRequest);
+        Application application = getApplicationEntityById(conversionRequest.getApplicationId());
+        studentService.insertStudentFromApplication(application, conversionRequest);
+        application.setIsArchived(true);
+        application.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
+        application.setArchiveReason("Converted into student");
+        operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.ARCHIVE);
         return ResponseDto.builder()
                 .result("Successfully converted application into a student.")
                 .resultCode(ResultCode.SUCCESS)
                 .build();
-        // TODO: 15.03.2023 need operations and some analytics 
+        // TODO: 15.03.2023 need some analytics
     }
 
     @Override
