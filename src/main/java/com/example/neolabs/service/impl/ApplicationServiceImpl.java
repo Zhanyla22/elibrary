@@ -8,6 +8,7 @@ import com.example.neolabs.dto.request.create.CreateApplicationRequest;
 import com.example.neolabs.dto.request.update.UpdateApplicationRequest;
 import com.example.neolabs.dto.response.SortedApplicationResponse;
 import com.example.neolabs.entity.Application;
+import com.example.neolabs.entity.Payment;
 import com.example.neolabs.enums.ApplicationStatus;
 import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.enums.OperationType;
@@ -158,6 +159,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
         application.setArchiveReason("Converted into student");
         operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.ARCHIVE);
+
         return ResponseDto.builder()
                 .result("Successfully converted application into a student.")
                 .resultCode(ResultCode.SUCCESS)
