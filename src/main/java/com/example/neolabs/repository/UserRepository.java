@@ -1,6 +1,7 @@
 package com.example.neolabs.repository;
 
 import com.example.neolabs.entity.User;
+import com.example.neolabs.enums.Role;
 import com.example.neolabs.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -18,4 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserById(Long id);
 
     List<User> findAllByStatus(Status status);
+
+    long countByRole(Role role);
 }
