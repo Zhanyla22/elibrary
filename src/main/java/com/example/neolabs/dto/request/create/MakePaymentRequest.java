@@ -1,11 +1,11 @@
-package com.example.neolabs.dto;
-
+package com.example.neolabs.dto.request.create;
 
 import com.example.neolabs.enums.TransactionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 
 @Getter
 @Setter
@@ -13,24 +13,17 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PaymentDto {
+public class MakePaymentRequest {
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    Long id;
-
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Long studentId;
 
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Double amount;
 
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     TransactionType transactionType;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    Double totalDebt;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    Double totalPayment;
-
 }

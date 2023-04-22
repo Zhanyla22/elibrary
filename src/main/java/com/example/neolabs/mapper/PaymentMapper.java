@@ -2,6 +2,7 @@ package com.example.neolabs.mapper;
 
 
 import com.example.neolabs.dto.PaymentDto;
+import com.example.neolabs.dto.request.create.MakePaymentRequest;
 import com.example.neolabs.entity.Payment;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -16,18 +17,25 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaymentMapper {
 
-    final MonthlyBillMapper monthlyBillMapper;
-
-    public PaymentDto entityToDto(Payment payment){
+    public static PaymentDto paymentToPaymentDto(Payment payment){
         return PaymentDto.builder()
                 .id(payment.getId())
+                .studentId(payment.getStudent().getId())
                 .amount(payment.getAmount())
                 .transactionType(payment.getTransactionType())
-                .monthlyBillID(monthlyBillMapper.entityToDto(payment.getMonthlyBill()).getId())
+                .totalPayment(payment.getTotalPayment())
+                .totalDebt(payment.getTotalDebt())
+                .build();
+    }
+
+    public MakePaymentRequest paymentToMakePaymentDto(Payment payment){
+        return MakePaymentRequest.builder()
+                .amount(payment.getAmount())
+                .transactionType(payment.getTransactionType())
                 .build();
     }
 
     public List<PaymentDto> entityListToDtoList(List<Payment> payment) {
-        return payment.stream().map(this::entityToDto).collect(Collectors.toList());
+        return payment.stream().map(PaymentMapper::paymentToPaymentDto).collect(Collectors.toList());
     }
 }

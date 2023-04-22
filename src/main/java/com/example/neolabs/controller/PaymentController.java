@@ -2,6 +2,8 @@ package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
 import com.example.neolabs.dto.PaymentDto;
+import com.example.neolabs.dto.ResponseDto;
+import com.example.neolabs.dto.request.create.MakePaymentRequest;
 import com.example.neolabs.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +19,13 @@ public class PaymentController extends BaseController {
 
     @Operation(summary = "Make a payment for monthly bill")
     @PostMapping("/pay")
-    public ResponseEntity<PaymentDto> makeSinglePayment(@RequestBody PaymentDto paymentDto){
-        return ResponseEntity.ok(paymentService.pay(paymentDto));
+    public ResponseEntity<ResponseDto> makeSinglePayment(@RequestBody MakePaymentRequest makePaymentRequest){
+        return ResponseEntity.ok(paymentService.pay(makePaymentRequest));
     }
 
-    @Operation(summary = "Get a payment by Id")
-    @GetMapping("{paymentId}")
-    public ResponseEntity<PaymentDto> getPaymentById(@PathVariable("paymentId") Long paymentId){
-        return ResponseEntity.ok(paymentService.getPaymentById(paymentId));
-    }
+//    @Operation(summary = "Get a payment by Id")
+//    @GetMapping("{paymentId}")
+//    public ResponseEntity<PaymentDto> getPaymentById(@PathVariable("paymentId") Long paymentId){
+//        return ResponseEntity.ok(paymentService.getPaymentById(paymentId));
+//    }
 }

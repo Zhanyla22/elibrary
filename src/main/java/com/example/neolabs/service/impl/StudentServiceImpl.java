@@ -6,14 +6,14 @@ import com.example.neolabs.dto.request.ArchiveRequest;
 import com.example.neolabs.dto.request.ConversionRequest;
 import com.example.neolabs.dto.request.create.CreateStudentRequest;
 import com.example.neolabs.dto.request.update.UpdateStudentRequest;
-import com.example.neolabs.entity.Application;
-import com.example.neolabs.entity.Group;
-import com.example.neolabs.entity.Student;
+import com.example.neolabs.entity.*;
 import com.example.neolabs.enums.*;
 import com.example.neolabs.exception.BaseException;
 import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.ApplicationMapper;
 import com.example.neolabs.mapper.StudentMapper;
+import com.example.neolabs.repository.PaymentRepository;
+import com.example.neolabs.repository.StudentGroupBillRepository;
 import com.example.neolabs.repository.StudentRepository;
 import com.example.neolabs.service.StudentService;
 import com.example.neolabs.util.DateUtil;
@@ -39,6 +39,8 @@ public class StudentServiceImpl implements StudentService {
     final StudentRepository studentRepository;
     final ApplicationMapper applicationMapper;
 
+    final PaymentRepository paymentRepository;
+
     @Override
     public ResponseDto insertStudent(CreateStudentRequest createStudentRequest) {
         Student student = StudentMapper.createRequestToEntity(createStudentRequest);
@@ -51,6 +53,14 @@ public class StudentServiceImpl implements StudentService {
         student.setStatus(Status.ACTIVE);
         student.setIsArchived(false);
         operationService.recordStudentOperation(studentRepository.save(student), OperationType.CREATE);
+
+        Double courseBill = Double.valueOf(groupService.getGroupEntityById(createStudentRequest.getEnrollmentGroupId()).getCourse().getCost());
+        Payment payment = new Payment();
+        payment.setStudent(student);
+        payment.setTotalDebt(courseBill);
+        payment.setTotalPayment(0.0);
+        paymentRepository.save(payment);
+
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
                 .result("Student has been successfully added to the database.")
@@ -61,7 +71,13 @@ public class StudentServiceImpl implements StudentService {
     public void insertStudentFromApplication(Application application, ConversionRequest conversionRequest) {
         Student student = applicationMapper.entityToStudentEntity(application, conversionRequest);
         operationService.recordStudentOperation(studentRepository.save(student), OperationType.CREATE);
-        //student is totally safe to use here
+
+        Double courseBill = Double.valueOf(application.getCourse().getCost());
+        Payment payment = new Payment();
+        payment.setTotalPayment(0.0);
+        payment.setStudent(student);
+        payment.setTotalDebt(courseBill);
+        paymentRepository.save(payment);
     }
 
     @Override
@@ -164,6 +180,14 @@ public class StudentServiceImpl implements StudentService {
         groups.add(group);
         student.setGroups(groups);
         operationService.recordEnrollmentOperation(group, studentRepository.save(student).getId());
+
+        Double courseBill = Double.valueOf(group.getCourse().getCost());
+        Payment payment = new Payment();
+        payment.setStudent(student);
+        payment.setTotalDebt(courseBill);
+        payment.setTotalPayment(0.0);
+        paymentRepository.save(payment);
+
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
                 .result("Student has been successfully enrolled to the group.")

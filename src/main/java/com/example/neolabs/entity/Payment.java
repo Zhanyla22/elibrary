@@ -18,6 +18,11 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Payment extends BaseEntity {
 
+    @ManyToOne(optional = false)
+    @JoinColumn(columnDefinition = "student_id",
+            referencedColumnName = "id")
+    Student student;
+
     Double amount;
 
     @Enumerated(EnumType.STRING)
@@ -27,8 +32,9 @@ public class Payment extends BaseEntity {
     @Column(name = "payment_date")
     LocalDateTime paymentDate;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "month_bill_id",
-            referencedColumnName = "id")
-    MonthlyBill monthlyBill;
+    @Column(name = "total_debt")
+    Double totalDebt;
+
+    @Column(name = "total_payment_amount")
+    Double totalPayment;
 }

@@ -176,6 +176,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .build();
         applicationStatusHistoryRepository.save(appStatusHistory);
         operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.ARCHIVE);
+
         return ResponseDto.builder()
                 .result("Successfully converted application into a student.")
                 .resultCode(ResultCode.SUCCESS)
