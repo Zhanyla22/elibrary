@@ -29,7 +29,7 @@ public class GroupMapper {
     public static GroupDto entityToDto(Group group){
         return GroupDto.builder()
                 .id(group.getId())
-                .course(CourseMapper.entityToCardDto(group.getCourse()))
+                .courseName(group.getCourse().getName())
                 .maxCapacity(group.getMaxCapacity())
                 .mentor(MentorMapper.entityToMentorCardDto(group.getMentor()))
                 .startDate(group.getStartDate())
@@ -40,15 +40,6 @@ public class GroupMapper {
                 .name(group.getName())
                 .endDate(group.getEndDate())
                 .status(group.getStatus())
-                .build();
-    }
-
-    public static Group dtoToEntity(GroupDto groupDto){
-        return Group.builder()
-                .maxCapacity(groupDto.getMaxCapacity())
-                .startDate(groupDto.getStartDate())
-                .endDate(groupDto.getEndDate())
-                .status(groupDto.getStatus())
                 .build();
     }
 
@@ -74,8 +65,7 @@ public class GroupMapper {
 
     public static GroupStudentsDto entityToCardDto(Group group) {
         return GroupStudentsDto.builder()
-                .groupId(group.getId())
-                .groupName(group.getName())
+                .group(entityToDto(group))
                 .students(StudentMapper.entityListToCardDtoList(group.getStudents()))
                 .build();
     }

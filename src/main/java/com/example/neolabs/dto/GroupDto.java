@@ -22,7 +22,7 @@ public class GroupDto {
 
     String name;
 
-    CourseCardDto course;
+    String courseName;
 
     Integer maxCapacity;
 
