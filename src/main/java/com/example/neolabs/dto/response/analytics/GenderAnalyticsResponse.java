@@ -17,8 +17,8 @@ public class GenderAnalyticsResponse {
     Double studentMaleConversionPercentage;
     Double studentFemaleConversionPercentage;
 
-    Integer studentMaleNumber;
-    Integer studentFemaleNumber;
-    Integer applicationMaleNumber;
-    Integer applicationFemaleNumber;
+    Long studentMaleNumber;
+    Long studentFemaleNumber;
+    Long applicationMaleNumber;
+    Long applicationFemaleNumber;
 }

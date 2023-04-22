@@ -10,16 +10,10 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GeneralAnalyticsResponse {
-    Integer totalStudentsAdded;
-    Integer totalApplicationsAdded;
-    Integer totalStudentsArchived;
-    Integer totalApplicationsArchived;
-    Integer totalStudentsLeft;
-    Integer totalStudentsFinished;
-    Integer totalStudentsBlacklisted;
-
-    // FIXME: 16.04.2023 dreams
-//    Integer totalManagerLogins;
-//    Integer totalNewManagers;
-//    Integer totalGroupsFinished;
+    Long totalStudents;
+    Long totalApplications;
+    Long totalGroups;
+    Long totalCourses;
+    Long totalMentors;
+    Long totalManagers;
 }

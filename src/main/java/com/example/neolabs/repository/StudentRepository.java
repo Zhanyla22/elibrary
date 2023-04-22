@@ -1,6 +1,7 @@
 package com.example.neolabs.repository;
 
 import com.example.neolabs.entity.Student;
+import com.example.neolabs.enums.Gender;
 import com.example.neolabs.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,4 +22,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
                     "WHERE created_date >= :date1::date\n" +
                     "AND created_date < (:date2::date + '1 day'::interval);")
     List<Student> findAllWithCreationDateMargin(@Param("date1") LocalDate date1,@Param("date2") LocalDate date2);
+
+    long countByGender(Gender gender);
 }
