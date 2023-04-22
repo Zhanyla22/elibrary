@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class GroupMapper {
+
     private final MentorRepository mentorRepository;
 
     public static GroupDto entityToDto(Group group){

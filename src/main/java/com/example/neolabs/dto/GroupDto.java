@@ -39,6 +39,4 @@ public class GroupDto {
     Boolean isArchived;
 
     Status status;
-
-    List<StudentDto> students;
 }
