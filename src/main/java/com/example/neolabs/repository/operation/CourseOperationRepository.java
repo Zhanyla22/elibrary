@@ -1,14 +1,11 @@
 package com.example.neolabs.repository.operation;
 
 import com.example.neolabs.entity.User;
-import com.example.neolabs.entity.operation.ApplicationOperation;
 import com.example.neolabs.entity.operation.CourseOperation;
 import com.example.neolabs.enums.OperationType;
 import com.example.neolabs.entity.operation.ICourseEnrollmentCount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
 
 import java.util.List;
 

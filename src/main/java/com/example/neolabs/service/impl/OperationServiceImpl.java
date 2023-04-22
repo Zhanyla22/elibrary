@@ -116,13 +116,13 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public void recordEnrollmentOperation(Group group, Long studentId) {
-        GroupOperation operation = GroupOperation.builder()
+        CourseOperation operation = CourseOperation.builder()
                 .user(getCurrentUserEntity())
-                .group(group)
+                .course(group.getCourse())
                 .description(operationUtil.buildEnrollDescription(group.getId(), studentId))
                 .operationType(OperationType.ENROLLMENT)
                 .build();
-        groupOpRepo.save(operation);
+        courseOpRepo.save(operation);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class OperationServiceImpl implements OperationService {
 
     private List<OperationDto> findAllOperations(){
         List<ApplicationOperation> applicationOperations = applicationOpRepo.findAll();
-        List<CourseOperation> courseOperations = courseOpRepo.findAll();;
+        List<CourseOperation> courseOperations = courseOpRepo.findAll();
         List<GroupOperation> groupOperations = groupOpRepo.findAll();
         List<MentorOperation> mentorOperations = mentorOpRepo.findAll();
         List<PaymentOperation> paymentOperations = paymentOpRepo.findAll();
