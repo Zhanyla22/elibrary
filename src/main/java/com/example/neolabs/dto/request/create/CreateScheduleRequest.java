@@ -1,4 +1,4 @@
-package com.example.neolabs.dto;
+package com.example.neolabs.dto.request.create;
 
 import com.example.neolabs.enums.DayOfTheWeek;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,18 +7,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ScheduleDto {
-
-    @NotNull
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    Long id;
+public class CreateScheduleRequest {
 
     @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
