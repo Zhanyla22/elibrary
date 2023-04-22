@@ -34,6 +34,7 @@ public class GroupMapper {
                 .maxCapacity(group.getMaxCapacity())
                 .mentor(MentorMapper.entityToMentorCardDto(group.getMentor()))
                 .startDate(group.getStartDate())
+                .studentsCount(group.getStudents().size())
                 .isArchived(group.getIsArchived())
                 .archiveReason(group.getReason())
                 .archiveDate(group.getArchiveDate() != null ?

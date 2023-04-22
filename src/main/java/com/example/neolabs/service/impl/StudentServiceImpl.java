@@ -61,6 +61,7 @@ public class StudentServiceImpl implements StudentService {
     public void insertStudentFromApplication(Application application, ConversionRequest conversionRequest) {
         Student student = applicationMapper.entityToStudentEntity(application, conversionRequest);
         operationService.recordStudentOperation(studentRepository.save(student), OperationType.CREATE);
+        //student is totally safe to use here
     }
 
     @Override

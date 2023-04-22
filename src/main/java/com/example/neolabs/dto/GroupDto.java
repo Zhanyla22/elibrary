@@ -26,6 +26,8 @@ public class GroupDto {
 
     Integer maxCapacity;
 
+    Integer studentsCount;
+
     MentorCardDto mentor;
 
     LocalDate startDate;

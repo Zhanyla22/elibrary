@@ -79,7 +79,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .password(passwordEncoder.encode(registrationRequest.getPassword()))
                     .role(Role.ROLE_MANAGER)
                     .build());
-
             return ResponseDto.builder()
                     .result("User has been added successfully.")
                     .resultCode(ResultCode.SUCCESS)
@@ -100,7 +99,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     )
             );
             User user = (User) authenticate.getPrincipal();
-            //TODO: in getUser add to DTO setLastVisitedDate field
             user.setLastVisitDate(LocalDateTime.now(DateUtil.getZoneId()));//s
             userRepository.save(user);//s
             return new AuthResponse2Role(
