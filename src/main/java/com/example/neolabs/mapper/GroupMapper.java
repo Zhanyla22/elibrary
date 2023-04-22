@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GroupMapper {
     private final MentorRepository mentorRepository;
-    private final GroupRepository groupRepository;
 
     public static GroupDto entityToDto(Group group){
         return GroupDto.builder()
@@ -33,7 +32,6 @@ public class GroupMapper {
                 .course(CourseMapper.entityToCardDto(group.getCourse()))
                 .maxCapacity(group.getMaxCapacity())
                 .mentor(MentorMapper.entityToMentorCardDto(group.getMentor()))
-                .imageUrl(group.getImageUrl())
                 .startDate(group.getStartDate())
                 .isArchived(group.getIsArchived())
                 .archiveReason(group.getReason())

@@ -30,8 +30,6 @@ public class GroupDto {
 
     LocalDate startDate;
 
-    String imageUrl;
-
     LocalDate endDate;
 
     String archiveDate;

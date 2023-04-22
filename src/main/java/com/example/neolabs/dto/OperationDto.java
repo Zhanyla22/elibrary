@@ -23,16 +23,16 @@ public class OperationDto implements Comparable<OperationDto> {
     OperationType type;
 
     @JsonProperty("targetType")
-    EntityEnum targetType;
-
-    @JsonProperty("target")
-    Object target;
+    String targetType;
 
     @JsonProperty("targetId")
     Long targetId;
 
-    @JsonProperty("user")
-    UserDto user;
+    @JsonProperty("firstName")
+    String firstName;
+
+    @JsonProperty("firstName")
+    String lastName;
 
     @JsonProperty("description")
     String description;
