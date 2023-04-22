@@ -8,7 +8,7 @@ import com.example.neolabs.dto.request.create.CreateApplicationRequest;
 import com.example.neolabs.dto.request.update.UpdateApplicationRequest;
 import com.example.neolabs.dto.response.SortedApplicationResponse;
 import com.example.neolabs.entity.Application;
-import com.example.neolabs.entity.Payment;
+import com.example.neolabs.entity.analytics.ApplicationStatusHistory;
 import com.example.neolabs.enums.ApplicationStatus;
 import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.enums.OperationType;
@@ -16,6 +16,7 @@ import com.example.neolabs.enums.ResultCode;
 import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.ApplicationMapper;
 import com.example.neolabs.repository.ApplicationRepository;
+import com.example.neolabs.repository.analytics.ApplicationStatusHistoryRepository;
 import com.example.neolabs.service.ApplicationService;
 import com.example.neolabs.util.StatusUtil;
 import com.example.neolabs.util.DateUtil;
@@ -26,6 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     final ApplicationMapper applicationMapper;
     final ApplicationRepository applicationRepository;
+    final ApplicationStatusHistoryRepository applicationStatusHistoryRepository;
     final StudentServiceImpl studentService;
     final CourseServiceImpl courseService;
     final OperationServiceImpl operationService;
@@ -60,9 +63,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ResponseDto updateApplicationStatus(Long applicationId, Integer newStatus) {
         Application application = getApplicationEntityById(applicationId);
         ApplicationStatus oldStatus = application.getApplicationStatus();
+        if (newStatus > 4) {
+            return archiveApplicationById(applicationId, ArchiveRequest.builder().reason("Конверсия в студента").build());
+        }
         application.setApplicationStatus(StatusUtil.getApplicationStatus(newStatus));
         application.setApplicationStatusUpdateDate(LocalDateTime.now(DateUtil.getZoneId()));
-        application.setIsArchived(newStatus > 4);
         operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.UPDATE);
         return ResponseDto.builder()
                 .result("Application status has been successfully updated from "
@@ -130,8 +135,14 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setApplicationStatus(ApplicationStatus.DID_NOT_APPLY_FOR_COURSES);
         application.setArchiveReason(archiveRequest.getReason());
         application.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
+        ApplicationStatusHistory appStatusHistory = ApplicationStatusHistory.builder()
+                .application(application)
+                .applicationCreationDate(application.getCreatedDate().toLocalDate())
+                .isConverted(false)
+                .statusBeforeArchiving(application.getApplicationStatus())
+                .build();
+        applicationStatusHistoryRepository.save(appStatusHistory);
         operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.ARCHIVE);
-        // TODO: 12.03.2023 need to save last status before archiving for analytics
         return ResponseDto.builder()
                 .resultCode(ResultCode.SUCCESS)
                 .result("Application with id " + applicationId + " has been successfully archived.")
@@ -148,7 +159,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .resultCode(ResultCode.SUCCESS)
                 .result("Application with id " + applicationId + " has been successfully unarchived.")
                 .build();
-        // TODO: 12.03.2023 same as function above
     }
 
     @Override
@@ -157,14 +167,20 @@ public class ApplicationServiceImpl implements ApplicationService {
         studentService.insertStudentFromApplication(application, conversionRequest);
         application.setIsArchived(true);
         application.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
-        application.setArchiveReason("Converted into student");
+        application.setArchiveReason("Конверсия в студента");
+        ApplicationStatusHistory appStatusHistory = ApplicationStatusHistory.builder()
+                .application(application)
+                .applicationCreationDate(application.getCreatedDate().toLocalDate())
+                .isConverted(true)
+                .statusBeforeArchiving(application.getApplicationStatus())
+                .build();
+        applicationStatusHistoryRepository.save(appStatusHistory);
         operationService.recordApplicationOperation(applicationRepository.save(application), OperationType.ARCHIVE);
 
         return ResponseDto.builder()
                 .result("Successfully converted application into a student.")
                 .resultCode(ResultCode.SUCCESS)
                 .build();
-        // TODO: 15.03.2023 need some analytics
     }
 
     @Override

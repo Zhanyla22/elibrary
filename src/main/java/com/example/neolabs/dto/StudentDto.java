@@ -41,6 +41,4 @@ public class StudentDto {
 
     Boolean isArchived;
 
-    List<GroupDto> groups;
-
 }

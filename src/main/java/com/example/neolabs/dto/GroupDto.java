@@ -22,15 +22,15 @@ public class GroupDto {
 
     String name;
 
-    CourseCardDto course;
+    String courseName;
 
     Integer maxCapacity;
+
+    Integer studentsCount;
 
     MentorCardDto mentor;
 
     LocalDate startDate;
-
-    String imageUrl;
 
     LocalDate endDate;
 
@@ -41,6 +41,4 @@ public class GroupDto {
     Boolean isArchived;
 
     Status status;
-
-    List<StudentDto> students;
 }

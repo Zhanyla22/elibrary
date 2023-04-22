@@ -44,7 +44,6 @@ public class StudentMapper {
                 .lastName(student.getLastName())
                 .phoneNumber(student.getPhoneNumber())
                 .gender(student.getGender().getRussian())
-                .groups(GroupMapper.entityListToDtoList(student.getGroups()))
                 .status(student.getStatus().getRussian())
                 .isArchived(student.getIsArchived())
                 .archiveReason(student.getReason())

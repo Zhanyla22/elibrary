@@ -2,16 +2,54 @@ package com.example.neolabs.enums;
 
 public enum EntityEnum {
 
-    USER,
-    APPLICATION,
-    GROUP,
-    MARKETING_STRATEGY,
-    STUDENT,
-    COURSE,
-    DEPARTMENT,
-    MENTOR,
-    SCHEDULE,
-    PAYMENT,
+    USER{
+        @Override
+        public String getRussian(){
+            return "Пользователь";
+        }
+    },
+    APPLICATION{
+        @Override
+        public String getRussian(){
+            return "Заявка";
+        }
+    },
+    GROUP{
+        @Override
+        public String getRussian(){
+            return "Группа";
+        }
+    },
+    STUDENT{
+        @Override
+        public String getRussian(){
+            return "Студент";
+        }
+    },
+    COURSE{
+        @Override
+        public String getRussian(){
+            return "Курс";
+        }
+    },
+    MENTOR{
+        @Override
+        public String getRussian(){
+            return "Ментор";
+        }
+    },
+    SCHEDULE{
+        @Override
+        public String getRussian(){
+            return "Расписание";
+        }
+    },
+    PAYMENT{
+        @Override
+        public String getRussian(){
+            return "Оплата";
+        }
+    },
     MONTHLY_BILL,
     SCHEDULE_UNIT,
     STUDENT_GROUP_BILL,
@@ -23,5 +61,8 @@ public enum EntityEnum {
     DEPARTMENT_OPERATION,
     MENTOR_OPERATION,
     STUDENT_OPERATION,
-    PAYMENT_OPERATION
+    PAYMENT_OPERATION;
+    public String getRussian(){
+        return "string";
+    }
 }

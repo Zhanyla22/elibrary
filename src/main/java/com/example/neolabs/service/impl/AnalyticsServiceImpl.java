@@ -46,10 +46,14 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     @Override
     public GenderAnalyticsResponse getGenderAnalytics() {
         long maleApplicants = applicationRepository.countByGender(Gender.MALE);
+        maleApplicants = maleApplicants == 0 ? 1 : maleApplicants;
         long femaleApplicants = applicationRepository.countByGender(Gender.FEMALE);
+        femaleApplicants = femaleApplicants == 0 ? 1 : femaleApplicants;
         long allApplicants = maleApplicants + femaleApplicants;
         long maleStudents = studentRepository.countByGender(Gender.MALE);
+        maleStudents = maleStudents == 0 ? 1 : maleStudents;
         long femaleStudents = studentRepository.countByGender(Gender.FEMALE);
+        femaleStudents = femaleStudents == 0 ? 1 : femaleStudents;
         long allStudents = maleStudents + femaleStudents;
         double applicationMalePercentage = (maleApplicants * 1000 / allApplicants) / 10.0;
         double applicationFemalePercentage = 100.0 - applicationMalePercentage;
@@ -93,6 +97,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         long totalAttendedTrial = appStatusRepository.countByStatusBeforeArchiving(ApplicationStatus.ATTENDED_TRIAL);
         long totalConverted = appStatusRepository.countByIsConverted(true);
         totalWaitingForCall = totalWaitingForCall + totalCallReceived + totalAppliedForTrial + totalAttendedTrial;
+        totalWaitingForCall = totalWaitingForCall == 0 ? 1 : totalWaitingForCall;
         totalCallReceived = totalCallReceived + totalAppliedForTrial + totalAttendedTrial;
         totalAppliedForTrial = totalAppliedForTrial + totalAttendedTrial;
         return ApplicationAnalyticsResponse.builder()

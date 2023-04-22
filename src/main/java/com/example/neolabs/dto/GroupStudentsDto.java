@@ -14,9 +14,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GroupStudentsDto {
 
-    Long groupId;
-
-    String groupName;
+    GroupDto group;
 
     List<StudentCardDto> students;
 

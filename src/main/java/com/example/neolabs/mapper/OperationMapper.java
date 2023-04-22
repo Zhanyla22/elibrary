@@ -16,11 +16,11 @@ public class OperationMapper {
 
     public static OperationDto applicationOperationToDto(ApplicationOperation operation){
         return OperationDto.builder()
-                .target(operation.getApplication())
                 .targetId(operation.getApplication().getId())
-                .targetType(EntityEnum.APPLICATION)
+                .targetType(EntityEnum.APPLICATION.getRussian())
                 .description(operation.getDescription())
-                .user(UserMapper.entityToDto(operation.getUser()))
+                .firstName(operation.getUser().getFirstName())
+                .lastName(operation.getUser().getLastName())
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
                 .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
@@ -34,11 +34,11 @@ public class OperationMapper {
 
     public static OperationDto userOperationToDto(UserOperation operation){
         return OperationDto.builder()
-                .target(operation.getTargetUser())
                 .targetId(operation.getTargetUser().getId())
-                .targetType(EntityEnum.APPLICATION)
+                .targetType(EntityEnum.USER.getRussian())
                 .description(operation.getDescription())
-                .user(UserMapper.entityToDto(operation.getUser()))
+                .firstName(operation.getUser().getFirstName())
+                .lastName(operation.getUser().getLastName())
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
                 .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
@@ -52,11 +52,11 @@ public class OperationMapper {
 
     public static OperationDto studentOperationToDto(StudentOperation operation){
         return OperationDto.builder()
-                .target(operation.getStudent())
                 .targetId(operation.getStudent().getId())
-                .targetType(EntityEnum.APPLICATION)
+                .targetType(EntityEnum.STUDENT.getRussian())
                 .description(operation.getDescription())
-                .user(UserMapper.entityToDto(operation.getUser()))
+                .firstName(operation.getUser().getFirstName())
+                .lastName(operation.getUser().getLastName())
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
                 .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
@@ -70,11 +70,11 @@ public class OperationMapper {
 
     public static OperationDto groupOperationToDto(GroupOperation operation){
         return OperationDto.builder()
-                .target(operation.getGroup())
                 .targetId(operation.getGroup().getId())
-                .targetType(EntityEnum.APPLICATION)
+                .targetType(EntityEnum.GROUP.getRussian())
                 .description(operation.getDescription())
-                .user(UserMapper.entityToDto(operation.getUser()))
+                .firstName(operation.getUser().getFirstName())
+                .lastName(operation.getUser().getLastName())
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
                 .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
@@ -88,11 +88,11 @@ public class OperationMapper {
 
     public static OperationDto courseOperationToDto(CourseOperation operation){
         return OperationDto.builder()
-                .target(operation.getCourse())
                 .targetId(operation.getCourse().getId())
-                .targetType(EntityEnum.APPLICATION)
+                .targetType(EntityEnum.COURSE.getRussian())
                 .description(operation.getDescription())
-                .user(UserMapper.entityToDto(operation.getUser()))
+                .firstName(operation.getUser().getFirstName())
+                .lastName(operation.getUser().getLastName())
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
                 .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
@@ -106,11 +106,11 @@ public class OperationMapper {
 
     public static OperationDto mentorOperationToDto(MentorOperation operation){
         return OperationDto.builder()
-                .target(operation.getMentor())
                 .targetId(operation.getMentor().getId())
-                .targetType(EntityEnum.APPLICATION)
+                .targetType(EntityEnum.MENTOR.getRussian())
                 .description(operation.getDescription())
-                .user(UserMapper.entityToDto(operation.getUser()))
+                .firstName(operation.getUser().getFirstName())
+                .lastName(operation.getUser().getLastName())
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
                 .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
@@ -124,11 +124,11 @@ public class OperationMapper {
 
     public static OperationDto paymentOperationToDto(PaymentOperation operation){
         return OperationDto.builder()
-                .target(operation.getPayment())
                 .targetId(operation.getPayment().getId())
-                .targetType(EntityEnum.APPLICATION)
+                .targetType(EntityEnum.PAYMENT.getRussian())
                 .description(operation.getDescription())
-                .user(UserMapper.entityToDto(operation.getUser()))
+                .firstName(operation.getUser().getFirstName())
+                .lastName(operation.getUser().getLastName())
                 .type(operation.getOperationType())
                 .rawDate(operation.getCreatedDate())
                 .date(DateUtil.datetimeToDateFormatter.format(operation.getCreatedDate()))
