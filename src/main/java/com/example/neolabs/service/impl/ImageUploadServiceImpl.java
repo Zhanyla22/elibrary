@@ -22,7 +22,7 @@ public class ImageUploadServiceImpl implements ImageUploadService {
             throw new EmptyFileException("File is empty");
         }
 
-        final String urlKey = "cloudinary://532431178934438:dziz4lD4M6_iip6t1tuF0an_N8Q@db5aw8xbo";
+        final String urlKey = "";
 
 
         Cloudinary cloudinary = new Cloudinary((urlKey));
