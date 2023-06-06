@@ -1,6 +1,6 @@
 package com.example.neolabs.exception.handler;
 
-import com.example.neolabs.dto.ResponseDto;
+import com.example.neolabs.dto.response.ResponseDto;
 import com.example.neolabs.enums.ResultCode;
 import com.example.neolabs.exception.BaseException;
 import io.jsonwebtoken.JwtException;

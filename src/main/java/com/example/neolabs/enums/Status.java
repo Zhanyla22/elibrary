@@ -9,9 +9,8 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum Status {
-    //TODO: пока что так(черновой вариант) потом добавим еще
-    //TODO: status types for now need to be added new status or changed
-    ACTIVE("ACTIVE"){
+
+     ACTIVE("ACTIVE"){
         @Override
         public String getRussian(){
             return "Активный";
@@ -29,16 +28,26 @@ public enum Status {
             return "Архивирован";
         }
     },
-    BLACKLIST("BLACKLIST"){
-        @Override
-        public String getRussian(){
-            return "В черном списке";
-        }
-    },
     FROZEN("FROZEN"){
         @Override
         public String getRussian(){
             return "Заморожен";
+        }
+    },
+    OLD("OLD"){
+        @Override
+        public String getRussian(){return "Старая книга";}
+    },
+    BOOKED("BOOKED"){
+        @Override
+        public String getRussian(){
+            return "забронирована";
+        }
+    },
+    LOAN("LOAN"){
+        @Override
+        public String getRussian(){
+            return "на руках";
         }
     };
 

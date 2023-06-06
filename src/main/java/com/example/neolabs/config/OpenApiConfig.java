@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @OpenAPIDefinition(info = @Info(
-        title = "Neolabs CMS API documentation",
+        title = "E-library for INAI API documentation",
         description = """
                 Enums spreadsheet : <a href=\"https://docs.google.com/spreadsheets/d/1yNkGDCksmzdz5fpL_rMUeM4tGkX-iiVTZsaZ2LVW7ws/edit?usp=sharing\">Link</a>
                 

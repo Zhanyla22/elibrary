@@ -1,6 +1,6 @@
 package com.example.neolabs.controller.base;
 
-import com.example.neolabs.dto.ResponseDto;
+import com.example.neolabs.dto.response.ResponseDto;
 import com.example.neolabs.enums.ResultCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

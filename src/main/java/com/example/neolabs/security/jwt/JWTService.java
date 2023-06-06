@@ -39,7 +39,7 @@ public class JWTService {
     public AuthenticationResponse generateToken(
             UserDetails userDetails
     ) {
-        Date dateExpiredToken = new Date(System.currentTimeMillis() + 8640000000L);
+        Date dateExpiredToken = new Date(System.currentTimeMillis() + JWT_EXPIRED);
         Date dateExpiredRefreshToken = new Date(System.currentTimeMillis() + REFRESH_EXPIRED);
         return AuthenticationResponse.builder()
                 .jwtToken(Jwts

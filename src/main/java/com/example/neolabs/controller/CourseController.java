@@ -1,72 +1,32 @@
 package com.example.neolabs.controller;
 
-
-import com.example.neolabs.controller.base.BaseController;
-import com.example.neolabs.dto.CourseCardDto;
-import com.example.neolabs.dto.CourseDto;
-import com.example.neolabs.dto.ResponseDto;
-import com.example.neolabs.dto.request.ArchiveRequest;
-import com.example.neolabs.dto.request.create.CreateCourseRequest;
-import com.example.neolabs.dto.request.update.UpdateCourseRequest;
-import com.example.neolabs.service.impl.CourseServiceImpl;
+import com.example.neolabs.dto.request.CourseRequest;
+import com.example.neolabs.dto.response.CourseResponse;
+import com.example.neolabs.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/courses")
-@Tag(name = "Course Resource", description = "The Course API ")
-public class CourseController extends BaseController {
+@RequestMapping("/api/v1/course")
+@Tag(name = "Курс", description = "API Курсы ")
+public class CourseController {
 
-    private final CourseServiceImpl courseService;
+    private final CourseService courseService;
 
-    @Operation(summary = "Get all courses")
-    @GetMapping(value = {""}, produces = "application/json")
-    public ResponseEntity<List<CourseCardDto>> getAllCourses(){
-        return ResponseEntity.ok(courseService.getAllCourses());
+    @GetMapping("/all")
+    @Operation(summary = "все курсы")
+    public List<CourseResponse> getAllCourses(){
+        return courseService.getAllCourses();
     }
 
-
-    @Operation(summary = "Insert new course")
-    @PostMapping(value = {""}, produces = "application/json")
-    public ResponseEntity<CourseDto> insertCourse(@RequestBody CreateCourseRequest createCourseRequest){
-        return ResponseEntity.ok(courseService.insertCourse(createCourseRequest));
-    }
-
-    @Operation(summary = "Save image for course")
-    @PostMapping("/save-image/{courseId}")
-    public ResponseEntity<ResponseDto> saveImage(@PathVariable Long courseId,
-                                                 @RequestPart MultipartFile multipartFile){
-        return constructSuccessResponse(courseService.saveImageCourse(courseId, multipartFile));
-    }
-
-    @PutMapping(value = {"/{courseId}"})
-    @Operation(summary = "Update course by id")// TODO: 17.04.2023
-    public ResponseEntity<CourseCardDto> updateCourseById(@PathVariable("courseId") Long id,
-                                                      @Valid @RequestBody UpdateCourseRequest updateCourseRequest){
-        return ResponseEntity.ok(courseService.updateCourseById(id, updateCourseRequest));
-    }
-
-    @PutMapping("/archive")
-    public ResponseEntity<ResponseDto> archiveCourseById(@RequestParam("courseId") Long courseId,
-                                                         @RequestBody @Valid ArchiveRequest archiveRequest){
-        return ResponseEntity.ok(courseService.archiveCourseById(courseId, archiveRequest));
-    }
-
-    @PutMapping("/unarchive")
-    public ResponseEntity<ResponseDto> unarchiveCourseById(@RequestParam("courseId") Long courseId){
-        return ResponseEntity.ok(courseService.unarchiveCourseById(courseId));
-    }
-
-    @GetMapping("/{courseId}")
-    public ResponseEntity<CourseDto> getCourseById(@PathVariable("courseId") Long courseId){
-        return ResponseEntity.ok(courseService.getCourseById(courseId));
+    @PostMapping("/add")
+    @Operation(summary="добавить новый курс")
+    public void addNewCourse(@RequestBody CourseRequest courseRequest){
+        courseService.addNewCourse(courseRequest);
     }
 }

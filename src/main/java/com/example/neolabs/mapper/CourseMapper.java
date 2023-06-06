@@ -1,72 +1,28 @@
 package com.example.neolabs.mapper;
 
-import com.example.neolabs.dto.CourseCardDto;
-import com.example.neolabs.dto.CourseDto;
-import com.example.neolabs.dto.request.create.CreateCourseRequest;
-import com.example.neolabs.dto.request.update.UpdateCourseRequest;
+import com.example.neolabs.dto.response.CourseResponse;
+import com.example.neolabs.dto.response.SubjectListResponse;
 import com.example.neolabs.entity.Course;
-import com.example.neolabs.util.DateUtil;
+import com.example.neolabs.entity.Subject;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
+@RequiredArgsConstructor
 public class CourseMapper {
 
-    public static CourseCardDto entityToCardDto(Course course) {
-        return CourseCardDto.builder()
+    public static CourseResponse entityToDto(Course course) {
+        return CourseResponse.builder()
                 .id(course.getId())
-                .name(course.getName())
-                .cost(course.getCost())
-                .durationInMonth(course.getDurationInMonth())
-                .imageUrl(course.getImageUrl())
-                .numberOfLessons(course.getNumberOfLessons())
-                .numberOfGroups(course.getGroups().size())
+                .courseName(course.getGroupss()+" "+course.getName())
                 .build();
     }
 
-    public static CourseDto entityToDto(Course course) {
-        return CourseDto.builder()
-                .id(course.getId())
-                .name(course.getName())
-                .cost(course.getCost())
-                .durationInMonth(course.getDurationInMonth())
-                .isArchived(course.getIsArchived())
-                .archiveReason(course.getReason())
-                .archiveDate(course.getArchiveDate() != null ?
-                        course.getArchiveDate().format(DateUtil.datetimeToDateFormatter) : null)
-                .imageUrl(course.getImageUrl())
-                .numberOfLessons(course.getNumberOfLessons())
-                .numberOfGroups(course.getGroups().size())
-                .numberOfMentors(course.getMentors().size())
-                .numberOfStudents(course.getGroups().stream().mapToInt(group -> group.getStudents().size()).sum())
-                .mentors(MentorMapper.entityListToMentorCardDtoList(course.getMentors()))
-                .groups(course.getGroups().stream().map(GroupMapper::entityToCardDto).collect(Collectors.toList()))
-                .build();
+    public static List<CourseResponse> entityListToDtoList(List<Course> courses) {
+        return courses.stream().map(CourseMapper::entityToDto).collect(Collectors.toList());
     }
 
-    public static Course createRequestToEntity(CreateCourseRequest request) {
-        return Course.builder()
-                .name(request.getName())
-                .cost(request.getCost())
-                .durationInMonth(request.getDurationInMonth())
-                .numberOfLessons(request.getNumberOfLessons())
-                .build();
-    }
-
-    public static Course updateEntity(Course course, UpdateCourseRequest request){
-        Course result = Course.builder()
-                .name(request.getName() != null ? request.getName() : course.getName())
-                .cost(request.getCost() != null ? request.getCost() : course.getCost())
-                .numberOfLessons(request.getNumberOfLessons() != null ?
-                        request.getNumberOfLessons() : course.getNumberOfLessons())
-                .durationInMonth(request.getDurationInMonth() != null ?
-                        request.getDurationInMonth() : course.getDurationInMonth())
-                .build();
-        result.setId(course.getId());
-        return result;
-    }
-
-    public static List<CourseCardDto> entityListToCardDtoList(List<Course> entities) {
-        return entities.stream().map(CourseMapper::entityToCardDto).collect(Collectors.toList());
-    }
 }

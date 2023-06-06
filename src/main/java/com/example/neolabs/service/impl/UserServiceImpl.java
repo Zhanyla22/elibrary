@@ -1,38 +1,24 @@
 package com.example.neolabs.service.impl;
 
-import com.example.neolabs.dto.*;
 import com.example.neolabs.dto.request.*;
-import com.example.neolabs.dto.request.auth.AuthenticationRequest;
-import com.example.neolabs.dto.request.auth.ForgotPasswordCodeRequestDto;
-import com.example.neolabs.dto.request.auth.ForgotPasswordRequestDto;
-import com.example.neolabs.dto.request.auth.RegistrationRequest;
-import com.example.neolabs.dto.request.update.UpdatePasswordRequest;
-import com.example.neolabs.dto.request.update.UpdateUserRequest;
-import com.example.neolabs.dto.response.AuthResponse2Role;
-import com.example.neolabs.dto.response.AuthenticationResponse;
+import com.example.neolabs.dto.response.*;
 import com.example.neolabs.entity.ResetPassword;
 import com.example.neolabs.entity.User;
-import com.example.neolabs.enums.EntityEnum;
 import com.example.neolabs.enums.ResultCode;
 import com.example.neolabs.enums.Role;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.exception.BaseException;
-import com.example.neolabs.exception.EntityNotFoundException;
 import com.example.neolabs.mapper.UserMapper;
-import com.example.neolabs.repository.ResetPasswordRepository;
-import com.example.neolabs.repository.UserRepository;
+import com.example.neolabs.repository.*;
 import com.example.neolabs.security.jwt.JWTService;
 import com.example.neolabs.service.UserService;
-import com.example.neolabs.util.DateUtil;
 import com.example.neolabs.util.EmailUtil;
-import com.example.neolabs.util.ResponseUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,10 +32,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.webjars.NotFoundException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static com.example.neolabs.mapper.UserMapper.entityListToDtoList;
 
 @Service
 @RequiredArgsConstructor
@@ -63,21 +53,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     final AuthenticationManager authenticationManager;
     final ResetPasswordRepository resetPasswordRepository;
     final EmailUtil emailUtil;
-    final OperationServiceImpl operationService;
-    final ImageUploadServiceImpl imageUploadService;
+    final FileUploadServiceImpl imageUploadService;
+    final SavedRepository savedRepository;
+    final BookingRepository bookingRepository;
+    final CourseRepository courseRepository;
 
     @Override
     public ResponseDto registration(RegistrationRequest registrationRequest) {
-        if (!userRepository.existsByEmail(registrationRequest.getEmail())) {
+        if (!userRepository.existsByEmail(registrationRequest.getLogin())) {
             userRepository.save(User.builder()
-                    .email(registrationRequest.getEmail())
+                    .email(registrationRequest.getLogin())
                     .firstName(registrationRequest.getFirstName())
                     .lastName(registrationRequest.getLastName())
                     .phoneNumber(registrationRequest.getPhoneNumber())
-                    .lastVisitDate(LocalDateTime.now(DateUtil.getZoneId()))
                     .status(Status.ACTIVE)
+                    .course(courseRepository.findById(registrationRequest.getCourseId()).orElseThrow(
+                            ()-> new BaseException("not found", HttpStatus.NOT_FOUND)
+                     ))
                     .password(passwordEncoder.encode(registrationRequest.getPassword()))
-                    .role(Role.ROLE_MANAGER)
+                    .role(Role.ROLE_READER)
                     .build());
             return ResponseDto.builder()
                     .result("User has been added successfully.")
@@ -90,7 +84,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     //TODO: fix auth status
     @Override
-    public AuthResponse2Role auth(AuthenticationRequest authenticationRequest) {
+    public AuthResponse2RoleResponse auth(AuthenticationRequest authenticationRequest) {
         try {
             Authentication authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -99,16 +93,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     )
             );
             User user = (User) authenticate.getPrincipal();
-            user.setLastVisitDate(LocalDateTime.now(DateUtil.getZoneId()));//s
             userRepository.save(user);//s
-            return new AuthResponse2Role(
+            return new AuthResponse2RoleResponse(
                     jwtService.generateToken((User) authenticate.getPrincipal()),
                     user.getRole(),
                     user.getFirstName(),
-                    user.getLastName()
+                    user.getLastName(),
+                    user.getPhoneNumber(),
+                    user.getCourse() == null ? null : user.getCourse().getName()
             );
         } catch (Exception e) {
-            throw new BaseException("User not found", HttpStatus.NOT_FOUND);
+            throw new BaseException("wrong email or password", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -131,8 +126,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void forgotPassword(ForgotPasswordRequestDto forgotPasswordRequestDto) {
-        User users = userRepository.findByEmail(forgotPasswordRequestDto.getEmail())
+    public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
+        User users = userRepository.findByEmail(forgotPasswordRequest.getEmail())
                 .orElseThrow(() -> new NotFoundException("user not found"));
         String genCode = codeGenerate();
         resetPasswordRepository.save(ResetPassword.builder()
@@ -141,7 +136,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .user(users)
                 .isActive(false)
                 .build());
-        emailUtil.send(forgotPasswordRequestDto.getEmail(), "Код для сброса пароля", genCode);
+        emailUtil.send(forgotPasswordRequest.getEmail(), "Код для сброса пароля", genCode);
     }
 
     @Override
@@ -153,13 +148,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void confirmCode(ForgotPasswordCodeRequestDto forgotPasswordCodeRequestDto) {
+    public void confirmCode(ForgotPasswordCodeRequest forgotPasswordCodeRequest) {
         ResetPassword resetPassword = resetPasswordRepository
-                .findTopByCodeAndIsActiveOrderByDateExpirationDesc(forgotPasswordCodeRequestDto.getCode(), false)
+                .findTopByCodeAndIsActiveOrderByDateExpirationDesc(forgotPasswordCodeRequest.getCode(), false)
                 .orElseThrow(() -> new BaseException("code undefined", HttpStatus.BAD_REQUEST));
         if (resetPassword.getDateExpiration().isAfter(LocalDateTime.now())) {
             User user = resetPassword.getUser();
-            user.setPassword(passwordEncoder.encode(forgotPasswordCodeRequestDto.getNewPassword()));
+            user.setPassword(passwordEncoder.encode(forgotPasswordCodeRequest.getNewPassword()));
             resetPassword.setIsActive(true);
             resetPasswordRepository.save(resetPassword);
             userRepository.save(user);
@@ -177,16 +172,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void updateProfilePage(Long id, UpdateUserRequest updateUserRequest) {
         User user = id != null ? getUserEntityById(id) :
                 (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        user.setEmail(updateUserRequest.getEmail() != null ? updateUserRequest.getEmail() : user.getEmail());
+        user.setEmail(updateUserRequest.getLogin() != null ? updateUserRequest.getLogin() : user.getEmail());
         user.setFirstName(updateUserRequest.getFirstName() != null ? updateUserRequest.getFirstName() : user.getFirstName());
         user.setPhoneNumber(updateUserRequest.getPhoneNumber() != null ? updateUserRequest.getPhoneNumber() : user.getPhoneNumber());
         user.setLastName(updateUserRequest.getLastName() != null ? updateUserRequest.getLastName() : user.getLastName());
+        user.setCourse(updateUserRequest.getCourseId() !=null ? courseRepository.findById(updateUserRequest.getCourseId()).orElseThrow(
+                ()-> new BaseException("not found", HttpStatus.NOT_FOUND)
+        ): user.getCourse());
+        user.setPassword(updateUserRequest.getPassword() !=null ? passwordEncoder.encode(updateUserRequest.getPassword()) : user.getPassword());
         userRepository.save(user);
     }
 
     @Override
     public void updateProfileImage(MultipartFile multipartFile, User user) {
-        user.setUrlImage(imageUploadService.saveImage(multipartFile));
+        user.setUrlImage(imageUploadService.saveFile(multipartFile));
         userRepository.save(user);
     }
 
@@ -199,8 +198,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<UserDto> search(String email, String firstName, String lastName, String firstOrLastName,
-                                String phoneNumber) {
+    public List<UserResponse> search(String email, String firstName, String lastName, String firstOrLastName,
+                                     String phoneNumber) {
         ExampleMatcher exampleMatcher = getSearchExampleMatcher();
         if (firstOrLastName != null) {
             firstName = firstOrLastName;
@@ -212,61 +211,97 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .lastName(lastName)
                 .phoneNumber(phoneNumber)
                 .build();
-        return UserMapper.entityListToDtoList(userRepository.findAll(Example.of(probe, exampleMatcher)));
+        return entityListToDtoList(userRepository.findAll(Example.of(probe, exampleMatcher)));
     }
 
     @Override
-    public List<UserDto> filter(Status status, Role role) {
+    public List<UserResponse> filter(Status status, Role role) {
         ExampleMatcher exampleMatcher = getFilterExampleMatcher();
         User probe = User.builder()
                 .status(status)
                 .role(role)
                 .build();
-        return UserMapper.entityListToDtoList(userRepository.findAll(Example.of(probe, exampleMatcher)));
+        return entityListToDtoList(userRepository.findAll(Example.of(probe, exampleMatcher)));
     }
 
     @Override
-    public List<UserDto> getAllUsers(PageRequest pageRequest) {
-        return UserMapper.entityListToDtoList(userRepository.findAll(pageRequest).stream().toList());
+    public List<UserCountResponse> findAllByStatus(int skip,
+                                              int limit) {
+        List<UserResponse> userResponses = UserMapper.entityListToDtoList(
+                userRepository
+                        .findAllByStatusAndRoleOrderByCreatedDateDesc());
+
+        int totalUser = userRepository.findAllByStatusAndRoleOrderByCreatedDateDesc().size();
+        int startIndex = skip < totalUser ? skip : totalUser;
+        int endIndex = Math.min(skip + limit, totalUser);
+
+        List<UserCountResponse> userCountResponses = new ArrayList<>();
+        UserCountResponse userCountResponse = new UserCountResponse(userResponses.subList(startIndex, endIndex),totalUser);
+        userCountResponses.add(userCountResponse);
+        return userCountResponses;
     }
 
     @Override
-    public UserDto getUserById(Long userId) {
+    public UserResponse getUserById(Long userId) {
         return UserMapper.entityToDto(getUserEntityById(userId));
     }
 
     @Override
-    public ResponseDto archiveUserById(Long userId, ArchiveRequest archiveRequest, Boolean isBlacklist) {
-        User user = getUserEntityById(userId);
-        if (user.getStatus() == Status.ARCHIVED && !isBlacklist) {
-            throw new BaseException("User is already archived", HttpStatus.CONFLICT);
-        }
-        if (user.getStatus() == Status.BLACKLIST && isBlacklist) {
-            throw new BaseException("User is already in blacklist", HttpStatus.CONFLICT);
-        }
-        user.setReason(archiveRequest.getReason());
-        user.setStatus(isBlacklist ? Status.BLACKLIST : Status.ARCHIVED);
-        user.setArchiveDate(LocalDateTime.now(DateUtil.getZoneId()));
-        userRepository.save(user);
-        return ResponseUtil.buildSuccessResponse("User has been successfully " + (isBlacklist ? "blacklisted." : "archived."));
+    public List<SavedResponse> getAllSaved(User user) {
+        List<SavedResponse> savedResponses = new ArrayList<>();
+
+        savedRepository.findAllByUserAndStatus(user, Status.ACTIVE).forEach(
+                x -> savedResponses.add(SavedResponse.builder()
+                        .fileUrl(x.getBook().getUrlImage())
+                        .title(x.getBook().getTitle())
+                        .bookId(x.getBook().getId())
+                        .savedId(x.getId())
+                        .build()
+                )
+        );
+
+        return savedResponses;
     }
 
     @Override
-    public ResponseDto unarchiveUserById(Long userId) {
-        User user = getUserEntityById(userId);
-        if (user.getStatus() == Status.ACTIVE) {
-            throw new BaseException("User is already active.", HttpStatus.CONFLICT);
-        }
-        user.setStatus(Status.ACTIVE);
-        user.setReason(null);
-        user.setArchiveDate(null);
-        userRepository.save(user);
-        return ResponseUtil.buildSuccessResponse("User has been successfully unarchived.");
+    public List<UserBookingInfoResponse> getALlBooked(User user, int skip, int limit) {
+        List<BookingResponse> bookingResponses = new ArrayList<>();
+
+        bookingRepository.findAllByUser(user).forEach(
+                x -> bookingResponses.add(BookingResponse.builder()
+                        .dateStarted(x.getGetDate() !=null ? x.getGetDate().toString():null)
+                        .title(x.getBook().getTitle())
+                        .dateEnd(x.getReturnDate() !=null ? x.getReturnDate().toString():null)
+                        .isDeadline(x.getReturnDate() !=null ? x.getReturnDate().isBefore(LocalDate.now()):false)
+                        .isLoaned(x.getGetDate() !=null ? true : false)
+                        .build()
+                )
+        );
+        int totalBooked = bookingRepository.findAllByUser(user).size();
+        int startIndex = skip < totalBooked ? skip : totalBooked;
+        int endIndex = Math.min(skip + limit, totalBooked);
+
+        List<UserBookingInfoResponse> userBookingInfoResponses = new ArrayList<>();
+        UserBookingInfoResponse userBookingInfoResponse = new UserBookingInfoResponse(bookingResponses.subList(startIndex, endIndex), totalBooked);
+        userBookingInfoResponses.add(userBookingInfoResponse);
+        return userBookingInfoResponses;
     }
 
     @Override
-    public List<User> getBlacklist() {
-        return userRepository.findAllByStatus(Status.BLACKLIST);
+    public UserInfo currentUser(User user) {
+        return UserInfo.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .courseName(user.getCourse().getGroupss() + " " + user.getCourse().getName())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
+    }
+
+    @Override
+    public AllUser getCountOfUsers() {
+        return AllUser.builder()
+                .count(userRepository.countAllByStatus(Status.ACTIVE))
+                .build();
     }
 
 
@@ -292,7 +327,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public User getUserEntityById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(EntityEnum.USER, "id", userId));
+        return userRepository.findById(userId).orElseThrow(() -> new BaseException("user with id " + userId + "not found", HttpStatus.NOT_FOUND));
     }
 
     public User getCurrentUserEntity() {
@@ -300,14 +335,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .orElseThrow(() -> new BaseException("User not found", HttpStatus.NOT_FOUND));
     }
 
-    private ExampleMatcher getFilterExampleMatcher(){
+    private ExampleMatcher getFilterExampleMatcher() {
         return ExampleMatcher.matchingAll()
                 .withMatcher("status", ExampleMatcher.GenericPropertyMatchers.exact())
                 .withMatcher("role", ExampleMatcher.GenericPropertyMatchers.exact())
                 .withIgnorePaths("id");
     }
 
-    private ExampleMatcher getSearchExampleMatcher(){
+    private ExampleMatcher getSearchExampleMatcher() {
         return ExampleMatcher.matchingAny()
                 .withMatcher("firstName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withMatcher("lastName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
@@ -315,4 +350,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .withMatcher("phoneNumber", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withIgnorePaths("id");
     }
+
+
 }

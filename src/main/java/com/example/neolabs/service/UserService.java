@@ -1,19 +1,16 @@
 package com.example.neolabs.service;
 
-import com.example.neolabs.dto.request.*;
-import com.example.neolabs.dto.request.auth.AuthenticationRequest;
-import com.example.neolabs.dto.request.auth.ForgotPasswordCodeRequestDto;
-import com.example.neolabs.dto.request.auth.ForgotPasswordRequestDto;
-import com.example.neolabs.dto.request.auth.RegistrationRequest;
-import com.example.neolabs.dto.request.update.UpdatePasswordRequest;
-import com.example.neolabs.dto.request.update.UpdateUserRequest;
-import com.example.neolabs.dto.*;
-import com.example.neolabs.dto.response.AuthResponse2Role;
+import com.example.neolabs.dto.request.CodeRequest;
+import com.example.neolabs.dto.request.AuthenticationRequest;
+import com.example.neolabs.dto.request.ForgotPasswordCodeRequest;
+import com.example.neolabs.dto.request.ForgotPasswordRequest;
+import com.example.neolabs.dto.request.RegistrationRequest;
+import com.example.neolabs.dto.request.UpdatePasswordRequest;
+import com.example.neolabs.dto.request.UpdateUserRequest;
+import com.example.neolabs.dto.response.*;
 import com.example.neolabs.entity.User;
-import com.example.neolabs.dto.response.AuthenticationResponse;
 import com.example.neolabs.enums.Role;
 import com.example.neolabs.enums.Status;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
@@ -24,17 +21,17 @@ public interface UserService {
 
     ResponseDto registration(RegistrationRequest registrationRequest);
 
-    AuthResponse2Role auth(AuthenticationRequest authenticationRequest);
+    AuthResponse2RoleResponse auth(AuthenticationRequest authenticationRequest);
 
     AuthenticationResponse refreshToken(User user);
 
     void updatePassword(UpdatePasswordRequest updatePasswordRequest);
 
-    void forgotPassword(ForgotPasswordRequestDto forgotPasswordRequestDto) throws MessagingException;
+    void forgotPassword(ForgotPasswordRequest forgotPasswordRequest) throws MessagingException;
 
     String codeGenerate();
 
-    void confirmCode(ForgotPasswordCodeRequestDto forgotPasswordCodeRequestDto);
+    void confirmCode(ForgotPasswordCodeRequest forgotPasswordCodeRequest);
 
     void confirmCodeFirst(CodeRequest code);
 
@@ -44,17 +41,22 @@ public interface UserService {
 
     void deleteUserById(Long id);
 
-    List<UserDto> search(String email, String firstName, String lastName, String firstOrLastName, String phoneNumber);
+    List<UserResponse> search(String email, String firstName, String lastName, String firstOrLastName, String phoneNumber);
 
-    List<UserDto> filter(Status status, Role role);
+    List<UserResponse> filter(Status status, Role role);
 
-    List<UserDto> getAllUsers(PageRequest pageRequest);
+    List<UserCountResponse> findAllByStatus(int skip, int limit);
 
-    UserDto getUserById(Long id);
+    UserResponse getUserById(Long id);
 
-    ResponseDto archiveUserById(Long userId, ArchiveRequest archiveRequest, Boolean isBlacklist);
+    List<SavedResponse> getAllSaved(User user);
 
-    ResponseDto unarchiveUserById(Long userId);
+    List<UserBookingInfoResponse> getALlBooked(User user, int skip, int limit);
 
-    List<User> getBlacklist();
+    UserInfo currentUser(User user);
+
+    AllUser getCountOfUsers();
+
+
+
 }

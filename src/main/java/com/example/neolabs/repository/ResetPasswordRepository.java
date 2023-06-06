@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface ResetPasswordRepository extends JpaRepository<ResetPassword, Long> {
 
     Optional<ResetPassword> findTopByCodeAndIsActiveOrderByDateExpirationDesc(String code, Boolean isActive);
-
 }

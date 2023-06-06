@@ -1,10 +1,14 @@
 package com.example.neolabs.exception;
 
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
-public class EmptyFileException extends  RuntimeException{
-    private final String msg;
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class EmptyFileException extends RuntimeException{
+
+    final String msg;
 }

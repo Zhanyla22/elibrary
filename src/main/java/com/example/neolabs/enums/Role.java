@@ -12,7 +12,9 @@ import org.springframework.security.core.GrantedAuthority;
 public enum Role implements GrantedAuthority {
 
     ROLE_ADMIN("ADMIN"),
-    ROLE_MANAGER("MANAGER");
+    ROLE_LIBRARIAN("LIBRARIAN"),
+    ROLE_READER("READER");
+
 
     final String name;
 

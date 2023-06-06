@@ -1,6 +1,5 @@
 package com.example.neolabs.dto.response;
 
-import com.example.neolabs.enums.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

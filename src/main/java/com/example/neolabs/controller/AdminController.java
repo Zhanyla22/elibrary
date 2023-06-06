@@ -1,11 +1,12 @@
 package com.example.neolabs.controller;
 
 import com.example.neolabs.controller.base.BaseController;
-import com.example.neolabs.dto.ResponseDto;
-import com.example.neolabs.dto.UserDto;
-import com.example.neolabs.dto.request.ArchiveRequest;
-import com.example.neolabs.dto.request.auth.RegistrationRequest;
-import com.example.neolabs.dto.request.update.UpdateUserRequest;
+import com.example.neolabs.dto.request.RegistrationRequest;
+import com.example.neolabs.dto.request.UpdateUserRequest;
+import com.example.neolabs.dto.response.AllUser;
+import com.example.neolabs.dto.response.ResponseDto;
+import com.example.neolabs.dto.response.UserCountResponse;
+import com.example.neolabs.dto.response.UserResponse;
 import com.example.neolabs.enums.Role;
 import com.example.neolabs.enums.Status;
 import com.example.neolabs.service.impl.CsvExportServiceImpl;
@@ -14,9 +15,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/admin")
-@Tag(name = "Admin Resource", description = "The Admin API ")
+@Tag(name = "Админ", description = "API Админ ")
 public class AdminController extends BaseController {
 
     private final UserServiceImpl userService;
@@ -40,12 +40,14 @@ public class AdminController extends BaseController {
         csvExportService.writeUsersToCsv(servletResponse.getWriter());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Регистрация нового пользователя   || Саку")
     @PostMapping("/registration")
     public ResponseEntity<ResponseDto> emergencyRegistration(@RequestBody RegistrationRequest registrationRequest) {
         return constructSuccessResponse(userService.registration(registrationRequest));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "удаление пользователя по Id")
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDto> deleteUserById(@PathVariable Long id) {
@@ -53,6 +55,7 @@ public class AdminController extends BaseController {
         return constructSuccessResponse("User with id " + id + "successfully deleted");
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "обновление данных пользователя")
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseDto> updateProfilePageUser(@PathVariable Long id, @RequestBody UpdateUserRequest updateUserRequest) {
@@ -61,48 +64,39 @@ public class AdminController extends BaseController {
     }
 
     @GetMapping("/users/filter")
-    public ResponseEntity<List<UserDto>> filterUsers(@RequestParam("status") Optional<Status> status,
-                                                     @RequestParam("role") Optional<Role> role) {
+    public ResponseEntity<List<UserResponse>> filterUsers(@RequestParam("status") Optional<Status> status,
+                                                          @RequestParam("role") Optional<Role> role) {
         return ResponseEntity.ok(userService.filter(status.orElse(null), role.orElse(null)));
     }
 
     @GetMapping("/users/search")
-    public ResponseEntity<List<UserDto>> searchUsers(@RequestParam("email") Optional<String> email,
-                                                     @RequestParam("firstName") Optional<String> firstName,
-                                                     @RequestParam("lastName") Optional<String> lastName,
-                                                     @RequestParam("firstOrLastName") Optional<String> firstOrLastName,
-                                                     @RequestParam("phoneNumber") Optional<String> phoneNumber) {
+    public ResponseEntity<List<UserResponse>> searchUsers(@RequestParam("email") Optional<String> email,
+                                                          @RequestParam("firstName") Optional<String> firstName,
+                                                          @RequestParam("lastName") Optional<String> lastName,
+                                                          @RequestParam("firstOrLastName") Optional<String> firstOrLastName,
+                                                          @RequestParam("phoneNumber") Optional<String> phoneNumber) {
         return ResponseEntity.ok(userService.search(email.orElse(null), firstName.orElse(null),
                 lastName.orElse(null), firstOrLastName.orElse(null), phoneNumber.orElse(null)));
     }
 
     @Operation(summary = "Получение всех пользователей")
-    @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getAllUsers(@RequestParam("sortBy") Optional<String> sortBy,
-                                                     @RequestParam("size") Optional<Integer> size,
-                                                     @RequestParam("page") Optional<Integer> page) {
+    @GetMapping("/users/{skip}/{limit}")
+    public List<UserCountResponse> getAllUsers(@PathVariable int skip,
+                                               @PathVariable int limit) {
 
-        return ResponseEntity.ok(userService.getAllUsers(
-                PageRequest.of(page.orElse(0), size.orElse(1000), Sort.by(sortBy.orElse("id")))
-        ));
+        return userService.findAllByStatus(skip,limit);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "получение 1го пользователя по айди")
     @GetMapping("users/{id}")
     public ResponseEntity<ResponseDto> getUserById(@PathVariable Long id) {
         return constructSuccessResponse(userService.getUserById(id));
     }
 
-    @PutMapping("/archive")
-    public ResponseEntity<ResponseDto> archiveUserById(@RequestParam("userId") Long userId,
-                                                       @RequestParam(value = "blacklist", defaultValue = "1") Boolean isBlacklist,
-                                                       @RequestBody ArchiveRequest archiveRequest) {
-        return ResponseEntity.ok(userService.archiveUserById(userId, archiveRequest, isBlacklist));
-    }
-
-    @PutMapping("/unarchive")
-    public ResponseEntity<ResponseDto> unarchiveUserById(@RequestParam("userId") Long userId){
-        return ResponseEntity.ok(userService.unarchiveUserById(userId));
+    @Operation(summary = "аналитика - количество пользователей")
+    @GetMapping("/count")
+    private AllUser allUserCount(){
+        return userService.getCountOfUsers();
     }
 }

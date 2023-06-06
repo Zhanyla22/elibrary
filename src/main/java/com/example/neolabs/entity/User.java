@@ -11,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -25,6 +24,12 @@ import java.util.Collections;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User extends BaseEntity implements UserDetails {
 
+    @Column(name = "first_name")
+    String firstName;
+
+    @Column(name = "last_name")
+    String lastName;
+
     @Column(name = "email")
     @NotNull
     String email;
@@ -33,20 +38,21 @@ public class User extends BaseEntity implements UserDetails {
     @NotNull
     String password;
 
-    @Column(name = "first_name")
-    String firstName;
-
-    @Column(name = "last_name")
-    String lastName;
-
     @Column(name = "phone_number")
     String phoneNumber;
 
-    @Column(name = "url_image")
+    @Column(name = "url_image", length = 5000)
     String urlImage;
 
-    @Column(name = "last_visit_date")
-    LocalDateTime lastVisitDate;
+    @ManyToOne
+    @JoinColumn(columnDefinition = "course_id",
+            referencedColumnName = "id")
+    Course course;
+
+    @ManyToOne
+    @JoinColumn(columnDefinition = "subject_id",
+            referencedColumnName = "id")
+    Subject subject;
 
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -54,15 +60,6 @@ public class User extends BaseEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     Status status;
-
-    @Column(name = "reason_changed_status")
-    String reason;
-
-    @Column(name = "is_archived")
-    Boolean isArchived;
-
-    @Column(name = "archive_date")
-    LocalDateTime archiveDate;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

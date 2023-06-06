@@ -1,13 +1,18 @@
 package com.example.neolabs.repository;
 
 import com.example.neolabs.entity.Course;
+import com.example.neolabs.enums.Group;
+import com.example.neolabs.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
-public interface CourseRepository extends JpaRepository<Course, Long> {
+public interface CourseRepository extends JpaRepository<Course,Long> {
 
-    Optional<Course> findCourseByName(String name);
+    List<Course> findAllByStatus(Status status);
 
-    Boolean existsByName(String name);
+    boolean existsByNameAndGroupss(String name, Group groups);
+
+    Optional<Course> findById(Long id);
 }

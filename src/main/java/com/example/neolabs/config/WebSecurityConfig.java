@@ -33,14 +33,15 @@ public class WebSecurityConfig{
     final String[] WHITELISTED_ENDPOINTS = {
             "/documentation/**",
             "/v3/api-docs/**",
-            "/user/auth",
+            "/api/v1/auth/sign-in",
             "/user/forgot-password",
             "/user/confirm-code",
             "/user/reset-password",
             "/ws",
             "/ws/**",
             "/error",
-            "/error/**"
+            "/error/**",
+            "/api/v1/book/download/**",
     };
 
     @Bean
